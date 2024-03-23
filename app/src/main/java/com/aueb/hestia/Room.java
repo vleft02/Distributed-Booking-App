@@ -12,6 +12,7 @@ public class Room {
     private int noOfReviews;
     private String roomImage;
     private float price;
+    private String ownerUsername;
     private ArrayList<DateRange> availability;
 
 
@@ -54,6 +55,8 @@ public class Room {
         }
         availability.add(new DateRange(from, to));
     }
+
+    
     public void addAvailability(String singleDate)
     {
 
