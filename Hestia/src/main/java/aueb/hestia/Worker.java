@@ -1,11 +1,42 @@
 package aueb.hestia;// package com.aueb.hestia;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class Worker extends Thread{
+
+    private static int counter = -1;
+
+    private int id = 0;
     ArrayList<Room> rooms = new ArrayList<Room>();
     ArrayList<WorkerThread> threads = new ArrayList<WorkerThread>();
-    
+
+
+    Worker()
+    {
+        id = counter++;
+    }
+
+    public void openServer()
+    {
+        ServerSocket ssocket = null;
+        try {
+            ssocket = new ServerSocket(4321+id);
+            while(true)
+            {
+
+                Socket client = ssocket.accept();
+                WorkerThread wt = new WorkerThread(client, rooms);
+            }
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     
     @Override
     public void run() {

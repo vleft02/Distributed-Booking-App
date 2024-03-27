@@ -1,14 +1,14 @@
 package aueb.hestia;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 public class WorkerThread extends Thread{
-    
-    String function;
-    // String[];
+    ArrayList<Room> rooms;
 
-
-    WorkerThread()
+    WorkerThread(Socket socket, ArrayList<Room> rooms)
     {
-
+        this.rooms = rooms;
     }
 
     
