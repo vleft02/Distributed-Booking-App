@@ -73,6 +73,9 @@ public class Worker extends Thread{
     {
 
     }
+    public void showRooms(String username)
+    {
 
+    }
 
 }

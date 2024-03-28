@@ -1,7 +1,8 @@
 package aueb.hestia;// package com.aueb.hestia;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-public class DateRange {
+public class DateRange implements Serializable {
     private LocalDate from;
     private LocalDate to;
 

@@ -36,8 +36,8 @@ public class Main{
         room1.book("2024-11-11","2024-11-09");
 
 
-        room1.addAvailability("2024-10-11");
-        room1.printAvailability();
+//        room1.addAvailability("2024-10-11");
+//        room1.printAvailability();
 
 
         room1.addAvailability("2024-10-11", "2024-10-16");

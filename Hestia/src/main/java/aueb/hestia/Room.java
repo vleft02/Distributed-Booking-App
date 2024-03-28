@@ -117,43 +117,7 @@ public class Room {
         }
     }
 
-//
-//    public void addAvailability(String singleDate)
-//    {
-//        try{
-//            LocalDate date = LocalDate.parse(singleDate);
-//
-//            for (DateRange interval : availability)
-//            {
-//                if (interval.contains(date))
-//                {
-//                    return;
-//                }
-//                else
-//                {
-//                    if (interval.overlaps(new DateRange(date, date)))
-//                    {
-//                        DateRange mergedInterval = interval.mergeOverlapping(new DateRange(date, date));
-//                        availability.remove(interval);
-//                        availability.add(mergedInterval);
-//                        return;
-//                    }
-//                    else if(interval.isAdjacent(new DateRange(date, date)))
-//                    {
-//                        interval.mergeAdjacent(new DateRange(date, date));
-//                        return;
-//                    }
-//                }
-//
-//            }
-//            availability.add(new DateRange(singleDate, singleDate));
-//        }
-//        catch (InvalidDateException e)
-//        {
-//            System.out.println("The date given is Invalid");
-//        }
-//
-//    }
+
 
     public void book(String from, String to)
     {
