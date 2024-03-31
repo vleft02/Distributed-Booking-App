@@ -21,10 +21,22 @@ public class User {
             out.writeObject("addRoom");
             out.flush();
 
+            out.writeObject("Kostas");
+            out.flush();
+
             out.writeObject("Priamos Hotel");
             out.flush();
 
             out.writeInt(1);
+            out.flush();
+
+            out.writeObject("Athens");
+            out.flush();
+
+            out.writeFloat(20.0f);
+            out.flush();
+
+            out.writeObject("img");
             out.flush();
 
 //            System.out.println("Server>" + in.readInt());
