@@ -3,6 +3,8 @@ package aueb.hestia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
@@ -12,8 +14,8 @@ class RoomTest {
     Room room2;
     @BeforeEach
     void setUp() {
-        room1 = new Room("Priamos",2,"Athens",4.5f,4,"img/image");
-        room2 = new Room("Xenos",2,"Athens",4.5f,4,"img/image");
+        room1 = new Room("Kostas","Priamos",2,"Athens",4.5f,4,20.0f,"img/image");
+        room2 = new Room("Giorgos","Xenos",2,"Athens",4.5f,4,10.0f,"img/image");
     }
 
     @Test
@@ -30,18 +32,18 @@ class RoomTest {
 
     @Test
     void addAvailability() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
         assertEquals(new DateRange("2024-03-10","2024-03-20"), room1.getAvailability().get(0));
 
-        room1.addAvailability("2024-03-25","2024-03-30");
+        room1.addAvailability(new DateRange("2024-03-25","2024-03-30"));
         assertEquals(new DateRange("2024-03-25","2024-03-30"), room1.getAvailability().get(1));
         assertEquals(2, room1.getAvailability().size());
     }
 
     @Test
     void addAvailabilityOverlapping() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.addAvailability("2024-03-05","2024-03-27");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.addAvailability(new DateRange("2024-03-05","2024-03-27"));
         assertEquals(new DateRange("2024-03-05","2024-03-27"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
 
@@ -49,8 +51,8 @@ class RoomTest {
 
     @Test
     void addAvailabilityAdjacent() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.addAvailability("2024-03-05","2024-03-09");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.addAvailability(new DateRange("2024-03-05","2024-03-09"));
         assertEquals(new DateRange("2024-03-05","2024-03-20"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
     }
@@ -58,8 +60,8 @@ class RoomTest {
 
     @Test
     void book() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.book("2024-03-10","2024-03-15");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.book(new DateRange("2024-03-10","2024-03-15"));
 
         assertEquals(new DateRange("2024-03-16", "2024-03-20"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
@@ -67,8 +69,8 @@ class RoomTest {
 
     @Test
     void bookInTheMiddle() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.book("2024-03-13","2024-03-15");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.book(new DateRange("2024-03-13","2024-03-15"));
 
         assertEquals(new DateRange("2024-03-10", "2024-03-12"), room1.getAvailability().get(0));
         assertEquals(new DateRange("2024-03-16", "2024-03-20"), room1.getAvailability().get(1));
@@ -77,8 +79,8 @@ class RoomTest {
 
     @Test
     void bookInvalid() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.book("2024-03-08","2024-03-15");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.book(new DateRange("2024-03-08","2024-03-15"));
 
         assertEquals(new DateRange("2024-03-10", "2024-03-20"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
@@ -86,8 +88,8 @@ class RoomTest {
 
     @Test
     void bookSingle() throws InvalidDateException {
-        room1.addAvailability("2024-03-10","2024-03-20");
-        room1.book("2024-03-11","2024-03-11");
+        room1.addAvailability(new DateRange("2024-03-10","2024-03-20"));
+        room1.book(new DateRange("2024-03-11","2024-03-11"));
         room1.printAvailability();
 
         assertEquals(new DateRange("2024-03-10", "2024-03-10"), room1.getAvailability().get(0));

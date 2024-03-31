@@ -19,8 +19,9 @@ public class Room {
 
 
 
-    public Room(String roomName, int noOfPersons, String area, float stars, int noOfReviews, String roomImage)
+    public Room(String ownerUsername, String roomName, int noOfPersons, String area, float stars, int noOfReviews, float price,String roomImage)
     {
+        this.ownerUsername = ownerUsername;
         this.roomName = roomName;
         this.noOfPersons = noOfPersons;
         this.area = area;
@@ -79,29 +80,26 @@ public class Room {
 
 
     //Methods
-    public void addAvailability(String from, String to)
+    public void addAvailability(DateRange dateRange)
     {
-        try{   
-            LocalDate fromDate = LocalDate.parse(from);
-            LocalDate toDate = LocalDate.parse(to);
 
             for (DateRange interval : availability)
             {
-                if (interval.contains(new DateRange(fromDate,toDate)))
+                if (interval.contains(dateRange))
                 {
                     return;
                 }
                 else
                 {
 
-                    if(interval.isAdjacent(new DateRange(fromDate, toDate)))
+                    if(interval.isAdjacent(dateRange))
                     {
-                        interval.mergeAdjacent(new DateRange(fromDate, toDate));
+                        interval.mergeAdjacent(dateRange);
                         return;
                     }
-                    else if(interval.overlaps(new DateRange(fromDate, toDate)))
+                    else if(interval.overlaps(dateRange))
                     {
-                        DateRange mergedInterval = interval.mergeOverlapping(new DateRange(fromDate, toDate));
+                        DateRange mergedInterval = interval.mergeOverlapping(dateRange);
                         availability.remove(interval);
                         availability.add(mergedInterval);
                         return;
@@ -109,21 +107,15 @@ public class Room {
                 }
 
             }
-            availability.add(new DateRange(from, to));
+            availability.add(dateRange);
         }
-        catch(InvalidDateException e)
-        {
-            System.out.println("The date given is Invalid");
-        }
-    }
 
 
 
-    public void book(String from, String to)
+    public void book(DateRange bookingDateRange)
     {
         try
         {
-            DateRange bookingDateRange = new DateRange(from, to);
             for (DateRange interval : availability)
             {
                 if (interval.contains(bookingDateRange))
@@ -146,10 +138,6 @@ public class Room {
         {
             System.out.println("Room is unavailable for Dates specified");
         }
-        catch(InvalidDateException e)
-        {
-            System.out.println("The Date given is Invalid");
-        }
     }
 
     public void printAvailability()
@@ -161,7 +149,7 @@ public class Room {
         System.out.print("\n");
     }
 
-    public void review(int starScore)
+    public void review(float starScore)
     {
         if (starScore>0 && starScore<=5)
         {
@@ -175,5 +163,14 @@ public class Room {
 
     }
 
-
+    public boolean isAvailable(DateRange dateRange) {
+        for (DateRange interval : availability)
+        {
+            if (interval.contains(dateRange))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

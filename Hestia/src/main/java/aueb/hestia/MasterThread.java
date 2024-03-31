@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static java.lang.Math.abs;
+
 public class MasterThread extends Thread{
 
     private String function;
@@ -155,11 +157,13 @@ public class MasterThread extends Thread{
         String roomName = (String) in.readObject();
         int noOfPersons = in.readInt();
         String area = (String) in.readObject();
+        float price = in.readFloat();
         String roomImage = (String) in.readObject();
 
-
-        requestSocket= new Socket("127.0.0.1", 4000+hashCode(roomName));
+        System.out.println(4000+hashCode(roomName));
+        requestSocket = new Socket("127.0.0.1", 4000+hashCode(roomName));
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+        ObjectInputStream in2 = new ObjectInputStream(requestSocket.getInputStream());
         out.writeObject("addRoom");
         out.flush();
         out.writeObject(username);
@@ -169,6 +173,8 @@ public class MasterThread extends Thread{
         out.writeInt(noOfPersons);
         out.flush();
         out.writeObject(area);
+        out.flush();
+        out.writeObject(price);
         out.flush();
         out.writeObject(roomImage);
         out.flush();
@@ -243,7 +249,7 @@ public class MasterThread extends Thread{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] encodedHash = digest.digest(roomName.getBytes(StandardCharsets.UTF_8));
             BigInteger bigInt = new BigInteger(1, encodedHash);
-            return bigInt.intValue() % numberOfWorkers;
+            return (int) abs(bigInt.intValue() % numberOfWorkers);
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
