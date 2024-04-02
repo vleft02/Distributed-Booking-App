@@ -1,9 +1,6 @@
 package aueb.hestia;// package com.aueb.hestia;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Room {
     private final String roomName;
@@ -12,14 +9,14 @@ public class Room {
     private float stars;
     private int noOfReviews;
     private String roomImage;
-    private float price;
+    private double price;
     private String ownerUsername;
     private ArrayList<DateRange> availability;
 
 
 
 
-    public Room(String ownerUsername, String roomName, int noOfPersons, String area, float stars, int noOfReviews, float price,String roomImage)
+    public Room(String ownerUsername, String roomName, int noOfPersons, String area, float stars, int noOfReviews, double price,String roomImage)
     {
         this.ownerUsername = ownerUsername;
         this.roomName = roomName;
@@ -28,14 +25,14 @@ public class Room {
         this.stars = stars;
         this.noOfReviews = noOfReviews;
         this.roomImage = roomImage;
-        this.price = 0.0f;
+        this.price = 0.0;
         this.availability = new ArrayList<DateRange>();
     }
 
     //Setters and Getters
-    public void setPrice(float price)
+    public void setPrice(double price)
     {
-        if (price>0.0f)
+        if (price>0.0)
         {
             this.price = price;
         }
@@ -68,7 +65,7 @@ public class Room {
     public String getOwnerUsername() {
         return ownerUsername;
     }
-    public float getPrice()
+    public double getPrice()
     {
         return price;
     }

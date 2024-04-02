@@ -6,8 +6,8 @@ public class Main{
         Room room2 = new Room("Giorgos","Xenos",2,"Athens",4.5f,4,10.0f,"img/image");
 
 
-        room1.setPrice(10.00f);
-        room2.setPrice(20.00f);
+        room1.setPrice(10.0);
+        room2.setPrice(20.0);
 
 
         room1.addAvailability(new DateRange("2024-10-10","2024-10-20"));

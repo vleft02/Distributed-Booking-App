@@ -13,8 +13,12 @@ public class ReduceThreads extends Thread{
         try {
             out = new ObjectOutputStream(connection.getOutputStream());
             in = new ObjectInputStream(connection.getInputStream());
+            String msg = (String)in.readObject();
+            System.out.println(msg);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

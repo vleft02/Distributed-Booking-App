@@ -1,12 +1,13 @@
 package aueb.hestia;
 
+import aueb.hestia.DateRange;
+import aueb.hestia.Room;
 import aueb.hestia.dao.RoomDao;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class WorkerThread extends Thread{
@@ -14,7 +15,7 @@ public class WorkerThread extends Thread{
     ObjectInputStream in;
     ObjectOutputStream out;
     String function;
-
+    Socket requestSocket;
 
     WorkerThread(Socket socket, RoomDao rooms)
     {
@@ -96,7 +97,6 @@ public class WorkerThread extends Thread{
             {
                 roomToBook.book(dateRange);
             }
-
         }
     }
 
@@ -122,13 +122,20 @@ public class WorkerThread extends Thread{
         String roomName = (String) in.readObject();
         int noOfPersons = in.readInt();
         String area = (String) in.readObject();
-        float price = in.readFloat();
+        double price = in.readDouble();
         String roomImage = (String) in.readObject();
 
         synchronized (rooms)
         {
             rooms.add(new Room(username,roomName, noOfPersons, area, 0,0,price,roomImage));
         }
+
+        requestSocket= new Socket("127.0.0.1", 4009);
+        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+        out.writeObject("Room Added Succesfully");
+        out.flush();
+
+
 
     }
 
@@ -149,7 +156,7 @@ public class WorkerThread extends Thread{
 
     public void showBookings(String username)
     {
-        
+
     }
     public void showRooms(ObjectInputStream in) throws IOException, ClassNotFoundException
     {

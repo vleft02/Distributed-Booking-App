@@ -13,12 +13,11 @@ public class Reduce {
     }
     void openServer() {
         try {
-            providerSocket = new ServerSocket(4001);
+            providerSocket = new ServerSocket(4009);
 
             while (true) {
                 connection = providerSocket.accept();
                 System.out.println("Running");
-
                 Thread t = new ReduceThreads(connection);
                 t.start();
 

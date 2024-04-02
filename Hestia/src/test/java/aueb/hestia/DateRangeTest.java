@@ -15,7 +15,7 @@ class DateRangeTest {
     DateRange adjacentRange2;
 
     @BeforeEach
-    void setUp() throws InvalidDateException{
+    void setUp() throws InvalidDateException {
         range1 = new DateRange("2024-03-10","2024-03-20");
         singleRange = new DateRange("2024-03-11", "2024-03-11");
         overlappingRange1 = new DateRange("2024-03-09","2024-03-21");

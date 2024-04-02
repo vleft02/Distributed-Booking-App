@@ -1,4 +1,5 @@
 package aueb.hestia;// package com.aueb.hestia;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

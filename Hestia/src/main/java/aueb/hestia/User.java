@@ -33,7 +33,7 @@ public class User {
             out.writeObject("Athens");
             out.flush();
 
-            out.writeFloat(20.0f);
+            out.writeDouble(20.0);
             out.flush();
 
             out.writeObject("img");

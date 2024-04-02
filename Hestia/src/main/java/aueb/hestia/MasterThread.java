@@ -1,7 +1,6 @@
 package aueb.hestia;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
@@ -40,25 +39,25 @@ public class MasterThread extends Thread{
 
             switch (function) {
                 case "addRoom":
-                    addRoom(in);
+                    addRoom(in, out);
                     break;
                 case "addDate":
-                    addDate(in);
+                    addDate(in, out);
                     break;
                 case "search":
-                    search(in);
+                    search(in,out);
                     break;
                 case "book":
-                    book(in);
+                    book(in,out);
                     break;
                 case "review":
-                    review(in);
+                    review(in,out);
                     break;
                 case "showRooms":
-                    showRooms(in);
+                    showRooms(in,out);
                     break;
                 case "showBookings":
-                    showBookings(in);
+                    showBookings(in,out);
                     break;
                 default:
                     System.out.print("Function Not Found");
@@ -78,7 +77,7 @@ public class MasterThread extends Thread{
     }
 
 
-    public void search(ObjectInputStream in) throws IOException, ClassNotFoundException
+    public void search(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException
     {
         String area = (String) in.readObject();
         DateRange dateRange = (DateRange) in.readObject();
@@ -89,156 +88,157 @@ public class MasterThread extends Thread{
         for (int i=0; i<numberOfWorkers; i++)
         {
             requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-            out.writeObject("showBookings");
-            out.flush();
-            out.writeObject(area);
-            out.flush();
-            out.writeObject(dateRange);
-            out.flush();
-            out.writeInt(noOfPersons);
-            out.flush();
-            out.writeFloat(stars);
-            out.flush();
+            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+            reqOut.writeObject("showBookings");
+            reqOut.flush();
+            reqOut.writeObject(area);
+            reqOut.flush();
+            reqOut.writeObject(dateRange);
+            reqOut.flush();
+            reqOut.writeInt(noOfPersons);
+            reqOut.flush();
+            reqOut.writeFloat(stars);
+            reqOut.flush();
             if (requestSocket != null) {
                 requestSocket.close();
             }
-            out.close();
+            reqOut.close();
         }
     }
 
-    public void book(ObjectInputStream in) throws IOException, ClassNotFoundException
+    public void book(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException
     {
         String roomName = (String) in.readObject();
         DateRange dateRange = (DateRange) in.readObject();
 
         requestSocket= new Socket("127.0.0.1", 4000+hashCode(roomName));
-        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-        out.writeObject("book");
-        out.flush();
-        out.writeObject(roomName);
-        out.flush();
-        out.writeObject(dateRange);
-        out.flush();
+        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+        reqOut.writeObject("book");
+        reqOut.flush();
+        reqOut.writeObject(roomName);
+        reqOut.flush();
+        reqOut.writeObject(dateRange);
+        reqOut.flush();
 
         if (requestSocket != null) {
             requestSocket.close();
         }
-        out.close();
+        reqOut.close();
     }
 
 
 
-    public void review(ObjectInputStream in) throws  IOException, ClassNotFoundException
+    public void review(ObjectInputStream in, ObjectOutputStream out) throws  IOException, ClassNotFoundException
     {
         String roomName = (String) in.readObject();
         float stars = in.readFloat();
 
 
         requestSocket= new Socket("127.0.0.1", 4000+hashCode(roomName));
-        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-        out.writeObject("review");
-        out.flush();
-        out.writeObject(roomName);
-        out.flush();
-        out.writeFloat(stars);
-        out.flush();
+        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+        reqOut.writeObject("review");
+        reqOut.flush();
+        reqOut.writeObject(roomName);
+        reqOut.flush();
+        reqOut.writeFloat(stars);
+        reqOut.flush();
 
 
         if (requestSocket != null) {
             requestSocket.close();
         }
-        out.close();
+        reqOut.close();
     }
 
-    public void addRoom(ObjectInputStream in) throws  IOException, ClassNotFoundException
+    public void addRoom(ObjectInputStream in, ObjectOutputStream out) throws  IOException, ClassNotFoundException
     {
         String username = (String) in.readObject();
         String roomName = (String) in.readObject();
         int noOfPersons = in.readInt();
         String area = (String) in.readObject();
-        float price = in.readFloat();
+        double price = in.readDouble();
+        System.out.print(price);
         String roomImage = (String) in.readObject();
 
         System.out.println(4000+hashCode(roomName));
         requestSocket = new Socket("127.0.0.1", 4000+hashCode(roomName));
-        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
         ObjectInputStream in2 = new ObjectInputStream(requestSocket.getInputStream());
-        out.writeObject("addRoom");
-        out.flush();
-        out.writeObject(username);
-        out.flush();
-        out.writeObject(roomName);
-        out.flush();
-        out.writeInt(noOfPersons);
-        out.flush();
-        out.writeObject(area);
-        out.flush();
-        out.writeObject(price);
-        out.flush();
-        out.writeObject(roomImage);
-        out.flush();
+        reqOut.writeObject("addRoom");
+        reqOut.flush();
+        reqOut.writeObject(username);
+        reqOut.flush();
+        reqOut.writeObject(roomName);
+        reqOut.flush();
+        reqOut.writeInt(noOfPersons);
+        reqOut.flush();
+        reqOut.writeObject(area);
+        reqOut.flush();
+        reqOut.writeDouble(price);
+        reqOut.flush();
+        reqOut.writeObject(roomImage);
+        reqOut.flush();
 
         if (requestSocket != null) {
             requestSocket.close();
         }
-        out.close();
+        reqOut.close();
     }
 
-    public void addDate(ObjectInputStream in) throws IOException, ClassNotFoundException
+    public void addDate(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException
     {
         String roomName= (String) in.readObject();
         DateRange daterange = (DateRange) in.readObject();
 
         requestSocket= new Socket("127.0.0.1", 4000+hashCode(roomName));
-        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-        out.writeObject("addDate");
-        out.flush();
-        out.writeObject(roomName);
-        out.flush();
-        out.writeObject(daterange);
-        out.flush();
+        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+        reqOut.writeObject("addDate");
+        reqOut.flush();
+        reqOut.writeObject(roomName);
+        reqOut.flush();
+        reqOut.writeObject(daterange);
+        reqOut.flush();
 
         if (requestSocket != null) {
             requestSocket.close();
         }
-        out.close();
+        reqOut.close();
     }
 
-    public void showBookings(ObjectInputStream in) throws IOException, ClassNotFoundException
+    public void showBookings(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException
     {
         String username = (String) in.readObject();
 
         for (int i=0; i<numberOfWorkers; i++)
         {
             requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-            out.writeObject("showBookings");
-            out.flush();
-            out.writeObject(username);
-            out.flush();
+            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+            reqOut.writeObject("showBookings");
+            reqOut.flush();
+            reqOut.writeObject(username);
+            reqOut.flush();
             if (requestSocket != null) {
                 requestSocket.close();
             }
-            out.close();
+            reqOut.close();
         }
 
     }
-    public void showRooms(ObjectInputStream in) throws IOException, ClassNotFoundException
+    public void showRooms(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException
     {
         String username = (String) in.readObject();
         for (int i=0; i<numberOfWorkers; i++)
         {
             requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-            out.writeObject("showBookings");
-            out.flush();
-            out.writeObject(username);
-            out.flush();
+            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+            reqOut.writeObject("showBookings");
+            reqOut.flush();
+            reqOut.writeObject(username);
+            reqOut.flush();
             if (requestSocket != null) {
                 requestSocket.close();
             }
-            out.close();
+            reqOut.close();
         }
     }
 

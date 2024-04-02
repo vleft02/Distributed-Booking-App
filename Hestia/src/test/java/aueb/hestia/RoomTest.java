@@ -3,8 +3,6 @@ package aueb.hestia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
@@ -20,14 +18,14 @@ class RoomTest {
 
     @Test
     void setPrice() {
-        room1.setPrice(10.0f);
-        assertEquals(10.0f , room1.getPrice());
+        room1.setPrice(10.0);
+        assertEquals(10.0 , room1.getPrice());
     }
     @Test
     void setPriceInvalidAmount() {
-        room1.setPrice(10.0f);
-        room1.setPrice(-10.0f);
-        assertEquals(10.0f , room1.getPrice());
+        room1.setPrice(10.0);
+        room1.setPrice(-10.0);
+        assertEquals(10.0 , room1.getPrice());
     }
 
     @Test

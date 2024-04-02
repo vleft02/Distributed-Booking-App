@@ -6,7 +6,6 @@ import aueb.hestia.dao.RoomMemoryDao;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Worker extends Thread{
 
@@ -15,7 +14,6 @@ public class Worker extends Thread{
     ServerSocket providerSocket;
     Socket connection = null;
     private int id = 0;
-   /* ArrayList<Room> rooms = new ArrayList<Room>();*/
     RoomDao rooms = new RoomMemoryDao();
     Worker()
     {
@@ -43,6 +41,7 @@ public class Worker extends Thread{
             {
                 connection = providerSocket.accept();
                 WorkerThread wt = new WorkerThread(connection, rooms);
+                wt.start();
 
             }
 
