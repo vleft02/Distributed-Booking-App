@@ -11,7 +11,7 @@ import org.json.simple.parser.*;
 public class Cosnole extends Thread{
 
     JSONObject lod;
-    Main(JSONObject lod){
+    Console(JSONObject lod){
         this.lod = lod;
     }
 

@@ -32,6 +32,7 @@ public class Master{
                 connection = providerSocket.accept();
 
                 Thread t = new ActionsForClients(connection);
+				//Thread t = new MasterThread(connection);
                 t.start();
 
             }
