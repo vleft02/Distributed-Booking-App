@@ -9,9 +9,9 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static java.lang.Math.abs;
 import org.json.simple.JSONObject;
+import static java.lang.Math.abs;
+
 
 public class MasterThread extends Thread{
 
@@ -38,7 +38,7 @@ public class MasterThread extends Thread{
     public void run() {
         try {
             JSONObject obj = (JSONObject) in.readObject();
-            function = obj.get("function");
+            function = (String) obj.get("function");
             //paizei na mhn mpainei se kanena case etsi, emena mono me equals doulepse
             switch (function) {
                 case "addRoom":

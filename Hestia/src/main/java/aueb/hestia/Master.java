@@ -12,11 +12,8 @@ public class Master{
 
 	public static void main(String[] args) {
 		new Master(5,0).clientServer();
-		new Server().openServer();
+		new Master(5,0).openServer();
 	}
-	
-	ServerSocket providerSocket;
-    Socket connection = null;
 
 
 	Master(int numberOfWorkers, int type )

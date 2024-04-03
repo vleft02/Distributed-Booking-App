@@ -1,3 +1,5 @@
+package aueb.hestia;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -8,7 +10,7 @@ import org.json.simple.JSONObject;
 
 import org.json.simple.parser.*;
 
-public class Cosnole extends Thread{
+public class Console extends Thread{
 
     JSONObject lod;
     Console(JSONObject lod){
@@ -87,7 +89,7 @@ public class Cosnole extends Thread{
                     JSONObject manager = new JSONObject();
                     manager.put("name",name);
                     manager.put("function","showBookings");
-                    new Cosnole(manager).start();
+                    new Console(manager).start();
                 }else if (answer.equals("n")) {
                     System.out.println("Thank you for visiting our app. We hope to see you again soon!");
                     adding = false;
