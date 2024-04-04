@@ -11,10 +11,8 @@ public class Master{
 	int numberOfWorkers;
 
 	public static void main(String[] args) {
-		new Master(5,0).clientServer();
 		new Master(5,0).openServer();
 	}
-
 
 	Master(int numberOfWorkers, int type )
 	{
@@ -44,25 +42,4 @@ public class Master{
         }
     }
 
-
-	void clientServer() {
-		try {
-			providerSocket = new ServerSocket(4000);
-			while (true) {
-				this.connection = providerSocket.accept();
-				Thread t = new MasterThread(connection, numberOfWorkers);
-				t.start();
-			}
-		} catch (IOException ioException) {
-			ioException.printStackTrace();
-		} finally {
-			try {
-				if (providerSocket != null) {
-					providerSocket.close();
-				}
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
-			}
-		}
-	}
 }
