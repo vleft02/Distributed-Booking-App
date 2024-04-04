@@ -1,4 +1,6 @@
-package aueb.hestia;
+package aueb.hestia.Reducer;
+import aueb.hestia.Domain.Room;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;

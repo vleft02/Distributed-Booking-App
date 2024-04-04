@@ -1,5 +1,7 @@
 package aueb.hestia;
 
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Helper.InvalidDateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

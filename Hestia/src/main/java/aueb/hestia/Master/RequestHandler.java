@@ -1,11 +1,10 @@
 package aueb.hestia.Master;
 
-import aueb.hestia.DateRange;
-import aueb.hestia.InvalidDateException;
-import aueb.hestia.Pair;
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Helper.InvalidDateException;
+import aueb.hestia.Helper.Pair;
 import org.json.simple.JSONObject;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,8 +14,6 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 
 import static java.lang.Math.abs;
 

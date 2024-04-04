@@ -1,7 +1,7 @@
 package aueb.hestia.dao;
 
-import aueb.hestia.DateRange;
-import aueb.hestia.Room;
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Domain.Room;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package aueb.hestia;
+package aueb.hestia.Helper;
 
 public class RoomUnavailableException extends Exception {
     public RoomUnavailableException() {

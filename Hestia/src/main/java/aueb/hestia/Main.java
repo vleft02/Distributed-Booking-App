@@ -1,8 +1,12 @@
 package aueb.hestia;// package com.aueb.hestia;
 
+import aueb.hestia.Domain.Room;
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Helper.InvalidDateException;
+
 public class Main{
     public static void main(String[] args) throws InvalidDateException {
-        Room room1 = new Room("Kostas","Priamos",2,"Athens",4.5f,4,5.0f,"img/image");
+/*        Room room1 = new Room("Kostas","Priamos",2,"Athens",4.5f,4,5.0f,"img/image");
         Room room2 = new Room("Giorgos","Xenos",2,"Athens",4.5f,4,10.0f,"img/image");
 
 
@@ -42,7 +46,7 @@ public class Main{
         room1.printAvailability();
 
         room1.addAvailability(new DateRange("2024-10-11", "2024-10-16"));
-        room1.printAvailability();
+        room1.printAvailability();*/
     }
 
 }

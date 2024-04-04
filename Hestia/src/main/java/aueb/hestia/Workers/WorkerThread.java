@@ -1,7 +1,8 @@
-package aueb.hestia;
+package aueb.hestia.Workers;
 
-import aueb.hestia.DateRange;
-import aueb.hestia.Room;
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Helper.Pair;
+import aueb.hestia.Domain.Room;
 import aueb.hestia.dao.RoomDao;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,5 +1,7 @@
-package aueb.hestia;
+package aueb.hestia.Reducer;
 
+import aueb.hestia.Helper.Pair;
+import aueb.hestia.Domain.Room;
 import org.json.simple.JSONObject;
 
 import java.net.Socket;
@@ -46,7 +48,7 @@ public class ReduceThread extends Thread{
                 String message = (String) responseJson.get("message");
                 out.writeObject(message);
                 out.flush();
-                
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,4 +1,4 @@
-package aueb.hestia;
+package aueb.hestia.Helper;
 
 import java.io.Serial;
 import java.io.Serializable;

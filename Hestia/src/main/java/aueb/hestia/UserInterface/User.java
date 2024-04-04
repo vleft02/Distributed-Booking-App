@@ -1,4 +1,4 @@
-package aueb.hestia;// package com.aueb.hestia;
+package aueb.hestia.UserInterface;// package com.aueb.hestia;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

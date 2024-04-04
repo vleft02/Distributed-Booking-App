@@ -1,4 +1,4 @@
-package aueb.hestia;
+package aueb.hestia.UserInterface;
 
 import java.io.*;
 import java.net.*;

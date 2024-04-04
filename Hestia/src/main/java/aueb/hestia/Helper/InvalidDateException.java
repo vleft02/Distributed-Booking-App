@@ -1,4 +1,4 @@
-package aueb.hestia;
+package aueb.hestia.Helper;
 
 public class InvalidDateException extends Exception {
     public InvalidDateException() {

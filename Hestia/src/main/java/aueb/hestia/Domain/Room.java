@@ -1,4 +1,7 @@
-package aueb.hestia;// package com.aueb.hestia;
+package aueb.hestia.Domain;// package com.aueb.hestia;
+
+import aueb.hestia.Helper.DateRange;
+import aueb.hestia.Helper.RoomUnavailableException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
