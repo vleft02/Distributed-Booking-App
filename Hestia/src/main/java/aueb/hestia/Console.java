@@ -30,8 +30,8 @@ public class Console extends Thread{
             out.flush();
 
 
-  /*          String responseJson = (String) in.readObject();
-            System.out.println("Server>" + responseJson);*/
+            String responseJson = (String) in.readObject();
+            System.out.println("Server>" + responseJson);
 
         } catch (UnknownHostException unknownHost) {
             System.err.println("You are trying to connect to an unknown host!");
@@ -39,7 +39,9 @@ public class Console extends Thread{
             ioException.printStackTrace();
         } /*catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }*/ finally {
+        }*/ catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
             try {
                 in.close();	out.close();
                 requestSocket.close();

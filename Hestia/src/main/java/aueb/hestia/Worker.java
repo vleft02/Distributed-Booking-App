@@ -45,14 +45,8 @@ public class Worker extends Thread{
                 connection = providerSocket.accept();
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-/*
-                HashMap<Integer,String> string = (HashMap<Integer,String>) in.readObject();
-*//*                System.out.println(string.get(1));*//*
-                System.out.println(string);
 
-                out.writeObject("bruh");
-                out.flush();*/
-                WorkerThread wt = new WorkerThread(connection, rooms);
+                WorkerThread wt = new WorkerThread(in, rooms);
 
                 wt.start();
             }

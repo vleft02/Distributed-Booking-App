@@ -26,7 +26,7 @@ public class RequestHandler extends Thread{
     private Socket requestSocket;
     JSONObject requestJson;
     private int requestId;
-    private final HashMap<Integer,String> mappedRequest  = new HashMap<Integer,String>();
+    private final Pair<Integer,String> mappedRequest  = new Pair<Integer,String>();
     private int numberOfWorkers;
 
     RequestHandler(ObjectInputStream in, int numberOfWorkers, int requestId)
@@ -140,26 +140,6 @@ public class RequestHandler extends Thread{
             out.close();
         }
 
-/*
-        for (int i=0; i<numberOfWorkers; i++)
-        {
-            requestSocket= new Socket("127.0.0.1", 4001+i+1);
-            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-            reqOut.writeObject("showBookings");
-            reqOut.flush();
-            reqOut.writeObject(area);
-            reqOut.flush();
-            reqOut.writeObject(dateRange);
-            reqOut.flush();
-            reqOut.writeInt(noOfPersons);
-            reqOut.flush();
-            reqOut.writeFloat(stars);
-            reqOut.flush();
-            if (requestSocket != null) {
-                requestSocket.close();
-            }
-            reqOut.close();
-        }*/
     }
 
     public void book(JSONObject json) throws IOException, ClassNotFoundException
