@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 public class DateRange implements Serializable {
     private LocalDate from;
     private LocalDate to;
-
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public DateRange(String from, String to) throws InvalidDateException
     {
-        LocalDate fromDate = LocalDate.parse(from);
-        LocalDate toDate = LocalDate.parse(to);
+        LocalDate fromDate = LocalDate.parse(from,dateFormatter);
+        LocalDate toDate = LocalDate.parse(to,dateFormatter);
         if (fromDate.isAfter(toDate))
         {
             throw new InvalidDateException();
@@ -99,9 +99,8 @@ public class DateRange implements Serializable {
     @Override
     public String toString()
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String fromDateStr = from.format(formatter);
-        String toDateStr =  to.format(formatter);
+        String fromDateStr = from.format(dateFormatter);
+        String toDateStr =  to.format(dateFormatter);
         return String.format("%s - %s", fromDateStr, toDateStr);
     }
 

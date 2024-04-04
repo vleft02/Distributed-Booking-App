@@ -16,22 +16,22 @@ class DateRangeTest {
 
     @BeforeEach
     void setUp() throws InvalidDateException {
-        range1 = new DateRange("2024-03-10","2024-03-20");
-        singleRange = new DateRange("2024-03-11", "2024-03-11");
-        overlappingRange1 = new DateRange("2024-03-09","2024-03-21");
-        overlappingRange2 = new DateRange("2024-03-05","2024-03-15");
+        range1 = new DateRange("10/03/2024","20/03/2024");
+        singleRange = new DateRange("11/03/2024", "11/03/2024");
+        overlappingRange1 = new DateRange("09/03/2024","21/03/2024");
+        overlappingRange2 = new DateRange("05/03/2024","15/03/2024");
 
-        adjacentRange1 =  new DateRange("2024-03-05","2024-03-09");
-        adjacentRange2 =  new DateRange("2024-03-21","2024-03-27");
+        adjacentRange1 =  new DateRange("05/03/2024","09/03/2024");
+        adjacentRange2 =  new DateRange("21/03/2024","27/03/2024");
     }
     @Test
     void contains() throws InvalidDateException{
-        DateRange range2 = new DateRange("2024-03-10","2024-03-15");
+        DateRange range2 = new DateRange("10/03/2024","15/03/2024");
         assertTrue(range1.contains(range2));
     }
     @Test
     void notContains() throws InvalidDateException{
-        DateRange range2 = new DateRange("2024-03-09","2024-03-15");
+        DateRange range2 = new DateRange("09/03/2024","15/03/2024");
         assertFalse(range1.contains(range2));
     }
 
@@ -79,19 +79,19 @@ class DateRangeTest {
     @Test
     void mergePartiallyOverlapping() throws InvalidDateException{
         DateRange merged = range1.mergeOverlapping(overlappingRange2);
-        assertEquals(new DateRange("2024-03-05","2024-03-20"),merged );
+        assertEquals(new DateRange("05/03/2024","20/03/2024"),merged );
     }
 
     @Test
     void mergeAdjacentLeft() throws InvalidDateException{
         range1.mergeAdjacent(adjacentRange1);
-        assertEquals(new DateRange("2024-03-05","2024-03-20"),range1);
+        assertEquals(new DateRange("05/03/2024","20/03/2024"),range1);
     }
 
     @Test
     void mergeAdjacentRight() throws InvalidDateException{
         range1.mergeAdjacent(adjacentRange2);
-        assertEquals(new DateRange("2024-03-10","2024-03-27"),range1);
+        assertEquals(new DateRange("10/03/2024","27/03/2024"),range1);
     }
 
 }

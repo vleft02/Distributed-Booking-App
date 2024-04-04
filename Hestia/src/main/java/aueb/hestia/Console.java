@@ -25,21 +25,21 @@ public class Console extends Thread{
             requestSocket = new Socket("127.0.0.1", 4000);
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
-
-            out.writeObject(lod);
+            System.out.println(lod.toJSONString());
+            out.writeObject(lod.toJSONString());
             out.flush();
 
 
-            JSONObject responseJson = (JSONObject) in.readObject();
-            System.out.println("Server>" + responseJson);
+  /*          String responseJson = (String) in.readObject();
+            System.out.println("Server>" + responseJson);*/
 
         } catch (UnknownHostException unknownHost) {
             System.err.println("You are trying to connect to an unknown host!");
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } /*catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } finally {
+        }*/ finally {
             try {
                 in.close();	out.close();
                 requestSocket.close();
@@ -96,9 +96,6 @@ public class Console extends Thread{
                     manager.put("name",name);
                     manager.put("function","showBookings");
                     new Console(manager).start();
-
-
-
             }
             else if (answer.equals("3")) {
                 //See Owned Lodgings

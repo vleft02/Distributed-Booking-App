@@ -14,30 +14,33 @@ public class User {
         ObjectInputStream in= null;
 
         try {
-            requestSocket = new Socket("127.0.0.1", 4000);
-            out = new ObjectOutputStream(requestSocket.getOutputStream());
-            in = new ObjectInputStream(requestSocket.getInputStream());
+            while (true){
+                requestSocket = new Socket("127.0.0.1", 4000);
+                out = new ObjectOutputStream(requestSocket.getOutputStream());
+                in = new ObjectInputStream(requestSocket.getInputStream());
 
-            out.writeObject("addRoom");
-            out.flush();
+                out.writeObject("addRoom");
+                out.flush();
 
-            out.writeObject("Kostas");
-            out.flush();
+                out.writeObject("Kostas");
+                out.flush();
 
-            out.writeObject("Priamos Hotel");
-            out.flush();
+                out.writeObject("Priamos Hotel");
+                out.flush();
 
-            out.writeInt(1);
-            out.flush();
+                out.writeInt(1);
+                out.flush();
 
-            out.writeObject("Athens");
-            out.flush();
+                out.writeObject("Athens");
+                out.flush();
 
-            out.writeDouble(20.0);
-            out.flush();
+                out.writeDouble(20.0);
+                out.flush();
 
-            out.writeObject("img");
-            out.flush();
+                out.writeObject("img");
+                out.flush();
+            }
+
 
 //            System.out.println("Server>" + in.readInt());
 

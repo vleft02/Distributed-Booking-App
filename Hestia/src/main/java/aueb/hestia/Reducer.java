@@ -3,13 +3,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Reduce {
+public class Reducer {
     ServerSocket providerSocket;
     Socket connection = null;
 
 
     public static void main(String[] args) {
-        new Reduce().openServer();
+        new Reducer().openServer();
     }
     void openServer() {
         try {

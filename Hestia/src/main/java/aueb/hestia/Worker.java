@@ -4,8 +4,11 @@ import aueb.hestia.dao.RoomDao;
 import aueb.hestia.dao.RoomMemoryDao;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class Worker extends Thread{
 
@@ -40,12 +43,21 @@ public class Worker extends Thread{
             while(true)
             {
                 connection = providerSocket.accept();
-                WorkerThread wt = new WorkerThread(connection, rooms);
-                wt.start();
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+/*
+                HashMap<Integer,String> string = (HashMap<Integer,String>) in.readObject();
+*//*                System.out.println(string.get(1));*//*
+                System.out.println(string);
 
+                out.writeObject("bruh");
+                out.flush();*/
+                WorkerThread wt = new WorkerThread(connection, rooms);
+
+                wt.start();
             }
 
-        } catch (IOException e) {
+        } catch (IOException /*| InterruptedException*/ e) {
             throw new RuntimeException(e);
         }
     }

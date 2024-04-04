@@ -1,8 +1,9 @@
 package aueb.hestia;// package com.aueb.hestia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room {
+public class Room implements Serializable {
     private final String roomName;
     private final int noOfPersons;
     private final String area;
