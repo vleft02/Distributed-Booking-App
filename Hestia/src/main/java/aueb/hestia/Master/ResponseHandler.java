@@ -1,4 +1,6 @@
-package aueb.hestia;
+package aueb.hestia.Master;
+
+import aueb.hestia.Pair;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

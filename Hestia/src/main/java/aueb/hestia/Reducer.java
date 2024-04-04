@@ -29,7 +29,6 @@ public class Reducer {
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 Thread rt = new ReduceThread(in, receivedParts);
                 rt.start();
-
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();

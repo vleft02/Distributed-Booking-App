@@ -1,4 +1,4 @@
-package aueb.hestia;// package com.aueb.hestia;
+package aueb.hestia.Master;// package com.aueb.hestia;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,30 +25,8 @@ public class Master{
 	}
 
 	void openServer() {
-        /*try {
-            providerSocket = new ServerSocket(4000);
-
-            while (true) {
-                connection = providerSocket.accept();
-//                Thread t = new ActionsForClients(connection);
-
-                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                connectionsMap.put(connectionsMap.size(), out);
-
-				Thread requestHandler = new RequestHandler(in, numberOfWorkers,connectionsMap.size());
-                requestHandler.start();
-
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            try {
-                providerSocket.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }*/
+        clientRequestListener.start();
+        ReducerResponseListener.start();
     }
 
 }

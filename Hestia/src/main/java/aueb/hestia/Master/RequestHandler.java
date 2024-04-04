@@ -1,5 +1,8 @@
-package aueb.hestia;
+package aueb.hestia.Master;
 
+import aueb.hestia.DateRange;
+import aueb.hestia.InvalidDateException;
+import aueb.hestia.Pair;
 import org.json.simple.JSONObject;
 
 import java.io.FileReader;
