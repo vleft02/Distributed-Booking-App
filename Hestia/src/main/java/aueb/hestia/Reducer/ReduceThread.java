@@ -19,10 +19,12 @@ public class ReduceThread extends Thread{
 
     private Socket requestSocket;
     private JSONObject responseJson;
+    HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts;
+    private int numberOfThreads;
 
-
-    public ReduceThread(ObjectInputStream inputStream, HashMap<Integer, ArrayList<Room>> receivedParts){
+    public ReduceThread(ObjectInputStream inputStream, HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts, int numberOfThreads){
         this.inputStream = inputStream;
+        this.numberOfThreads = numberOfThreads;
         try {
             results = (Pair<Integer , Object>) inputStream.readObject();
             requestId = results.getKey();
@@ -46,12 +48,50 @@ public class ReduceThread extends Thread{
                 requestSocket= new Socket("127.0.0.1", 3999);
                 ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
                 String message = (String) responseJson.get("message");
-                out.writeObject(message);
-                out.flush();
 
+                Pair<Integer, String> response = new Pair<Integer, String>();
+                response.put(results.getKey(), message);
+                out.writeObject(response);
+                out.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+        }
+        else{
+            Object obj = results.getValue();
+            ArrayList<Room> rooms = (ArrayList<Room>) obj;
+            synchronized (receivedParts)
+            {
+                if (!receivedParts.containsKey(results.getKey()))
+                {
+                    Pair<ArrayList<Room>, Integer> receivedSegment = new Pair<ArrayList<Room>, Integer>();
+                    receivedSegment.put(rooms,1);
+                    receivedParts.put(results.getKey(), receivedSegment);
+                }
+                else
+                {
+                    Pair<ArrayList<Room>, Integer> roomsArrived = receivedParts.get(results.getKey());
+
+                    roomsArrived.getKey().addAll(rooms);
+                    roomsArrived.setValue(roomsArrived.getValue()+1);
+                    if (roomsArrived.getValue() == numberOfThreads){
+                        try {
+                            requestSocket= new Socket("127.0.0.1", 3999);
+                            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+
+                            Pair<Integer, ArrayList<Room>> response = new Pair<Integer, ArrayList<Room>>();
+                            response.put(results.getKey(), roomsArrived.getKey());
+                            out.writeObject(response);
+                            out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                }
+            }
+
 
         }
     }

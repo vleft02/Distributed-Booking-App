@@ -26,7 +26,7 @@ public class RequestHandler extends Thread{
     private Socket requestSocket;
     JSONObject requestJson;
     private int requestId;
-    private final Pair<Integer,String> mappedRequest  = new Pair<Integer,String>();
+    private final Pair<Integer,JSONObject> mappedRequest  = new Pair<Integer,JSONObject>();
     private int numberOfWorkers;
 
     RequestHandler(ObjectInputStream in, int numberOfWorkers, int requestId)
@@ -36,14 +36,11 @@ public class RequestHandler extends Thread{
             this.numberOfWorkers = numberOfWorkers;
             this.requestId = requestId;
 
-            String requestJsonString =  (String) requestInputStream.readObject();
-            this.requestJson = (JSONObject) new JSONParser().parse(requestJsonString);
+            this.requestJson =  (JSONObject) requestInputStream.readObject();
             this.function = (String) requestJson.get("function");
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
 
     }
@@ -77,6 +74,7 @@ public class RequestHandler extends Thread{
                     System.out.print("Function Not Found");
             }
 
+
         } catch (UnknownHostException unknownHost) {
             System.err.println("You are trying to connect to an unknown host!");
         } catch (IOException | ClassNotFoundException ioException) {
@@ -92,8 +90,7 @@ public class RequestHandler extends Thread{
 
 
     public void search(JSONObject json) throws IOException, ClassNotFoundException {
-        String area = (String) json.get("area");
-        DateRange dateRange = null;
+      /*  DateRange dateRange = null;
         String dateRangeString = (String) json.get("dateRange");
         if (dateRangeString.contains("-"))
         {
@@ -113,44 +110,23 @@ public class RequestHandler extends Thread{
                 throw new RuntimeException(e);
             }
         }
+*/
 
-        int noOfPersons = (int) json.get("noOfPersons");
-        float stars =  (float) json.get("stars");
+        mappedRequest.put(requestId, json);
 
-
-        JSONObject jsonToSend = new JSONObject();
-        jsonToSend.put("function", function);
-        jsonToSend.put("area", area);
-        jsonToSend.put("dateRange", dateRange);
-        jsonToSend.put("noOfPersons",noOfPersons);
-        jsonToSend.put("stars", stars);
-
-        String jsonToSendString = jsonToSend.toJSONString();
-        mappedRequest.put(requestId, jsonToSendString);
-
-        for (int i=0; i<numberOfWorkers; i++)
-        {
-            requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-            out.writeObject(mappedRequest);
-            out.flush();
-            if (requestSocket != null) {
-                requestSocket.close();
-            }
-            out.close();
-        }
+        sendToAllWorkers(mappedRequest);
 
     }
 
     public void book(JSONObject json) throws IOException, ClassNotFoundException
     {
-/*      String roomName = (String) json.get("roomName");
-        DateRange dateRange = (DateRange) json.get("daterange");
+        String roomName = (String) json.get("roomName");
+        /*DateRange dateRange = (DateRange) json.get("daterange");*/
 
-        requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
-        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-        reqOut.writeObject("book");
-        reqOut.flush();
+        mappedRequest.put(requestId, json);
+
+        sendToWorker(4001+hashCode(roomName) ,mappedRequest);
+        /*
         reqOut.writeObject(roomName);
         reqOut.flush();
         reqOut.writeObject(dateRange);
@@ -207,7 +183,7 @@ public class RequestHandler extends Thread{
         jsonToSend.put("roomImage",roomImage);
 
         String jsonToSendString = jsonToSend.toJSONString();
-        mappedRequest.put(requestId, jsonToSendString);
+        mappedRequest.put(requestId, jsonToSend);
 
         requestSocket = new Socket("127.0.0.1", 4001+hashCode(roomName));
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
@@ -251,7 +227,7 @@ public class RequestHandler extends Thread{
 
 
         String jsonToSendString = jsonToSend.toJSONString();
-        mappedRequest.put(requestId, jsonToSendString);
+        mappedRequest.put(requestId, jsonToSend);
 
         for (int i=0; i<numberOfWorkers; i++)
         {
@@ -299,6 +275,45 @@ public class RequestHandler extends Thread{
         }*/
     }
 
+    public void sendToWorker(int port, Pair<Integer,JSONObject> request)
+    {
+        try {
+            requestSocket = new Socket("127.0.0.1", port);
+            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+            out.writeObject(request);
+            out.flush();
+
+            if (requestSocket != null) {
+                requestSocket.close();
+            }
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public void sendToAllWorkers(Pair<Integer,JSONObject> request)
+    {
+        try {
+            for (int i=0; i<numberOfWorkers; i++)
+            {
+                requestSocket= new Socket("127.0.0.1", 4000+i+1);
+                ObjectOutputStream out = null;
+                out = new ObjectOutputStream(requestSocket.getOutputStream());
+
+                out.writeObject(request);
+                out.flush();
+                if (requestSocket != null) {
+                    requestSocket.close();
+                }
+                out.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     private int hashCode(String roomName) {

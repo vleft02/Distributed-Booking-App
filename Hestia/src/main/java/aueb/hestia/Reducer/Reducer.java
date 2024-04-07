@@ -1,5 +1,6 @@
 package aueb.hestia.Reducer;
 import aueb.hestia.Domain.Room;
+import aueb.hestia.Helper.Pair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,7 +13,7 @@ public class Reducer {
     private ServerSocket providerSocket;
     private Socket connection = null;
     private int numberOfThreads;
-    private HashMap<Integer, ArrayList<Room>> receivedParts ;
+    private HashMap<Integer, Pair<ArrayList<Room>, Integer>> receivedParts ;
     public static void main(String[] args) {
         new Reducer(5).openServer();
     }
@@ -29,7 +30,7 @@ public class Reducer {
             while (true) {
                 connection = providerSocket.accept();
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                Thread rt = new ReduceThread(in, receivedParts);
+                Thread rt = new ReduceThread(in, receivedParts,numberOfThreads);
                 rt.start();
             }
         } catch (IOException ioException) {
