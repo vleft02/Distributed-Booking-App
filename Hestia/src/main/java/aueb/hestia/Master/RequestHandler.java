@@ -94,7 +94,7 @@ public class RequestHandler extends Thread{
     public void search(JSONObject json) throws IOException, ClassNotFoundException {
         String area = (String) json.get("area");
         DateRange dateRange = null;
-        String dateRangeString = (String) json.get("dateRange");;
+        String dateRangeString = (String) json.get("dateRange");
         if (dateRangeString.contains("-"))
         {
             String[] dateParts = dateRangeString.split(" - ");
@@ -144,8 +144,8 @@ public class RequestHandler extends Thread{
 
     public void book(JSONObject json) throws IOException, ClassNotFoundException
     {
-/*        String roomName = (String) in.readObject();
-        DateRange dateRange = (DateRange) in.readObject();
+/*      String roomName = (String) json.get("roomName");
+        DateRange dateRange = (DateRange) json.get("daterange");
 
         requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
         ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
@@ -166,8 +166,8 @@ public class RequestHandler extends Thread{
 
     public void review(JSONObject json) throws  IOException, ClassNotFoundException
     {
-/*        String roomName = (String) in.readObject();
-        float stars = in.readFloat();
+/*      String roomName = (String) json.get("roomName");
+        float stars = (float) json.get("stars");
 
 
         requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
@@ -223,7 +223,7 @@ public class RequestHandler extends Thread{
 
     public void addDate(JSONObject json) throws IOException, ClassNotFoundException
     {
-/*        String roomName= (String) in.readObject();
+/*        String roomName= (String) json.get("roomName");
         DateRange daterange = (DateRange) in.readObject();
 
         requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
@@ -264,7 +264,7 @@ public class RequestHandler extends Thread{
             }
             reqOut.close();
         }
-      /*  String username = (String) in.readObject();
+      /*   String username = (String) json.get("username");
 
         for (int i=0; i<numberOfWorkers; i++)
         {
@@ -283,7 +283,7 @@ public class RequestHandler extends Thread{
     }
     public void showRooms(JSONObject json) throws IOException, ClassNotFoundException
     {
-        /*String username = (String) in.readObject();
+        /* String username = (String) json.get("username");
         for (int i=0; i<numberOfWorkers; i++)
         {
             requestSocket= new Socket("127.0.0.1", 4000+i+1);
