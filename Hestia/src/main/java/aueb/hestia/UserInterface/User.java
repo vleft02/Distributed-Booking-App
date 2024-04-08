@@ -1,12 +1,153 @@
 package aueb.hestia.UserInterface;// package com.aueb.hestia;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
+import java.text.ParseException;
+import java.util.*;
 
-public class User {
+import org.json.simple.JSONArray;
+
+import org.json.simple.JSONObject;
+
+import org.json.simple.parser.*;
+
+public class User extends Thread{
+
+    JSONObject lod ;
+
+    User(JSONObject lod){
+        this.lod = lod;
+    }
+
+    public void run() {
+        Socket requestSocket = null;
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
+        try {
+            requestSocket = new Socket("localhost", 4000);
+            out = new ObjectOutputStream(requestSocket.getOutputStream());
+            in = new ObjectInputStream(requestSocket.getInputStream());
+
+            out.writeObject(lod);
+            JSONObject lod2 = (JSONObject) in.readObject();
+            System.out.println("Server>" + lod2);
+
+        } catch (UnknownHostException unknownHost) {
+            System.err.println("You are trying to connect to an unknown host!");
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                in.close();	out.close();
+                requestSocket.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException, ParseException {
+        boolean searching=true;
+        String datePattern = "\\d{2}/\\d{2}/\\d{2}-\\d{2}/\\d{2}/\\d{2}";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to our Hotel Booking App! Book now your next holidays!");
+        while(searching) {
+            System.out.println("1.Search\n2.Book a room\n3.Make a review\n4.Exit");
+            System.out.println("Type the number if the operation you want to perform.");
+
+            String answer = scanner.nextLine();
+            if (answer.equals("1")){
+                //looking for a room
+                System.out.println("Please give me the area you are looking for.");
+                String area = scanner.nextLine();
+                System.out.println("Please give the dates you are looking for in the format 01/04/24-25/04/24");
+                String dates = scanner.nextLine();
+                if (dates.matches(datePattern)) {
+                    System.out.println("Please give the number of persons.");
+                    if (scanner.hasNextInt()) {
+                        int noOfPersons = scanner.nextInt();
+                        System.out.println("Please give the number of stars.");
+                        if (scanner.hasNextInt()) {
+                            int stars = scanner.nextInt();
+                            JSONObject search = new JSONObject();
+                            search.put("area",area);
+                            search.put("dates",dates);
+                            search.put("noOfPersons",noOfPersons);
+                            search.put("stars",stars);
+                            search.put("function","search");
+                            new User(search).start();
+                        } else {
+                            System.out.println("Invalid input. Please enter an integer for the number of stars.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter an integer for the number of persons.");
+                    }
+                } else {
+                    System.out.println("Invalid dates format. Please enter dates in the specified format.");
+                }
+            }else if (answer.equals("2")) {
+                //booking a room
+                System.out.println("Give me your name please.");
+                String name = scanner.nextLine();
+                if (name.matches("[a-zA-Z]+")) {
+                    System.out.println("Give me the room's name please.");
+                    String roomName = scanner.nextLine();
+                    System.out.println("Please give the dates you want to reserve in the format 01/04/24-25/04/24");
+                    String dates = scanner.nextLine();
+                    // Check if the input matches the required format
+                    if (dates.matches(datePattern)) {
+                        JSONObject booking = new JSONObject();
+                        booking.put("customerName",name);
+                        booking.put("roomName",roomName);
+                        booking.put("dates",dates);
+                        booking.put("function","book");
+                        new User(booking).start();
+                    } else {
+                        System.out.println("Invalid dates format. Please enter dates in the specified format.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
+                }
+            }
+            else if (answer.equals("3")) {
+                //make a review
+                System.out.println("Give me your name please.");
+                String name = scanner.nextLine();
+                if (name.matches("[a-zA-Z]+")) {
+                    System.out.println("Give me the room's name please.");
+                    String roomName = scanner.nextLine();
+                    System.out.println("Please give the number of stars.");
+                    if (scanner.hasNextInt()) {
+                        int stars = scanner.nextInt();
+                        JSONObject review = new JSONObject();
+                        review.put("customerName",name);
+                        review.put("roomName",roomName);
+                        review.put("stars",stars);
+                        review.put("function","review");
+                        new User(review).start();
+                    } else {
+                        System.out.println("Invalid input. Please enter an integer for the number of stars.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
+                }
+            }else if (answer.equals("4")) {
+                System.out.println("Thank you for visiting our app. We hope to see you again soon!");
+                searching = false;
+            }else{
+                System.out.println("Invalid Operation");
+            }
+        }
+        scanner.close();
+    }
+}
+
+
+
+
+/*public class User {
     public static void main(String[] args)
     {
         Socket requestSocket = null;
@@ -58,4 +199,4 @@ public class User {
         }
     }
     
-}
+}*/
