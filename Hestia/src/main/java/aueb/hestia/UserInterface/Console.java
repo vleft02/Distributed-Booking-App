@@ -23,7 +23,7 @@ public class Console extends Thread{
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
             System.out.println(lod.toJSONString());
-            out.writeObject(lod.toJSONString());
+            out.writeObject(lod);
             out.flush();
 
 

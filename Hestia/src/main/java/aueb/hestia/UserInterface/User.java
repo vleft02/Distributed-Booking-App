@@ -29,6 +29,9 @@ public class User extends Thread{
             in = new ObjectInputStream(requestSocket.getInputStream());
 
             out.writeObject(lod);
+            out.flush();
+
+
             JSONObject lod2 = (JSONObject) in.readObject();
             System.out.println("Server>" + lod2);
 

@@ -113,10 +113,8 @@ public class Room implements Serializable {
 
 
 
-    public void book(DateRange bookingDateRange)
+    public void book(DateRange bookingDateRange) throws RoomUnavailableException
     {
-        try
-        {
             for (DateRange interval : availability)
             {
                 if (interval.contains(bookingDateRange))
@@ -133,12 +131,7 @@ public class Room implements Serializable {
                     return;
                 }
             }
-            throw new RoomUnavailableException();
-        }
-        catch(RoomUnavailableException e)
-        {
-            System.out.println("Room is unavailable for Dates specified");
-        }
+
     }
 
     public void printAvailability()

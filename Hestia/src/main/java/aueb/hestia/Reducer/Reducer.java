@@ -4,6 +4,7 @@ import aueb.hestia.Helper.Pair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class Reducer {
 
             while (true) {
                 connection = providerSocket.accept();
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 Thread rt = new ReduceThread(in, receivedParts,numberOfThreads);
                 rt.start();

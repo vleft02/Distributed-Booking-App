@@ -45,7 +45,7 @@ public class Worker extends Thread{
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
 
-                WorkerThread wt = new WorkerThread(in, rooms);
+                WorkerThread wt = new WorkerThread(connection, rooms);
 
                 wt.start();
             }

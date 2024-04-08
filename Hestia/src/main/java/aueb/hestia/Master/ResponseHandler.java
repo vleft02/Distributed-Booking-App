@@ -6,16 +6,17 @@ import aueb.hestia.Helper.Pair;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ResponseHandler extends Thread{
 
     private Pair<Integer,Object> mappedResults;
-    private HashMap<Integer, ObjectOutputStream> connectionsMap;
+    private HashMap<Integer, Socket> connectionsMap;
     ObjectInputStream inputStream;
 
-    ResponseHandler(ObjectInputStream inputStream, HashMap<Integer, ObjectOutputStream> connectionsMap){
+    ResponseHandler(ObjectInputStream inputStream, HashMap<Integer,Socket> connectionsMap){
         this.inputStream = inputStream;
         this.connectionsMap = connectionsMap;
         try {
@@ -30,29 +31,22 @@ public class ResponseHandler extends Thread{
     @Override
     public void run()
     {
-        ObjectOutputStream out = connectionsMap.get(mappedResults.getKey());
-        synchronized (connectionsMap) {
-            connectionsMap.remove(mappedResults.getKey());
-        }
-        if (mappedResults.getValue() instanceof String)
-        {
-            String message = (String) mappedResults.getValue();
-            try {
-                out.writeObject(message);
-                out.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+        try {
+            Socket clientSocket = connectionsMap.get(mappedResults.getKey());
+            ObjectOutputStream out = null;
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            synchronized (connectionsMap) {
+                connectionsMap.remove(mappedResults.getKey());
             }
-        }
-        else
-        {
             ArrayList<Room> rooms = (ArrayList<Room>) mappedResults.getValue();
-            try {
-                out.writeObject(rooms);
-                out.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            out.writeObject(rooms);
+            out.flush();
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }

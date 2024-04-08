@@ -31,7 +31,6 @@ public class ReduceThread extends Thread{
             Object obj = results.getValue();
             if (obj instanceof JSONObject) {
                 JSONObject jsonObject = (JSONObject) obj;
-                redirectImmediately = true;
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -42,23 +41,7 @@ public class ReduceThread extends Thread{
     }
 
     public void run(){
-        if (redirectImmediately)
-        {
-            try {
-                requestSocket= new Socket("127.0.0.1", 3999);
-                ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-                String message = (String) responseJson.get("message");
 
-                Pair<Integer, String> response = new Pair<Integer, String>();
-                response.put(results.getKey(), message);
-                out.writeObject(response);
-                out.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-        else{
             Object obj = results.getValue();
             ArrayList<Room> rooms = (ArrayList<Room>) obj;
             synchronized (receivedParts)
@@ -75,6 +58,7 @@ public class ReduceThread extends Thread{
 
                     roomsArrived.getKey().addAll(rooms);
                     roomsArrived.setValue(roomsArrived.getValue()+1);
+                    //Make Sure that the condition turns to true at some points
                     if (roomsArrived.getValue() == numberOfThreads){
                         try {
                             requestSocket= new Socket("127.0.0.1", 3999);
@@ -91,8 +75,5 @@ public class ReduceThread extends Thread{
                     }
                 }
             }
-
-
-        }
     }
 }

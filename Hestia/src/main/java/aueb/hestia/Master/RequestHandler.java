@@ -136,6 +136,8 @@ public class RequestHandler extends Thread{
             requestSocket.close();
         }
         reqOut.close();*/
+
+
     }
 
 
@@ -182,7 +184,6 @@ public class RequestHandler extends Thread{
         jsonToSend.put("price", price);
         jsonToSend.put("roomImage",roomImage);
 
-        String jsonToSendString = jsonToSend.toJSONString();
         mappedRequest.put(requestId, jsonToSend);
 
         requestSocket = new Socket("127.0.0.1", 4001+hashCode(roomName));
@@ -226,7 +227,6 @@ public class RequestHandler extends Thread{
         jsonToSend.put("username", username);
 
 
-        String jsonToSendString = jsonToSend.toJSONString();
         mappedRequest.put(requestId, jsonToSend);
 
         for (int i=0; i<numberOfWorkers; i++)
@@ -280,9 +280,12 @@ public class RequestHandler extends Thread{
         try {
             requestSocket = new Socket("127.0.0.1", port);
             ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
             out.writeObject(request);
             out.flush();
 
+
+//            return in;
             if (requestSocket != null) {
                 requestSocket.close();
             }
@@ -301,8 +304,9 @@ public class RequestHandler extends Thread{
             {
                 requestSocket= new Socket("127.0.0.1", 4000+i+1);
                 ObjectOutputStream out = null;
+                ObjectInputStream in = null;
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
-
+                in = new ObjectInputStream(requestSocket.getInputStream());
                 out.writeObject(request);
                 out.flush();
                 if (requestSocket != null) {

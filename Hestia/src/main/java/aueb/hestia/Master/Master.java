@@ -1,4 +1,5 @@
-package aueb.hestia.Master;// package com.aueb.hestia;
+package aueb.hestia.Master;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,15 +10,15 @@ import java.util.HashMap;
 
 public class Master{
 
-    private final HashMap<Integer, ObjectOutputStream> connectionsMap  = new HashMap<Integer,ObjectOutputStream>();
+    private final HashMap<Integer, Socket> connectionsMap  = new HashMap<>();
 	int numberOfWorkers;
     ClientRequestListener clientRequestListener;
     ReducerRequestListener ReducerResponseListener;
 	public static void main(String[] args) {
-		new Master(5,0).openServer();
+		new Master(5).openServer();
 	}
 
-	Master(int numberOfWorkers, int type )
+	Master(int numberOfWorkers)
 	{
 		this.numberOfWorkers = numberOfWorkers;
         this.clientRequestListener = new ClientRequestListener(connectionsMap, numberOfWorkers);
@@ -35,11 +36,12 @@ public class Master{
 class ClientRequestListener extends Thread{
     ServerSocket providerSocket;
     Socket connection = null;
-    private final HashMap<Integer, ObjectOutputStream> connectionsMap  = new HashMap<Integer,ObjectOutputStream>();
+    private HashMap<Integer, Socket> connectionsMap;
     int numberOfWorkers;
-    ClientRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
+    ClientRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
     {
-
+        this.connectionsMap = connectionsMap;
+        this.numberOfWorkers = numberOfWorkers;
     }
 
     @Override
@@ -51,13 +53,14 @@ class ClientRequestListener extends Thread{
 
             while (true) {
                 connection = providerSocket.accept();
-//                Thread t = new ActionsForClients(connection);
-
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                connectionsMap.put(connectionsMap.size(), out);
-
-                Thread requestHandler = new RequestHandler(in, numberOfWorkers,connectionsMap.size());
+                Thread requestHandler;
+                synchronized (connectionsMap)
+                {
+                    connectionsMap.put(connectionsMap.size(), connection);
+                    requestHandler = new RequestHandler(in, numberOfWorkers,connectionsMap.size()-1);
+                }
                 requestHandler.start();
 
             }
@@ -80,8 +83,8 @@ class ReducerRequestListener extends Thread
     ServerSocket providerSocket;
     Socket connection = null;
     private int numberOfWorkers;
-    private HashMap<Integer, ObjectOutputStream> connectionsMap;
-    ReducerRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
+    private HashMap<Integer,Socket> connectionsMap;
+    ReducerRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;

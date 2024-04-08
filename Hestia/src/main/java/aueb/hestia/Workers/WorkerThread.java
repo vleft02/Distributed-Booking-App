@@ -3,6 +3,7 @@ package aueb.hestia.Workers;
 import aueb.hestia.Helper.DateRange;
 import aueb.hestia.Helper.Pair;
 import aueb.hestia.Domain.Room;
+import aueb.hestia.Helper.RoomUnavailableException;
 import aueb.hestia.dao.RoomDao;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,24 +19,24 @@ public class WorkerThread extends Thread{
     private Integer requestId;
     RoomDao rooms;
     ObjectInputStream inputStream;
+    ObjectOutputStream outputStream;
     JSONObject requestJson;
     String function;
     Socket requestSocket;
 
-    WorkerThread(ObjectInputStream inputStream, RoomDao rooms)
+    WorkerThread(Socket clientSocket, RoomDao rooms)
     {
         this.rooms = rooms;
         try {
-        this.inputStream = inputStream;
-        Pair<Integer,String> pair = (Pair<Integer, String>) inputStream.readObject();
-        this.requestJson = (JSONObject)  new JSONParser().parse(pair.getValue());
+        this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
+        this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+        Pair<Integer,JSONObject> pair = (Pair<Integer, JSONObject>) inputStream.readObject();
+        this.requestJson = (JSONObject) pair.getValue();
         this.requestId = pair.getKey();
         this.function = (String) requestJson.get("function");
         System.out.println(function);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -115,10 +116,20 @@ public class WorkerThread extends Thread{
         synchronized (rooms)
         {
             Room roomToBook  = rooms.findByRoomName(roomName);
-            if(roomToBook != null)
-            {
-                roomToBook.book(dateRange);
+            try {
+                if(roomToBook != null)
+                {
+                    roomToBook.book(dateRange);
+                }
+
+                outputStream.writeObject("Room" +roomName+" booked Successfully for dates "+dateRange.toString());
+                outputStream.flush();
+            } catch (RoomUnavailableException e) {
+                outputStream.writeObject("Booking of room "+roomName+"Failed");
+                outputStream.flush();
+
             }
+
         }
     }
 
@@ -133,6 +144,13 @@ public class WorkerThread extends Thread{
             if(roomToRate != null)
             {
                 roomToRate.review(stars);
+                outputStream.writeObject("Room reviewed Successfully");
+                outputStream.flush();
+            }
+            else
+            {
+                outputStream.writeObject("Room not Found");
+                outputStream.flush();
             }
 
         }
@@ -151,12 +169,8 @@ public class WorkerThread extends Thread{
         {
             rooms.add(new Room(username,roomName, noOfPersons, area, 0,0,price,roomImage));
         }
-
-        requestSocket= new Socket("127.0.0.1", 4009);
-        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-        out.writeObject("Room Added Succesfully");
-        out.flush();
-
+        outputStream.writeObject("Rooms added Successfully");
+        outputStream.flush();
 
 
     }
@@ -172,6 +186,12 @@ public class WorkerThread extends Thread{
             if (roomToUpdate != null)
             {
                 roomToUpdate.addAvailability(daterange);
+                outputStream.writeObject("Availability for room "+ roomName +" added successfully");
+                outputStream.flush();
+            }
+            else{
+                outputStream.writeObject("Room not found");
+                outputStream.flush();
             }
         }
     }
