@@ -124,6 +124,7 @@ public class WorkerThread extends Thread{
 
                 outputStream.writeObject("Room" +roomName+" booked Successfully for dates "+dateRange.toString());
                 outputStream.flush();
+
             } catch (RoomUnavailableException e) {
                 outputStream.writeObject("Booking of room "+roomName+"Failed");
                 outputStream.flush();

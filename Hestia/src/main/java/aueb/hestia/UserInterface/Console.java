@@ -109,6 +109,8 @@ public class Console extends Thread{
                         manager.put("name",name);
                         manager.put("function","showBookings");
                         new Console(manager).start();
+
+
                     } else {
                         System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
                     }
