@@ -167,4 +167,16 @@ public class Room implements Serializable {
         }
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+
+        String room = "Name: "+roomName+"\nNumber of persons: "+noOfPersons+"\nArea: "+area+"\nRating: "+stars+"\nReviews: "+noOfReviews+"\nPrice "+price+"$\nAvailable for: ";
+        for (DateRange date : availability)
+        {
+            room = room+date.toString()+"\n";
+        }
+        return room;
+    }
 }

@@ -5,6 +5,7 @@ import java.net.*;
 import java.text.ParseException;
 import java.util.*;
 
+import aueb.hestia.Domain.Room;
 import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
@@ -13,13 +14,14 @@ import org.json.simple.parser.*;
 
 public class User extends Thread{
 
-    JSONObject lod ;
+    JSONObject requestJson ;
 
-    User(JSONObject lod){
-        this.lod = lod;
+    User(JSONObject requestJson){
+        this.requestJson = requestJson;
     }
 
-    public void run() {
+    ObjectInputStream responseInputStream;
+    public Object request() {
         Socket requestSocket = null;
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
@@ -28,17 +30,18 @@ public class User extends Thread{
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
 
-            out.writeObject(lod);
+            this.responseInputStream = (ObjectInputStream) new ObjectInputStream(requestSocket.getInputStream());
+
+            out.writeObject(requestJson);
             out.flush();
 
+            Object obj =  in.readObject();
+            return obj;
 
-            JSONObject lod2 = (JSONObject) in.readObject();
-            System.out.println("Server>" + lod2);
-
-        } catch (UnknownHostException unknownHost) {
-            System.err.println("You are trying to connect to an unknown host!");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
@@ -51,9 +54,10 @@ public class User extends Thread{
         }
     }
 
+
     public static void main(String[] args) throws IOException, ParseException {
         boolean searching=true;
-        String datePattern = "\\d{2}/\\d{2}/\\d{2}-\\d{2}/\\d{2}/\\d{2}";
+        String datePattern = "\\d{2}/\\d{2}/\\d{4}-\\d{2}/\\d{2}/\\d{4}";
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to our Hotel Booking App! Book now your next holidays!");
         while(searching) {
@@ -80,7 +84,13 @@ public class User extends Thread{
                             search.put("noOfPersons",noOfPersons);
                             search.put("stars",stars);
                             search.put("function","search");
-                            new User(search).start();
+                            ArrayList<Room> response = (ArrayList<Room>)new User(search).request();
+
+                            for (Room room : response)
+                            {
+                                System.out.println(room);
+                            }
+
                         } else {
                             System.out.println("Invalid input. Please enter an integer for the number of stars.");
                         }
@@ -97,7 +107,7 @@ public class User extends Thread{
                 if (name.matches("[a-zA-Z]+")) {
                     System.out.println("Give me the room's name please.");
                     String roomName = scanner.nextLine();
-                    System.out.println("Please give the dates you want to reserve in the format 01/04/24-25/04/24");
+                    System.out.println("Please give the dates you want to reserve in the format 01/04/2024-25/04/2024");
                     String dates = scanner.nextLine();
                     // Check if the input matches the required format
                     if (dates.matches(datePattern)) {
@@ -106,7 +116,8 @@ public class User extends Thread{
                         booking.put("roomName",roomName);
                         booking.put("dates",dates);
                         booking.put("function","book");
-                        new User(booking).start();
+                        String response = (String) new User(booking).request();
+                        System.out.println(response);
                     } else {
                         System.out.println("Invalid dates format. Please enter dates in the specified format.");
                     }
@@ -129,7 +140,8 @@ public class User extends Thread{
                         review.put("roomName",roomName);
                         review.put("stars",stars);
                         review.put("function","review");
-                        new User(review).start();
+                        String response  = (String) new User(review).request();
+                        System.out.println(response);
                     } else {
                         System.out.println("Invalid input. Please enter an integer for the number of stars.");
                     }

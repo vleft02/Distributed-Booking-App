@@ -28,13 +28,13 @@ public class WorkerThread extends Thread{
     {
         this.rooms = rooms;
         try {
-        this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
-        this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
-        Pair<Integer,JSONObject> pair = (Pair<Integer, JSONObject>) inputStream.readObject();
-        this.requestJson = (JSONObject) pair.getValue();
-        this.requestId = pair.getKey();
-        this.function = (String) requestJson.get("function");
-        System.out.println(function);
+            this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
+            this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+            Pair<Integer,JSONObject> pair = (Pair<Integer, JSONObject>) inputStream.readObject();
+            this.requestJson = (JSONObject) pair.getValue();
+            this.requestId = pair.getKey();
+            this.function = (String) requestJson.get("function");
+            System.out.println(function);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -3,40 +3,42 @@ package aueb.hestia.UserInterface;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
+import aueb.hestia.Domain.Room;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.text.ParseException;
 
 public class Console extends Thread{
 
-    JSONObject lod;
-    Console(JSONObject lod){
-        this.lod = lod;
+    private JSONObject requestJson;
+    private ObjectInputStream responseInputStream;
+    Console(JSONObject requestJson){
+        this.requestJson = requestJson;
     }
 
-    public void run() {
+    public Object request() {
         Socket requestSocket = null;
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
-            requestSocket = new Socket("127.0.0.1", 4000);
+            requestSocket = new Socket("localhost", 4000);
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
-            System.out.println(lod.toJSONString());
-            out.writeObject(lod);
+
+            this.responseInputStream = (ObjectInputStream) new ObjectInputStream(requestSocket.getInputStream());
+
+            out.writeObject(requestJson);
             out.flush();
 
+            Object obj =  in.readObject();
+            return obj;
 
-            String responseJson = (String) in.readObject();
-            System.out.println("Server>" + responseJson);
-
-        } catch (UnknownHostException unknownHost) {
-            System.err.println("You are trying to connect to an unknown host!");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } /*catch (ClassNotFoundException e) {
+        } catch (UnknownHostException e) {
             throw new RuntimeException(e);
-        }*/ catch (ClassNotFoundException e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -50,7 +52,7 @@ public class Console extends Thread{
 
     public static void main(String[] args) throws IOException, ParseException {
         boolean adding=true;
-        String datePattern = "\\d{2}/\\d{2}/\\d{2}-\\d{2}/\\d{2}/\\d{2}(,\\d{2}/\\d{2}/\\d{2}-\\d{2}/\\d{2}/\\d{2})*";
+        String datePattern = "\\d{2}/\\d{2}/\\d{4}-\\d{2}/\\d{2}/\\d{4}(,\\d{2}/\\d{2}/\\d{4}-\\d{2}/\\d{2}/\\d{4})*";
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to our Hotel Booking App! Add your lodging now and start earning money.");
         while(adding) {
@@ -63,7 +65,7 @@ public class Console extends Thread{
                 try{
                     System.out.println("Please give me the path of your lodging's JSON file.");
                     String path = scanner.nextLine();
-                    System.out.println("Please give the available dates in the format 01/04/24-25/04/24,15/05/24-29/05/24)");
+                    System.out.println("Please give the available dates in the format 01/04/2024-25/04/2024,15/05/2024-29/05/2024)");
                     String dates = scanner.nextLine();
                     if (dates.matches(datePattern)) {
                         Object o = new JSONParser().parse(new FileReader(path));
@@ -86,8 +88,8 @@ public class Console extends Thread{
                         room.put("dates",dates);
                         room.put("function","addRoom");
 
-                        //System.out.println(room);
-                        new Console(room).start();
+                        String response = (String) new Console(room).request();
+                        System.out.println(response);
                     } else {
                         System.out.println("Invalid dates format. Please enter dates in the specified format.");
                     }
@@ -108,7 +110,7 @@ public class Console extends Thread{
                         JSONObject manager = new JSONObject();
                         manager.put("name",name);
                         manager.put("function","showBookings");
-                        new Console(manager).start();
+                        new Console(manager).request();
 
 
                     } else {
@@ -123,7 +125,12 @@ public class Console extends Thread{
                     JSONObject manager = new JSONObject();
                     manager.put("name",name);
                     manager.put("function","showRooms");
-                    new Console(manager).start();
+                    ArrayList<Room> response = (ArrayList<Room>) new Console(manager).request();
+
+                    for (Room room : response)
+                    {
+                        System.out.println(room);
+                    }
                 } else {
                     System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
                 }
@@ -139,7 +146,8 @@ public class Console extends Thread{
                     addindDates.put("roomName",roomName);
                     addindDates.put("function","addDate");
                     addindDates.put("dates",dates);
-                    new Console(addindDates).start();
+                    String response = (String) new Console(addindDates).request();
+                    System.out.println(response);
                 } else {
                     System.out.println("Invalid dates format. Please enter dates in the specified format.");
                 }
