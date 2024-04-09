@@ -53,6 +53,16 @@ public class RequestHandler extends Thread{
 
     public void run() {
         try {
+
+            if ((function == "search") || (function == "showBookings") || (function == "showRooms")){
+                reducefuncion(requestJson);
+
+            }else{
+                nonreducefunction(requestJson);
+            }
+
+
+            /*
             switch (function) {
                 case "addRoom":
                     addRoom(requestJson);
@@ -77,10 +87,16 @@ public class RequestHandler extends Thread{
                     break;
                 default:
                     System.out.print("Function Not Found");
-            }
+                    */
+
+            } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
 
-        } catch (UnknownHostException unknownHost) {
+    } catch (UnknownHostException unknownHost) {
             System.err.println("You are trying to connect to an unknown host!");
         } catch (IOException | ClassNotFoundException ioException) {
             ioException.printStackTrace();
@@ -94,200 +110,201 @@ public class RequestHandler extends Thread{
     }
 
 
-    public void search(JSONObject json) throws IOException, ClassNotFoundException {
-      /*  DateRange dateRange = null;
-        String dateRangeString = (String) json.get("dateRange");
-        if (dateRangeString.contains("-"))
-        {
-            String[] dateParts = dateRangeString.split(" - ");
-            try {
-                dateRange = new DateRange(dateParts[0],dateParts[1]);
-            } catch (InvalidDateException e) {
-                System.out.println("Invalid Date Given");
-            }
-        }
-        else
-        {
-            String dateStr = dateRangeString.replaceAll("\\s+", "");
-            try {
-                dateRange = new DateRange(dateStr,dateStr);
-            } catch (InvalidDateException e) {
-                throw new RuntimeException(e);
-            }
-        }
-*/
-
-        mappedRequest.put(requestId, json);
-
-        sendToAllWorkers(mappedRequest);
-
-    }
-
-    public void book(JSONObject json) throws IOException, ClassNotFoundException
-    {
-        String roomName = (String) json.get("roomName");
-
-        mappedRequest.put(requestId, json);
-
-        sendToWorker(4001+hashCode(roomName) ,mappedRequest);
-
-        Pair<Integer, String> message = (Pair<Integer, String>) workerInputStream.readObject();
-
-        Socket clientSocket = connectionsMap.get(requestId);
-
-        ObjectOutputStream clientOutputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
-
-        clientOutputStream.writeObject(message.getValue());
-        clientOutputStream.flush();
-
-        /*
-        reqOut.writeObject(roomName);
-        reqOut.flush();
-        reqOut.writeObject(dateRange);
-        reqOut.flush();
-
-        if (requestSocket != null) {
-            requestSocket.close();
-        }
-        reqOut.close();*/
-
-
-    }
-
-
-
-    public void review(JSONObject json) throws  IOException, ClassNotFoundException
-    {
-/*      String roomName = (String) json.get("roomName");
-        float stars = (float) json.get("stars");
-
-
-        requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
-        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-        reqOut.writeObject("review");
-        reqOut.flush();
-        reqOut.writeObject(roomName);
-        reqOut.flush();
-        reqOut.writeFloat(stars);
-        reqOut.flush();
-
-
-        if (requestSocket != null) {
-            requestSocket.close();
-        }
-        reqOut.close();*/
-    }
-
-    public void addRoom(JSONObject json) throws  IOException, ClassNotFoundException
-    {
-//        String username = (String) json.get("username");
+//    public void search(JSONObject json) throws IOException, ClassNotFoundException {
+//      /*  DateRange dateRange = null;
+//        String dateRangeString = (String) json.get("dateRange");
+//        if (dateRangeString.contains("-"))
+//        {
+//            String[] dateParts = dateRangeString.split(" - ");
+//            try {
+//                dateRange = new DateRange(dateParts[0],dateParts[1]);
+//            } catch (InvalidDateException e) {
+//                System.out.println("Invalid Date Given");
+//            }
+//        }
+//        else
+//        {
+//            String dateStr = dateRangeString.replaceAll("\\s+", "");
+//            try {
+//                dateRange = new DateRange(dateStr,dateStr);
+//            } catch (InvalidDateException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        */
+//
+//        mappedRequest.put(requestId, json);
+//
+//        sendToAllWorkers(mappedRequest);
+//
+//
+//    }
+//
+//    public void book(JSONObject json) throws IOException, ClassNotFoundException
+//    {
 //        String roomName = (String) json.get("roomName");
-//        int noOfPersons = (int) json.get("noOfPersons");
-//        String area = (String) json.get("roomName");
-//        double price = (double) json.get("roomName");
-//        System.out.print(price);
-//        String roomImage = (String) json.get("roomImage");
-//        //Add availability as well
 //
-//        JSONObject jsonToSend = new JSONObject();
-//        jsonToSend.put("function", function);
-//        jsonToSend.put("username", username);
-//        jsonToSend.put("roomName", roomName);
-//        jsonToSend.put("noOfPersons", noOfPersons);
-//        jsonToSend.put("area", area);
-//        jsonToSend.put("price", price);
-//        jsonToSend.put("roomImage",roomImage);
+//        mappedRequest.put(requestId, json);
 //
-//        mappedRequest.put(requestId, jsonToSend);
+//        sendToWorker(4001+hashCode(roomName) ,mappedRequest);
 //
-//        requestSocket = new Socket("127.0.0.1", 4001+hashCode(roomName));
-//        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-//        out.writeObject(mappedRequest);
-//        out.flush();
+//        Pair<Integer, String> message = (Pair<Integer, String>) workerInputStream.readObject();
+//
+//        Socket clientSocket = connectionsMap.get(requestId);
+//
+//        ObjectOutputStream clientOutputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+//
+//        clientOutputStream.writeObject(message.getValue());
+//        clientOutputStream.flush();
+//
+//        /*
+//        reqOut.writeObject(roomName);
+//        reqOut.flush();
+//        reqOut.writeObject(dateRange);
+//        reqOut.flush();
 //
 //        if (requestSocket != null) {
 //            requestSocket.close();
 //        }
-//        out.close();
-
-    }
-
-    public void addDate(JSONObject json) throws IOException, ClassNotFoundException
-    {
-/*        String roomName= (String) json.get("roomName");
-        DateRange daterange = (DateRange) in.readObject();
-
-        requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
-        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-        reqOut.writeObject("addDate");
-        reqOut.flush();
-        reqOut.writeObject(roomName);
-        reqOut.flush();
-        reqOut.writeObject(daterange);
-        reqOut.flush();
-
-        if (requestSocket != null) {
-            requestSocket.close();
-        }
-        reqOut.close();*/
-    }
-
-    public void showBookings(JSONObject json) throws IOException, ClassNotFoundException
-    {
-
-        String username = (String) json.get("username");
-        JSONObject jsonToSend = new JSONObject();
-        jsonToSend.put("function", function);
-        jsonToSend.put("username", username);
-
-
-        mappedRequest.put(requestId, jsonToSend);
-
-        for (int i=0; i<numberOfWorkers; i++)
-        {
-            requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-            reqOut.writeObject(mappedRequest);
-            reqOut.flush();
-            if (requestSocket != null) {
-                requestSocket.close();
-            }
-            reqOut.close();
-        }
-      /*   String username = (String) json.get("username");
-
-        for (int i=0; i<numberOfWorkers; i++)
-        {
-            requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-            reqOut.writeObject("showBookings");
-            reqOut.flush();
-            reqOut.writeObject(username);
-            reqOut.flush();
-            if (requestSocket != null) {
-                requestSocket.close();
-            }
-            reqOut.close();
-        }*/
-
-    }
-    public void showRooms(JSONObject json) throws IOException, ClassNotFoundException
-    {
-        /* String username = (String) json.get("username");
-        for (int i=0; i<numberOfWorkers; i++)
-        {
-            requestSocket= new Socket("127.0.0.1", 4000+i+1);
-            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
-            reqOut.writeObject("showBookings");
-            reqOut.flush();
-            reqOut.writeObject(username);
-            reqOut.flush();
-            if (requestSocket != null) {
-                requestSocket.close();
-            }
-            reqOut.close();
-        }*/
-    }
+//        reqOut.close();*/
+//
+//
+//    }
+//
+//
+//
+//    public void review(JSONObject json) throws  IOException, ClassNotFoundException
+//    {
+///*      String roomName = (String) json.get("roomName");
+//        float stars = (float) json.get("stars");
+//
+//
+//        requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
+//        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+//        reqOut.writeObject("review");
+//        reqOut.flush();
+//        reqOut.writeObject(roomName);
+//        reqOut.flush();
+//        reqOut.writeFloat(stars);
+//        reqOut.flush();
+//
+//
+//        if (requestSocket != null) {
+//            requestSocket.close();
+//        }
+//        reqOut.close();*/
+//    }
+//
+//    public void addRoom(JSONObject json) throws  IOException, ClassNotFoundException
+//    {
+////        String username = (String) json.get("username");
+////        String roomName = (String) json.get("roomName");
+////        int noOfPersons = (int) json.get("noOfPersons");
+////        String area = (String) json.get("roomName");
+////        double price = (double) json.get("roomName");
+////        System.out.print(price);
+////        String roomImage = (String) json.get("roomImage");
+////        //Add availability as well
+////
+////        JSONObject jsonToSend = new JSONObject();
+////        jsonToSend.put("function", function);
+////        jsonToSend.put("username", username);
+////        jsonToSend.put("roomName", roomName);
+////        jsonToSend.put("noOfPersons", noOfPersons);
+////        jsonToSend.put("area", area);
+////        jsonToSend.put("price", price);
+////        jsonToSend.put("roomImage",roomImage);
+////
+////        mappedRequest.put(requestId, jsonToSend);
+////
+////        requestSocket = new Socket("127.0.0.1", 4001+hashCode(roomName));
+////        ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+////        out.writeObject(mappedRequest);
+////        out.flush();
+////
+////        if (requestSocket != null) {
+////            requestSocket.close();
+////        }
+////        out.close();
+//
+//    }
+//
+//    public void addDate(JSONObject json) throws IOException, ClassNotFoundException
+//    {
+///*        String roomName= (String) json.get("roomName");
+//        DateRange daterange = (DateRange) in.readObject();
+//
+//        requestSocket= new Socket("127.0.0.1", 4001+hashCode(roomName));
+//        ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+//        reqOut.writeObject("addDate");
+//        reqOut.flush();
+//        reqOut.writeObject(roomName);
+//        reqOut.flush();
+//        reqOut.writeObject(daterange);
+//        reqOut.flush();
+//
+//        if (requestSocket != null) {
+//            requestSocket.close();
+//        }
+//        reqOut.close();*/
+//    }
+//
+//    public void showBookings(JSONObject json) throws IOException, ClassNotFoundException
+//    {
+//
+//        mappedRequest.put(requestId, json);
+//
+//        sendToAllWorkers(mappedRequest);
+//        /*
+//        for (int i=0; i<numberOfWorkers; i++)
+//        {
+//            requestSocket= new Socket("127.0.0.1", 4000+i+1);
+//            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+//            reqOut.writeObject(mappedRequest);
+//            reqOut.flush();
+//            if (requestSocket != null) {
+//                requestSocket.close();
+//            }
+//            reqOut.close();
+//        }
+//      /*   String username = (String) json.get("username");
+//
+//        for (int i=0; i<numberOfWorkers; i++)
+//        {
+//            requestSocket= new Socket("127.0.0.1", 4000+i+1);
+//            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+//            reqOut.writeObject("showBookings");
+//            reqOut.flush();
+//            reqOut.writeObject(username);
+//            reqOut.flush();
+//            if (requestSocket != null) {
+//                requestSocket.close();
+//            }
+//            reqOut.close();
+//        }*/
+//
+//    }
+//    public void showRooms(JSONObject json) throws IOException, ClassNotFoundException
+//    {
+//
+//        mappedRequest.put(requestId, json);
+//
+//        sendToAllWorkers(mappedRequest);
+//        /*
+//        for (int i=0; i<numberOfWorkers; i++)
+//        {
+//            requestSocket= new Socket("127.0.0.1", 4000+i+1);
+//            ObjectOutputStream reqOut = new ObjectOutputStream(requestSocket.getOutputStream());
+//            reqOut.writeObject("showBookings");
+//            reqOut.flush();
+//            reqOut.writeObject(username);
+//            reqOut.flush();
+//            if (requestSocket != null) {
+//                requestSocket.close();
+//            }
+//            reqOut.close();
+//        }*/
+//    }
 
     public void sendToWorker(int port, Pair<Integer,JSONObject> request)
     {
@@ -345,5 +362,29 @@ public class RequestHandler extends Thread{
             return 0;
         }
     }
+
+    public void reducefuncion(JSONObject json) throws IOException, ClassNotFoundException{
+        mappedRequest.put(requestId, json);
+
+        sendToAllWorkers(mappedRequest);
+
+
+    }
+    public void nonreducefunction(JSONObject json) throws IOException, ClassNotFoundException{
+        String roomName = (String) json.get("roomName");
+        mappedRequest.put(requestId, json);
+
+        sendToWorker(4001+hashCode(roomName) ,mappedRequest);
+
+        Pair<Integer, String> message = (Pair<Integer, String>) workerInputStream.readObject();
+
+        Socket clientSocket = connectionsMap.get(requestId);
+
+        ObjectOutputStream clientOutputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+
+        clientOutputStream.writeObject(message.getValue());
+        clientOutputStream.flush();
+    }
+
 
 }
