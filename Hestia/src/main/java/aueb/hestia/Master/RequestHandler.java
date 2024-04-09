@@ -34,10 +34,12 @@ public class RequestHandler extends Thread{
 
     private HashMap<Integer, Socket> connectionsMap ;
 
-    RequestHandler(ObjectInputStream in, int numberOfWorkers, int requestId, HashMap<Integer, Socket> connectionsMap)
+    private Socket clientSocket;
+    RequestHandler(Socket clientSocket, int numberOfWorkers, int requestId, HashMap<Integer, Socket> connectionsMap)
     {
         try {
-            this.requestInputStream = in;
+            this.clientSocket = clientSocket;
+            this.requestInputStream = new ObjectInputStream(clientSocket.getInputStream());
             this.numberOfWorkers = numberOfWorkers;
             this.requestId = requestId;
             this.connectionsMap =connectionsMap;
@@ -46,6 +48,12 @@ public class RequestHandler extends Thread{
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                requestInputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -55,10 +63,9 @@ public class RequestHandler extends Thread{
         try {
 
             if ((function == "search") || (function == "showBookings") || (function == "showRooms")){
-                reducefuncion(requestJson);
-
+                reduceFunction(requestJson);
             }else{
-                nonreducefunction(requestJson);
+                nonReduceFunction(requestJson);
             }
 
 
@@ -93,13 +100,6 @@ public class RequestHandler extends Thread{
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
-
-
-    } catch (UnknownHostException unknownHost) {
-            System.err.println("You are trying to connect to an unknown host!");
-        } catch (IOException | ClassNotFoundException ioException) {
-            ioException.printStackTrace();
         } finally {
             try {
                 requestInputStream.close();
@@ -306,7 +306,7 @@ public class RequestHandler extends Thread{
 //        }*/
 //    }
 
-    public void sendToWorker(int port, Pair<Integer,JSONObject> request)
+    public Object sendToWorker(int port, Pair<Integer,JSONObject> request)
     {
         try {
             requestSocket = new Socket("127.0.0.1", port);
@@ -314,13 +314,15 @@ public class RequestHandler extends Thread{
             ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
             out.writeObject(request);
             out.flush();
-            this.workerInputStream = in;
-//            return in;
+
+            Object response = in.readObject();
             if (requestSocket != null) {
                 requestSocket.close();
             }
             out.close();
-        } catch (IOException e) {
+            in.close();
+            return response;
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -334,11 +336,10 @@ public class RequestHandler extends Thread{
             {
                 requestSocket= new Socket("127.0.0.1", 4000+i+1);
                 ObjectOutputStream out = null;
-                ObjectInputStream in = null;
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
-                in = new ObjectInputStream(requestSocket.getInputStream());
                 out.writeObject(request);
                 out.flush();
+
                 if (requestSocket != null) {
                     requestSocket.close();
                 }
@@ -363,20 +364,18 @@ public class RequestHandler extends Thread{
         }
     }
 
-    public void reducefuncion(JSONObject json) throws IOException, ClassNotFoundException{
+    public void reduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
         mappedRequest.put(requestId, json);
 
         sendToAllWorkers(mappedRequest);
-
-
     }
-    public void nonreducefunction(JSONObject json) throws IOException, ClassNotFoundException{
+    public void nonReduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
         String roomName = (String) json.get("roomName");
         mappedRequest.put(requestId, json);
 
-        sendToWorker(4001+hashCode(roomName) ,mappedRequest);
+        Pair<Integer, String> message = (Pair<Integer, String>) sendToWorker(4001+hashCode(roomName) ,mappedRequest);
 
-        Pair<Integer, String> message = (Pair<Integer, String>) workerInputStream.readObject();
+//        Pair<Integer, String> message = (Pair<Integer, String>) workerInputStream.readObject();
 
         Socket clientSocket = connectionsMap.get(requestId);
 

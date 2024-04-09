@@ -37,13 +37,15 @@ public class Worker extends Thread{
     }
     @Override
     public void run() {
+        ObjectOutputStream out=null;
+        ObjectInputStream in=null;
         try {
             providerSocket = new ServerSocket(4001+id);
             while(true)
             {
                 connection = providerSocket.accept();
-                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                out = new ObjectOutputStream(connection.getOutputStream());
+                in = new ObjectInputStream(connection.getInputStream());
 
                 WorkerThread wt = new WorkerThread(connection, rooms);
 
@@ -52,6 +54,15 @@ public class Worker extends Thread{
 
         } catch (IOException /*| InterruptedException*/ e) {
             throw new RuntimeException(e);
+        }finally
+        {
+            try {
+                out.close();
+                in.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

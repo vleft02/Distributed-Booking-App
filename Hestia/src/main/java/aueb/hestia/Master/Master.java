@@ -59,7 +59,7 @@ class ClientRequestListener extends Thread{
                 synchronized (connectionsMap)
                 {
                     connectionsMap.put(connectionsMap.size(), connection);
-                    requestHandler = new RequestHandler(in, numberOfWorkers,connectionsMap.size()-1, connectionsMap);
+                    requestHandler = new RequestHandler(connection, numberOfWorkers,connectionsMap.size()-1, connectionsMap);
                 }
                 requestHandler.start();
 

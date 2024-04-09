@@ -17,19 +17,24 @@ import java.util.ArrayList;
 
 public class WorkerThread extends Thread{
     private Integer requestId;
-    RoomDao rooms;
-    ObjectInputStream inputStream;
-    ObjectOutputStream outputStream;
-    JSONObject requestJson;
-    String function;
+    private RoomDao rooms;
+/*    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;*/
+    private JSONObject requestJson;
+    private String function;
+    private Socket masterSocket;
     Socket requestSocket;
 
-    WorkerThread(Socket clientSocket, RoomDao rooms)
+    WorkerThread(Socket masterSocket, RoomDao rooms)
     {
         this.rooms = rooms;
+        ObjectInputStream inputStream=null;
         try {
-            this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
-            this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+
+            this.masterSocket = masterSocket;
+//            this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
+//            this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+            inputStream = (ObjectInputStream) new ObjectInputStream(masterSocket.getInputStream());
             Pair<Integer,JSONObject> pair = (Pair<Integer, JSONObject>) inputStream.readObject();
             this.requestJson = (JSONObject) pair.getValue();
             this.requestId = pair.getKey();
@@ -37,6 +42,13 @@ public class WorkerThread extends Thread{
             System.out.println(function);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }finally
+        {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -73,12 +85,6 @@ public class WorkerThread extends Thread{
             }
        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
         }
     }
 
@@ -112,7 +118,7 @@ public class WorkerThread extends Thread{
     public void book(JSONObject json) throws IOException, ClassNotFoundException {
         String roomName = (String) json.get("roomName");
         DateRange dateRange = (DateRange) json.get("dateRange");
-
+        ObjectOutputStream outputStream = (ObjectOutputStream) new ObjectOutputStream(masterSocket.getOutputStream());
         synchronized (rooms)
         {
             Room roomToBook  = rooms.findByRoomName(roomName);
@@ -129,16 +135,20 @@ public class WorkerThread extends Thread{
                 outputStream.writeObject("Booking of room "+roomName+"Failed");
                 outputStream.flush();
 
+            }finally {
+                outputStream.close();
             }
 
         }
+
+
     }
 
     public void review(JSONObject json) throws IOException, ClassNotFoundException
     {
         String roomName = (String) json.get("roomName");
         float stars = (float) json.get("stars");
-
+        ObjectOutputStream outputStream = (ObjectOutputStream) new ObjectOutputStream(masterSocket.getOutputStream());
         synchronized (rooms)
         {
             Room roomToRate  = rooms.findByRoomName(roomName);
@@ -153,7 +163,7 @@ public class WorkerThread extends Thread{
                 outputStream.writeObject("Room not Found");
                 outputStream.flush();
             }
-
+            outputStream.close();
         }
     }
 
@@ -166,6 +176,8 @@ public class WorkerThread extends Thread{
         double price = (double) json.get("price");
         String roomImage = (String) json.get("roomImage");
 
+        ObjectOutputStream outputStream = (ObjectOutputStream) new ObjectOutputStream(masterSocket.getOutputStream());
+
         synchronized (rooms)
         {
             rooms.add(new Room(username,roomName, noOfPersons, area, 0,0,price,roomImage));
@@ -174,13 +186,15 @@ public class WorkerThread extends Thread{
         outputStream.flush();
 
 
+        outputStream.close();
+
     }
 
     public void addDate(JSONObject json) throws IOException, ClassNotFoundException
     {
         String roomName= (String) json.get("roomName");
         DateRange daterange = (DateRange) json.get("dateRange");
-
+        ObjectOutputStream outputStream = (ObjectOutputStream) new ObjectOutputStream(masterSocket.getOutputStream());
         synchronized (rooms)
         {
             Room roomToUpdate = rooms.findByRoomName(roomName);
@@ -195,6 +209,7 @@ public class WorkerThread extends Thread{
                 outputStream.flush();
             }
         }
+        outputStream.close();
     }
 
     public void showBookings(JSONObject json) throws IOException, ClassNotFoundException

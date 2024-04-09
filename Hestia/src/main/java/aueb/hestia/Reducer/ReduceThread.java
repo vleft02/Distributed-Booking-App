@@ -11,21 +11,25 @@ import java.util.HashMap;
 
 public class ReduceThread extends Thread{
 
-    private ObjectInputStream inputStream;
-    private String function;
+
     private Pair<Integer , Object> results;
     private int requestId;
     private boolean redirectImmediately = false ;
 
     private Socket requestSocket;
-    private JSONObject responseJson;
+
+    private Socket workerSocket;
     HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts;
     private int numberOfThreads;
 
-    public ReduceThread(ObjectInputStream inputStream, HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts, int numberOfThreads){
-        this.inputStream = inputStream;
+    public ReduceThread(Socket workerSocket, HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts, int numberOfThreads){
+//        this.inputStream = inputStream;
+        this.workerSocket=workerSocket;
         this.numberOfThreads = numberOfThreads;
+        ObjectInputStream inputStream = null;
         try {
+
+            inputStream = (ObjectInputStream) new ObjectInputStream(workerSocket.getInputStream());
             results = (Pair<Integer , Object>) inputStream.readObject();
             requestId = results.getKey();
             Object obj = results.getValue();
@@ -34,6 +38,13 @@ public class ReduceThread extends Thread{
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 
@@ -68,6 +79,8 @@ public class ReduceThread extends Thread{
                             response.put(results.getKey(), roomsArrived.getKey());
                             out.writeObject(response);
                             out.flush();
+
+                            out.close();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

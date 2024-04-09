@@ -30,9 +30,9 @@ public class Reducer {
 
             while (true) {
                 connection = providerSocket.accept();
-                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                Thread rt = new ReduceThread(in, receivedParts,numberOfThreads);
+//                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+//                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                Thread rt = new ReduceThread(connection, receivedParts,numberOfThreads);
                 rt.start();
             }
         } catch (IOException ioException) {
@@ -40,6 +40,7 @@ public class Reducer {
         } finally {
             try {
                 providerSocket.close();
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
