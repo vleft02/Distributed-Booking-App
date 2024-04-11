@@ -34,9 +34,9 @@ public class Master{
 
 
 class ClientRequestListener extends Thread{
-    ServerSocket providerSocket;
+    private ServerSocket providerSocket;
     Socket connection = null;
-    private HashMap<Integer, Socket> connectionsMap;
+    private final HashMap<Integer, Socket> connectionsMap;
     int numberOfWorkers;
     ClientRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
     {
@@ -53,16 +53,14 @@ class ClientRequestListener extends Thread{
 
             while (true) {
                 connection = providerSocket.accept();
-                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                Thread requestHandler;
+                int requestId ;
                 synchronized (connectionsMap)
                 {
                     connectionsMap.put(connectionsMap.size(), connection);
-                    requestHandler = new RequestHandler(connection, numberOfWorkers,connectionsMap.size()-1, connectionsMap);
+                    requestId = connectionsMap.size()-1;
                 }
+                Thread requestHandler = new RequestHandler(connection, numberOfWorkers,requestId, connectionsMap);
                 requestHandler.start();
-
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -80,7 +78,7 @@ class ClientRequestListener extends Thread{
 
 class ReducerRequestListener extends Thread
 {
-    ServerSocket providerSocket;
+    private ServerSocket providerSocket;
     Socket connection = null;
     private int numberOfWorkers;
     private HashMap<Integer,Socket> connectionsMap;
@@ -102,6 +100,7 @@ class ReducerRequestListener extends Thread
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
 
                 ResponseHandler responseHandler = new ResponseHandler(in, connectionsMap);
+                responseHandler.start();
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();

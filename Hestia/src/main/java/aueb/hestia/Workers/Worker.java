@@ -22,11 +22,11 @@ public class Worker extends Thread{
         id = counter++;
     }
     public static void main(String[] args) {
-        Worker wk = new Worker();
-        Worker wk2 = new Worker();
-        Worker wk3 = new Worker();
-        Worker wk4 = new Worker();
-        Worker wk5 = new Worker();
+        Worker wk = new Worker(0);
+        Worker wk2 = new Worker(1);
+        Worker wk3 = new Worker(2);
+        Worker wk4 = new Worker(3);
+        Worker wk5 = new Worker(4);
 
         wk2.start();
         wk.start();
@@ -35,17 +35,19 @@ public class Worker extends Thread{
         wk5.start();
 
     }
+
+
+    Worker(int id)
+    {
+        this.id = id;
+    }
     @Override
     public void run() {
-        ObjectOutputStream out=null;
-        ObjectInputStream in=null;
         try {
             providerSocket = new ServerSocket(4001+id);
             while(true)
             {
                 connection = providerSocket.accept();
-                out = new ObjectOutputStream(connection.getOutputStream());
-                in = new ObjectInputStream(connection.getInputStream());
 
                 WorkerThread wt = new WorkerThread(connection, rooms);
 
@@ -54,15 +56,13 @@ public class Worker extends Thread{
 
         } catch (IOException /*| InterruptedException*/ e) {
             throw new RuntimeException(e);
-        }finally
-        {
+        } finally {
             try {
-                out.close();
-                in.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+                providerSocket.close();
 
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 

@@ -25,11 +25,12 @@ public class RequestHandler extends Thread{
 
     private String function;
     private ObjectInputStream requestInputStream;
+    private ObjectOutputStream requestOutputStream;
     private ObjectInputStream workerInputStream;
     private Socket requestSocket;
     JSONObject requestJson;
     private int requestId;
-    private final Pair<Integer,JSONObject> mappedRequest  = new Pair<Integer,JSONObject>();
+    private final Pair<Integer,String> mappedRequest  = new Pair<Integer,String>();
     private int numberOfWorkers;
 
     private HashMap<Integer, Socket> connectionsMap ;
@@ -39,30 +40,28 @@ public class RequestHandler extends Thread{
     {
         try {
             this.clientSocket = clientSocket;
-            this.requestInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            this.requestOutputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
+            this.requestInputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
             this.numberOfWorkers = numberOfWorkers;
             this.requestId = requestId;
             this.connectionsMap =connectionsMap;
-            this.requestJson =  (JSONObject) requestInputStream.readObject();
-            this.function = (String) requestJson.get("function");
 
-        } catch (IOException | ClassNotFoundException e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                requestInputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
 
     }
 
-
-    public void run() {
+@Override
+public void run() {
         try {
 
-            if ((function == "search") || (function == "showBookings") || (function == "showRooms")){
+            String requestJsonString = requestInputStream.readUTF();
+            this.requestJson = (JSONObject) new JSONParser().parse(requestJsonString);
+            this.function = (String) requestJson.get("function");
+
+            if ((function.equals("search")) || (function.equals("showBookings")) || (function.equals("showRooms"))){
                 reduceFunction(requestJson);
             }else{
                 nonReduceFunction(requestJson);
@@ -96,15 +95,14 @@ public class RequestHandler extends Thread{
                     System.out.print("Function Not Found");
                     */
 
-            } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | ParseException e) {
             throw new RuntimeException(e);
         } finally {
             try {
                 requestInputStream.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+                requestOutputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -306,7 +304,7 @@ public class RequestHandler extends Thread{
 //        }*/
 //    }
 
-    public Object sendToWorker(int port, Pair<Integer,JSONObject> request)
+    public Object sendToWorker(int port, Pair<Integer,String> request)
     {
         try {
             requestSocket = new Socket("127.0.0.1", port);
@@ -329,7 +327,7 @@ public class RequestHandler extends Thread{
     }
 
 
-    public void sendToAllWorkers(Pair<Integer,JSONObject> request)
+    public void sendToAllWorkers(Pair<Integer,String> request)
     {
         try {
             for (int i=0; i<numberOfWorkers; i++)
@@ -365,13 +363,13 @@ public class RequestHandler extends Thread{
     }
 
     public void reduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
-        mappedRequest.put(requestId, json);
+        mappedRequest.put(requestId, json.toJSONString());
 
         sendToAllWorkers(mappedRequest);
     }
     public void nonReduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
         String roomName = (String) json.get("roomName");
-        mappedRequest.put(requestId, json);
+        mappedRequest.put(requestId, json.toJSONString());
 
         Pair<Integer, String> message = (Pair<Integer, String>) sendToWorker(4001+hashCode(roomName) ,mappedRequest);
 
@@ -381,6 +379,10 @@ public class RequestHandler extends Thread{
 
         ObjectOutputStream clientOutputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
 
+        synchronized (connectionsMap)
+        {
+            connectionsMap.remove(requestId);
+        }
         clientOutputStream.writeObject(message.getValue());
         clientOutputStream.flush();
     }

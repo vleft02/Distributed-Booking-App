@@ -26,13 +26,13 @@ public class User extends Thread{
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
-            requestSocket = new Socket("localhost", 4000);
+            requestSocket = new Socket("127.0.0.1", 4000);
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
 
-            this.responseInputStream = (ObjectInputStream) new ObjectInputStream(requestSocket.getInputStream());
 
-            out.writeObject(requestJson);
+
+            out.writeUTF(requestJson.toJSONString());
             out.flush();
 
             Object obj =  in.readObject();
@@ -69,7 +69,7 @@ public class User extends Thread{
                 //looking for a room
                 System.out.println("Please give me the area you are looking for.");
                 String area = scanner.nextLine();
-                System.out.println("Please give the dates you are looking for in the format 01/04/24-25/04/24");
+                System.out.println("Please give the dates you are looking for in the format 01/04/2024-25/04/2024");
                 String dates = scanner.nextLine();
                 if (dates.matches(datePattern)) {
                     System.out.println("Please give the number of persons.");
@@ -116,6 +116,7 @@ public class User extends Thread{
                         booking.put("roomName",roomName);
                         booking.put("dates",dates);
                         booking.put("function","book");
+                        System.out.println(booking.toJSONString());
                         String response = (String) new User(booking).request();
                         System.out.println(response);
                     } else {

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 public class WorkerThread extends Thread{
     private Integer requestId;
     private RoomDao rooms;
-/*    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;*/
+    private ObjectInputStream inputStream;
+/*    private ObjectOutputStream outputStream;*/
     private JSONObject requestJson;
     private String function;
     private Socket masterSocket;
@@ -28,28 +28,7 @@ public class WorkerThread extends Thread{
     WorkerThread(Socket masterSocket, RoomDao rooms)
     {
         this.rooms = rooms;
-        ObjectInputStream inputStream=null;
-        try {
-
-            this.masterSocket = masterSocket;
-//            this.inputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
-//            this.outputStream = (ObjectOutputStream) new ObjectOutputStream(clientSocket.getOutputStream());
-            inputStream = (ObjectInputStream) new ObjectInputStream(masterSocket.getInputStream());
-            Pair<Integer,JSONObject> pair = (Pair<Integer, JSONObject>) inputStream.readObject();
-            this.requestJson = (JSONObject) pair.getValue();
-            this.requestId = pair.getKey();
-            this.function = (String) requestJson.get("function");
-            System.out.println(function);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally
-        {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        this.masterSocket = masterSocket;
     }
 
     
@@ -57,6 +36,14 @@ public class WorkerThread extends Thread{
     @Override
     public void run() {
         try {
+
+            this.inputStream = (ObjectInputStream) new ObjectInputStream(masterSocket.getInputStream());
+            Pair<Integer,String> pair = (Pair<Integer, String>) inputStream.readObject();
+            String requestJsonString = pair.getValue();
+            this.requestJson = (JSONObject) new JSONParser().parse(requestJsonString);
+            this.requestId = pair.getKey();
+            this.function = (String) requestJson.get("function");
+
 
             switch (function) {
                 case "addRoom":
@@ -85,6 +72,14 @@ public class WorkerThread extends Thread{
             }
        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

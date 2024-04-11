@@ -28,9 +28,10 @@ public class Console extends Thread{
 
             this.responseInputStream = (ObjectInputStream) new ObjectInputStream(requestSocket.getInputStream());
 
-            out.writeObject(requestJson);
+            out.writeObject(requestJson.toJSONString());
             out.flush();
-
+            in.close();	out.close();
+            requestSocket.close();
             Object obj =  in.readObject();
             return obj;
 
