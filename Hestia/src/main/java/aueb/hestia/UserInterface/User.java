@@ -116,9 +116,12 @@ public class User extends Thread{
                         booking.put("roomName",roomName);
                         booking.put("dates",dates);
                         booking.put("function","book");
-                        System.out.println(booking.toJSONString());
+
                         String response = (String) new User(booking).request();
-                        System.out.println(response);
+
+                        System.out.println("Server> "+response+"\n\n");
+
+
                     } else {
                         System.out.println("Invalid dates format. Please enter dates in the specified format.");
                     }
@@ -141,8 +144,10 @@ public class User extends Thread{
                         review.put("roomName",roomName);
                         review.put("stars",stars);
                         review.put("function","review");
+
                         String response  = (String) new User(review).request();
-                        System.out.println(response);
+
+                        System.out.println("Server> "+response+"\n\n");
                     } else {
                         System.out.println("Invalid input. Please enter an integer for the number of stars.");
                     }
