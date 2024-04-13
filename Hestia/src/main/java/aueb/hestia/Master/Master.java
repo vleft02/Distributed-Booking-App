@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import aueb.hestia.Config.Config;
 
 public class Master{
 
@@ -14,6 +15,7 @@ public class Master{
 	int numberOfWorkers;
     ClientRequestListener clientRequestListener;
     ReducerRequestListener ReducerResponseListener;
+
 	public static void main(String[] args) {
 		new Master(5).openServer();
 	}
@@ -23,6 +25,7 @@ public class Master{
 		this.numberOfWorkers = numberOfWorkers;
         this.clientRequestListener = new ClientRequestListener(connectionsMap, numberOfWorkers);
         this.ReducerResponseListener = new ReducerRequestListener(connectionsMap,numberOfWorkers);
+
 	}
 
 	void openServer() {
@@ -38,10 +41,12 @@ class ClientRequestListener extends Thread{
     Socket connection = null;
     private final HashMap<Integer, Socket> connectionsMap;
     int numberOfWorkers;
+    Config portConfig ;
     ClientRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
+        this.portConfig = new Config();
     }
 
     @Override
@@ -49,6 +54,8 @@ class ClientRequestListener extends Thread{
 
 
         try {
+            /*int cPort = portConfig.getClientRequestListenerPort();
+            providerSocket = new ServerSocket(cPort);*/
             providerSocket = new ServerSocket(4000);
 
             while (true) {
@@ -82,15 +89,19 @@ class ReducerRequestListener extends Thread
     Socket connection = null;
     private int numberOfWorkers;
     private HashMap<Integer,Socket> connectionsMap;
+    Config portConfig ;
     ReducerRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
+        this.portConfig = new Config();
     }
     @Override
     public void run() {
 
         try {
+            /*int rPort = portConfig.getReducerRequestListener();
+            providerSocket = new ServerSocket(rPort);*/
             providerSocket = new ServerSocket(3999);
 
             while (true) {
