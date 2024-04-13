@@ -117,6 +117,7 @@ public void run() {
         try {
             for (int i=0; i<numberOfWorkers; i++)
             {
+
                 requestSocket= new Socket("127.0.0.1", 4000+i+1);
                 ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
