@@ -1,0 +1,234 @@
+[
+  {
+    "roomName": "Luxury Suite",
+    "noOfPersons": 2,
+    "area": "City Center",
+    "stars": 5,
+    "noOfReviews": 100,
+    "roomImage": "luxury_suite.jpg"
+  },
+  {
+    "roomName": "Family Room",
+    "noOfPersons": 4,
+    "area": "Suburb",
+    "stars": 4,
+    "noOfReviews": 75,
+    "roomImage": "family_room.jpg"
+  },
+  {
+    "roomName": "Standard Double",
+    "noOfPersons": 2,
+    "area": "Downtown",
+    "stars": 3,
+    "noOfReviews": 50,
+    "roomImage": "standard_double.jpg"
+  },
+  {
+    "roomName": "Executive Suite",
+    "noOfPersons": 2,
+    "area": "Financial District",
+    "stars": 5,
+    "noOfReviews": 120,
+    "roomImage": "executive_suite.jpg"
+  },
+  {
+    "roomName": "Budget Room",
+    "noOfPersons": 1,
+    "area": "Outskirts",
+    "stars": 2,
+    "noOfReviews": 30,
+    "roomImage": "budget_room.jpg"
+  },
+  {
+    "roomName": "Ocean View Suite",
+    "noOfPersons": 2,
+    "area": "Coastal Area",
+    "stars": 5,
+    "noOfReviews": 90,
+    "roomImage": "ocean_view_suite.jpg"
+  },
+  {
+    "roomName": "Deluxe Room",
+    "noOfPersons": 2,
+    "area": "City Center",
+    "stars": 4,
+    "noOfReviews": 80,
+    "roomImage": "deluxe_room.jpg"
+  },
+  {
+    "roomName": "Penthouse",
+    "noOfPersons": 4,
+    "area": "Skyline",
+    "stars": 5,
+    "noOfReviews": 150,
+    "roomImage": "penthouse.jpg"
+  },
+  {
+    "roomName": "Economy Single",
+    "noOfPersons": 1,
+    "area": "Outskirts",
+    "stars": 2,
+    "noOfReviews": 40,
+    "roomImage": "economy_single.jpg"
+  },
+  {
+    "roomName": "Riverside Suite",
+    "noOfPersons": 2,
+    "area": "Riverside",
+    "stars": 4,
+    "noOfReviews": 70,
+    "roomImage": "riverside_suite.jpg"
+  },
+  {
+    "roomName": "Mountain View Chalet",
+    "noOfPersons": 4,
+    "area": "Mountain Resort",
+    "stars": 5,
+    "noOfReviews": 110,
+    "roomImage": "mountain_view_chalet.jpg"
+  },
+  {
+    "roomName": "Studio Apartment",
+    "noOfPersons": 2,
+    "area": "Downtown",
+    "stars": 3,
+    "noOfReviews": 60,
+    "roomImage": "studio_apartment.jpg"
+  },
+  {
+    "roomName": "Countryside Retreat",
+    "noOfPersons": 6,
+    "area": "Countryside",
+    "stars": 4,
+    "noOfReviews": 85,
+    "roomImage": "countryside_retreat.jpg"
+  },
+  {
+    "roomName": "Beachfront Villa",
+    "noOfPersons": 8,
+    "area": "Beachfront",
+    "stars": 5,
+    "noOfReviews": 200,
+    "roomImage": "beachfront_villa.jpg"
+  },
+  {
+    "roomName": "Historic Inn",
+    "noOfPersons": 2,
+    "area": "Old Town",
+    "stars": 3,
+    "noOfReviews": 55,
+    "roomImage": "historic_inn.jpg"
+  },
+  {
+    "roomName": "Ski Lodge",
+    "noOfPersons": 10,
+    "area": "Ski Resort",
+    "stars": 4,
+    "noOfReviews": 120,
+    "roomImage": "ski_lodge.jpg"
+  },
+  {
+    "roomName": "Urban Loft",
+    "noOfPersons": 4,
+    "area": "City Center",
+    "stars": 4,
+    "noOfReviews": 90,
+    "roomImage": "urban_loft.jpg"
+  },
+  {
+    "roomName": "Country Cottage",
+    "noOfPersons": 6,
+    "area": "Rural Area",
+    "stars": 3,
+    "noOfReviews": 70,
+    "roomImage": "country_cottage.jpg"
+  },
+  {
+    "roomName": "Lakeside Cabin",
+    "noOfPersons": 4,
+    "area": "Lakeside",
+    "stars": 4,
+    "noOfReviews": 80,
+    "roomImage": "lakeside_cabin.jpg"
+  },
+  {
+    "roomName": "Tropical Bungalow",
+    "noOfPersons": 2,
+    "area": "Island Resort",
+    "stars": 5,
+    "noOfReviews": 150,
+    "roomImage": "tropical_bungalow.jpg"
+  },
+  {
+    "roomName": "Business Suite",
+    "noOfPersons": 2,
+    "area": "Financial District",
+    "stars": 4,
+    "noOfReviews": 85,
+    "roomImage": "business_suite.jpg"
+  },
+  {
+    "roomName": "Farmhouse",
+    "noOfPersons": 8,
+    "area": "Farmland",
+    "stars": 3,
+    "noOfReviews": 65,
+    "roomImage": "farmhouse.jpg"
+  },
+  {
+    "roomName": "Desert Oasis",
+    "noOfPersons": 4,
+    "area": "Desert",
+    "stars": 5,
+    "noOfReviews": 100,
+    "roomImage": "desert_oasis.jpg"
+  },
+  {
+    "roomName": "Mansion",
+    "noOfPersons": 12,
+    "area": "Suburb",
+    "stars": 5,
+    "noOfReviews": 180,
+    "roomImage": "mansion.jpg"
+  },
+  {
+    "roomName": "Art Deco Apartment",
+    "noOfPersons": 3,
+    "area": "City Center",
+    "stars": 4,
+    "noOfReviews": 95,
+    "roomImage": "art_deco_apartment.jpg"
+  },
+  {
+    "roomName": "Rustic Lodge",
+    "noOfPersons": 6,
+    "area": "Forest",
+    "stars": 4,
+    "noOfReviews": 110,
+    "roomImage": "rustic_lodge.jpg"
+  },
+  {
+    "roomName": "Tudor House",
+    "noOfPersons": 8,
+    "area": "Countryside",
+    "stars": 3,
+    "noOfReviews": 75,
+    "roomImage": "tudor_house.jpg"
+  },
+  {
+    "roomName": "City View Apartment",
+    "noOfPersons": 4,
+    "area": "City Center",
+    "stars": 4,
+    "noOfReviews": 105,
+    "roomImage": "city_view_apartment.jpg"
+  },
+  {
+    "roomName": "Lakefront Retreat",
+    "noOfPersons": 6,
+    "area": "Lakefront",
+    "stars": 5,
+    "noOfReviews": 130,
+    "roomImage": "lakefront_retreat.jpg"
+  }
+]
