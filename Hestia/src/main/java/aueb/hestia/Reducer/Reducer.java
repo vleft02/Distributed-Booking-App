@@ -14,7 +14,10 @@ public class Reducer {
     private ServerSocket providerSocket;
     private Socket connection = null;
     private int numberOfThreads;
-    private HashMap<Integer, Pair<ArrayList<Room>, Integer>> receivedParts ;
+
+//    private final HashMap<Integer, Pair<ArrayList<Room>, Integer>> receivedParts = new HashMap<>();
+    private final HashMap<Integer, Pair<Integer, ArrayList<Room>>> receivedParts = new HashMap<>();
+
     public static void main(String[] args) {
         new Reducer(5).openServer();
     }
@@ -22,7 +25,6 @@ public class Reducer {
     Reducer(int numberOfThreads)
     {
         this.numberOfThreads = numberOfThreads;
-        this.receivedParts = new HashMap<>();
     }
     void openServer() {
         try {
@@ -30,8 +32,6 @@ public class Reducer {
 
             while (true) {
                 connection = providerSocket.accept();
-//                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-//                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 Thread rt = new ReduceThread(connection, receivedParts,numberOfThreads);
                 rt.start();
             }

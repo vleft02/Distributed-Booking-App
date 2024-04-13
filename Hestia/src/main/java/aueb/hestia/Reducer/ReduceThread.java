@@ -14,79 +14,84 @@ public class ReduceThread extends Thread{
 
     private Pair<Integer , Object> results;
     private int requestId;
-    private boolean redirectImmediately = false ;
 
+    ObjectOutputStream workerOutputStream;
+    ObjectInputStream workerInputStream;
     private Socket requestSocket;
 
     private Socket workerSocket;
-    HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts;
+    HashMap<Integer, Pair<Integer,ArrayList<Room>>> receivedParts;
     private int numberOfThreads;
 
-    public ReduceThread(Socket workerSocket, HashMap<Integer, Pair<ArrayList<Room>,Integer>> receivedParts, int numberOfThreads){
-//        this.inputStream = inputStream;
-        this.workerSocket=workerSocket;
-        this.numberOfThreads = numberOfThreads;
-        ObjectInputStream inputStream = null;
-        try {
+    public ReduceThread(Socket workerSocket, HashMap<Integer, Pair<Integer,ArrayList<Room>>> receivedParts, int numberOfThreads){
 
-            inputStream = (ObjectInputStream) new ObjectInputStream(workerSocket.getInputStream());
-            results = (Pair<Integer , Object>) inputStream.readObject();
-            requestId = results.getKey();
-            Object obj = results.getValue();
-            if (obj instanceof JSONObject) {
-                JSONObject jsonObject = (JSONObject) obj;
-            }
-        } catch (IOException | ClassNotFoundException e) {
+        this.workerSocket=workerSocket;
+        this.receivedParts=receivedParts;
+        this.numberOfThreads = numberOfThreads;
+        try {
+            this.workerOutputStream = new ObjectOutputStream(workerSocket.getOutputStream());
+            this.workerInputStream = new ObjectInputStream(workerSocket.getInputStream());
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
 
     }
 
     public void run(){
 
+        try {
+            results = (Pair<Integer, Object>) workerInputStream.readObject();
+            requestId = results.getKey();
             Object obj = results.getValue();
             ArrayList<Room> rooms = (ArrayList<Room>) obj;
             synchronized (receivedParts)
             {
                 if (!receivedParts.containsKey(results.getKey()))
                 {
-                    Pair<ArrayList<Room>, Integer> receivedSegment = new Pair<ArrayList<Room>, Integer>();
-                    receivedSegment.put(rooms,1);
-                    receivedParts.put(results.getKey(), receivedSegment);
+                    Pair<Integer, ArrayList<Room>> receivedSegment = new Pair<>();
+                    receivedSegment.put(1,rooms);
+                    receivedParts.put(requestId, receivedSegment);
                 }
                 else
                 {
-                    Pair<ArrayList<Room>, Integer> roomsArrived = receivedParts.get(results.getKey());
+                    Pair<Integer,ArrayList<Room>> roomsAlreadyArrived = receivedParts.get(requestId);
 
-                    roomsArrived.getKey().addAll(rooms);
-                    roomsArrived.setValue(roomsArrived.getValue()+1);
+                    roomsAlreadyArrived.getValue().addAll(rooms);
+                    roomsAlreadyArrived.setKey(roomsAlreadyArrived.getKey()+1);
                     //Make Sure that the condition turns to true at some points
-                    if (roomsArrived.getValue() == numberOfThreads){
-                        try {
+                    if (roomsAlreadyArrived.getKey() == numberOfThreads){
                             requestSocket= new Socket("127.0.0.1", 3999);
                             ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+                            ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
 
                             Pair<Integer, ArrayList<Room>> response = new Pair<Integer, ArrayList<Room>>();
-                            response.put(results.getKey(), roomsArrived.getKey());
+                            response.put(requestId, roomsAlreadyArrived.getValue());
                             out.writeObject(response);
                             out.flush();
 
                             out.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
+                            in.close();
+                            if (requestSocket != null) {
+                                requestSocket.close();
+                            }
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }finally
+        {
+            try {
+                workerOutputStream.close();
+                workerInputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
     }
 }

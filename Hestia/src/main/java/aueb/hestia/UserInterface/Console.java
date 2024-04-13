@@ -12,7 +12,6 @@ import java.text.ParseException;
 public class Console extends Thread{
 
     private JSONObject requestJson;
-    private ObjectInputStream responseInputStream;
     Console(JSONObject requestJson){
         this.requestJson = requestJson;
     }
@@ -22,16 +21,13 @@ public class Console extends Thread{
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
-            requestSocket = new Socket("localhost", 4000);
+            requestSocket = new Socket("127.0.0.1", 4000);
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
 
-            this.responseInputStream = (ObjectInputStream) new ObjectInputStream(requestSocket.getInputStream());
-
-            out.writeObject(requestJson.toJSONString());
+            out.writeUTF(requestJson.toJSONString());
             out.flush();
-            in.close();	out.close();
-            requestSocket.close();
+
             Object obj =  in.readObject();
             return obj;
 
@@ -86,7 +82,7 @@ public class Console extends Thread{
                         room.put("stars",stars);
                         room.put("noOfReviews",noOfReviews);
                         room.put("roomImage",roomImage);
-                        room.put("dates",dates);
+                        room.put("dateRange", dates);
                         room.put("function","addRoom");
 
                         String response = (String) new Console(room).request();
@@ -139,14 +135,14 @@ public class Console extends Thread{
                 //Add Availability
                 System.out.println("Give me your lodging's name please.");
                 String roomName = scanner.nextLine();
-                System.out.println("Please give the available dates in the format 01/04/24-25/04/24,15/05/24-29/05/24)");
+                System.out.println("Please give the available dates in the format 01/04/2024-25/04/2024,15/05/24-29/05/24");
                 String dates = scanner.nextLine();
                 // Check if the input matches the required format
                 if (dates.matches(datePattern)) {
                     JSONObject addindDates = new JSONObject();
                     addindDates.put("roomName",roomName);
                     addindDates.put("function","addDate");
-                    addindDates.put("dates",dates);
+                    addindDates.put("dateRange",dates);
                     String response = (String) new Console(addindDates).request();
                     System.out.println(response);
                 } else {

@@ -80,7 +80,7 @@ public class User extends Thread{
                             int stars = scanner.nextInt();
                             JSONObject search = new JSONObject();
                             search.put("area",area);
-                            search.put("dates",dates);
+                            search.put("dateRange",dates);
                             search.put("noOfPersons",noOfPersons);
                             search.put("stars",stars);
                             search.put("function","search");
@@ -114,7 +114,7 @@ public class User extends Thread{
                         JSONObject booking = new JSONObject();
                         booking.put("customerName",name);
                         booking.put("roomName",roomName);
-                        booking.put("dates",dates);
+                        booking.put("dateRange",dates);
                         booking.put("function","book");
 
                         String response = (String) new User(booking).request();
