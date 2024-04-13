@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 
 import aueb.hestia.Domain.Room;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.text.ParseException;
@@ -69,28 +70,39 @@ public class Console extends Thread{
                     System.out.println("Please give the available dates in the format 01/04/2024-25/04/2024,15/05/2024-29/05/2024)");
                     String dates = scanner.nextLine();
                     if (dates.matches(datePattern)) {
-                        Object o = new JSONParser().parse(new FileReader(path));
-                        JSONObject j = (JSONObject) o;
+                        //Object o = new JSONParser().parse(new FileReader(path));
+                        //JSONObject j = (JSONObject) o;
+                        BufferedReader reader = new BufferedReader(new FileReader(path));
+                        String line;
+                        StringBuilder jsonStringBuilder = new StringBuilder();
+                        while ((line = reader.readLine()) != null) {
+                            jsonStringBuilder.append(line);
+                        }
+                        JSONParser parser = new JSONParser();
+                        JSONArray jsonArray = (JSONArray) parser.parse(jsonStringBuilder.toString());
 
-                        String roomName = (String) j.get("roomName");
-                        Long noOfPersons = (Long ) j.get("noOfPersons");
-                        String area = (String) j.get("area");
-                        Long stars = (Long ) j.get("stars");
-                        Long noOfReviews = (Long ) j.get("noOfReviews");
-                        String roomImage = (String ) j.get("roomImage");
+                        for (Object obj : jsonArray) {
+                            JSONObject j = (JSONObject) obj;
+                            String roomName = (String) j.get("roomName");
+                            Long noOfPersons = (Long) j.get("noOfPersons");
+                            String area = (String) j.get("area");
+                            Long stars = (Long) j.get("stars");
+                            Long noOfReviews = (Long) j.get("noOfReviews");
+                            String roomImage = (String) j.get("roomImage");
 
-                        JSONObject room = new JSONObject();
-                        room.put("roomName",roomName);
-                        room.put("noOfPersons",noOfPersons);
-                        room.put("area",area);
-                        room.put("stars",stars);
-                        room.put("noOfReviews",noOfReviews);
-                        room.put("roomImage",roomImage);
-                        room.put("dates",dates);
-                        room.put("function","addRoom");
+                            JSONObject room = new JSONObject();
+                            room.put("roomName", roomName);
+                            room.put("noOfPersons", noOfPersons);
+                            room.put("area", area);
+                            room.put("stars", stars);
+                            room.put("noOfReviews", noOfReviews);
+                            room.put("roomImage", roomImage);
+                            room.put("dates", dates);
+                            room.put("function", "addRoom");
 
-                        String response = (String) new Console(room).request();
-                        System.out.println(response);
+                            String response = (String) new Console(room).request();
+                            System.out.println(response);
+                        }
                     } else {
                         System.out.println("Invalid dates format. Please enter dates in the specified format.");
                     }
