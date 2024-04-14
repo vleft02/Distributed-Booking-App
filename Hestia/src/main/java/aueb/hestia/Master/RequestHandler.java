@@ -35,6 +35,8 @@ public class RequestHandler extends Thread{
 
     private HashMap<Integer, Socket> connectionsMap ;
 
+    private boolean reducerFucntion = false;
+
     private Socket clientSocket;
     RequestHandler(Socket clientSocket, int numberOfWorkers, int requestId, HashMap<Integer, Socket> connectionsMap)
     {
@@ -61,6 +63,7 @@ public void run() {
             this.function = (String) requestJson.get("function");
 
             if ((function.equals("search")) || (function.equals("showBookings")) || (function.equals("showRooms"))){
+                reducerFucntion = true;
                 reduceFunction(requestJson);
             }else{
                 nonReduceFunction(requestJson);
@@ -71,8 +74,10 @@ public void run() {
             throw new RuntimeException(e);
         } finally {
             try {
-                requestInputStream.close();
-                requestOutputStream.close();
+                if(!reducerFucntion){
+                    requestInputStream.close();
+                    requestOutputStream.close();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -114,22 +119,17 @@ public void run() {
 
     public void sendToAllWorkers(Pair<Integer,String> request)
     {
+        ObjectOutputStream out =null;
+        ObjectInputStream in = null;
         try {
             for (int i=0; i<numberOfWorkers; i++)
             {
 
                 requestSocket= new Socket("127.0.0.1", 4000+i+1);
-                ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
+                out = new ObjectOutputStream(requestSocket.getOutputStream());
+                in = new ObjectInputStream(requestSocket.getInputStream());
                 out.writeObject(request);
                 out.flush();
-
-
-                out.close();
-                in.close();
-                if (requestSocket != null) {
-                    requestSocket.close();
-                }
 
             }
         } catch (IOException e) {
@@ -137,9 +137,13 @@ public void run() {
         }
         finally {
             try {
+                out.close();
+                in.close();
                 if (requestSocket != null) {
                     requestSocket.close();
                 }
+//                requestInputStream.close();
+//                requestOutputStream.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -164,6 +168,8 @@ public void run() {
         mappedRequest.put(requestId, json.toJSONString());
 
         sendToAllWorkers(mappedRequest);
+
+
     }
     public void nonReduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
         String roomName = (String) json.get("roomName");

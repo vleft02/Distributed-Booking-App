@@ -1,9 +1,11 @@
-{
-  "roomName": "Priamos",
-  "area": "Athens",
-  "price": 60,
-  "noOfPersons": 2,
-  "stars": 4.5,
-  "noOfReviews": 3,
-  "roomImage": "bedroom1.jpg"
-}
+[
+  {
+    "roomName": "Priamos",
+    "area": "Athens",
+    "price": 60,
+    "noOfPersons": 2,
+    "stars": 4,
+    "noOfReviews": 3,
+    "roomImage": "bedroom1.jpg"
+  }
+]

@@ -46,7 +46,7 @@ class ClientRequestListener extends Thread{
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
-        this.portConfig = new Config();
+//        this.portConfig = new Config();
     }
 
     @Override
@@ -94,7 +94,7 @@ class ReducerRequestListener extends Thread
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
-        this.portConfig = new Config();
+//        this.portConfig = new Config();
     }
     @Override
     public void run() {
@@ -107,15 +107,12 @@ class ReducerRequestListener extends Thread
             while (true) {
                 connection = providerSocket.accept();
 
-                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-
-                ResponseHandler responseHandler = new ResponseHandler(in, connectionsMap);
+                ResponseHandler responseHandler = new ResponseHandler(connection, connectionsMap);
                 responseHandler.start();
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        } finally {
+        }finally {
             try {
                 providerSocket.close();
             } catch (IOException ioException) {

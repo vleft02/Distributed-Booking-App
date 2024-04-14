@@ -181,19 +181,22 @@ public class WorkerThread extends Thread {
     public void addRoom(JSONObject json) throws IOException, ClassNotFoundException {
         String username = (String) json.get("username");
         String roomName = (String) json.get("roomName");
-        int noOfPersons = (int) json.get("noOfPersons");
+        Long longNoOfPersons = (Long) json.get("noOfPersons");
+        int noOfPersons = longNoOfPersons.intValue();
         String area = (String) json.get("area");
+
         double price = (double) json.get("price");
+        double stars = (double) json.get("stars");
+
         String roomImage = (String) json.get("roomImage");
 
+        Long longNoOfReviews = (Long) json.get("noOfReviews");
+        int noOfReviews = longNoOfPersons.intValue();
         synchronized (rooms) {
-            rooms.add(new Room(username, roomName, noOfPersons, area, 0, 0, price, roomImage));
+            rooms.add(new Room(username, roomName, noOfPersons, area, (float)stars ,noOfReviews, price, roomImage));
         }
-        outputStream.writeUTF("Rooms added Successfully");
+        outputStream.writeUTF("Room added Successfully");
         outputStream.flush();
-
-
-        outputStream.close();
 
     }
 
@@ -233,7 +236,6 @@ public class WorkerThread extends Thread {
         ArrayList<Room> ownedRooms;
         synchronized (rooms) {
             ownedRooms = rooms.findByOwner(username);
-
         }
         Pair<Integer, ArrayList<Room>> pair = new Pair<>();
         pair.put(requestId, ownedRooms);

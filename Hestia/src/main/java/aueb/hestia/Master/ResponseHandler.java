@@ -12,16 +12,20 @@ import java.util.HashMap;
 
 public class ResponseHandler extends Thread{
 
-    private Pair<Integer,Object> mappedResults;
+    private Pair<Integer,ArrayList<Room>> mappedResults;
     private HashMap<Integer, Socket> connectionsMap;
-    ObjectInputStream inputStream;
+    private ObjectInputStream reducerInputStream;
+    private ObjectOutputStream reducerOutputStream;
+    private Socket reducerSocket ;
 
-    ResponseHandler(ObjectInputStream inputStream, HashMap<Integer,Socket> connectionsMap){
-        this.inputStream = inputStream;
+    ResponseHandler(Socket reducerSocket, HashMap<Integer,Socket> connectionsMap){
+
         this.connectionsMap = connectionsMap;
         try {
-            mappedResults = (Pair<Integer,Object>) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+            this.reducerSocket = reducerSocket;
+            this.reducerOutputStream = new ObjectOutputStream(reducerSocket.getOutputStream());
+            this.reducerInputStream =  new ObjectInputStream(reducerSocket.getInputStream());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -31,22 +35,37 @@ public class ResponseHandler extends Thread{
     @Override
     public void run()
     {
-
         try {
-            Socket clientSocket = connectionsMap.get(mappedResults.getKey());
-            ObjectOutputStream out = null;
-            out = new ObjectOutputStream(clientSocket.getOutputStream());
-            synchronized (connectionsMap) {
-                connectionsMap.remove(mappedResults.getKey());
-            }
-            ArrayList<Room> rooms = (ArrayList<Room>) mappedResults.getValue();
-            out.writeObject(rooms);
-            out.flush();
-
-
-        } catch (IOException e) {
+            forwardToClient();
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }finally {
+            try {
+                reducerOutputStream.close();
+                reducerInputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+    }
+
+
+    public void forwardToClient() throws IOException, ClassNotFoundException {
+        mappedResults = (Pair<Integer,ArrayList<Room>>) reducerInputStream.readObject();
+        Socket clientSocket = connectionsMap.get(mappedResults.getKey());
+
+        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+//        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+
+        synchronized (connectionsMap) {
+            connectionsMap.remove(mappedResults.getKey());
+        }
+        ArrayList<Room> rooms = mappedResults.getValue();
+        out.writeObject(rooms);
+        out.flush();
+
+        out.close();
+//        in.close();
     }
 }

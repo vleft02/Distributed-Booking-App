@@ -21,7 +21,7 @@ public class User extends Thread{
     }
 
     ObjectInputStream responseInputStream;
-    public Object request() {
+    public Object request() throws RuntimeException {
         Socket requestSocket = null;
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
@@ -38,11 +38,7 @@ public class User extends Thread{
             Object obj =  in.readObject();
             return obj;
 
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
             try {
