@@ -33,12 +33,12 @@ public class RequestHandler extends Thread{
     private final Pair<Integer,String> mappedRequest  = new Pair<Integer,String>();
     private int numberOfWorkers;
 
-    private HashMap<Integer, Socket> connectionsMap ;
+    private HashMap<Integer, ObjectOutputStream> connectionsMap ;
 
     private boolean reducerFucntion = false;
 
     private Socket clientSocket;
-    RequestHandler(Socket clientSocket, int numberOfWorkers, int requestId, HashMap<Integer, Socket> connectionsMap)
+    RequestHandler(Socket clientSocket, int numberOfWorkers, int requestId, HashMap<Integer, ObjectOutputStream> connectionsMap)
     {
         try {
             this.clientSocket = clientSocket;
@@ -75,8 +75,8 @@ public void run() {
         } finally {
             try {
                 if(!reducerFucntion){
-                    requestInputStream.close();
                     requestOutputStream.close();
+                    requestInputStream.close();
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -142,8 +142,6 @@ public void run() {
                 if (requestSocket != null) {
                     requestSocket.close();
                 }
-//                requestInputStream.close();
-//                requestOutputStream.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -165,6 +163,7 @@ public void run() {
     }
 
     public void reduceFunction(JSONObject json) throws IOException, ClassNotFoundException{
+        connectionsMap.put(requestId, requestOutputStream);
         mappedRequest.put(requestId, json.toJSONString());
 
         sendToAllWorkers(mappedRequest);

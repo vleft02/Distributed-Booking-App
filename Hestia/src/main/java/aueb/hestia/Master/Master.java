@@ -4,6 +4,7 @@ package aueb.hestia.Master;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -11,8 +12,9 @@ import aueb.hestia.Config.Config;
 
 public class Master{
 
-    private final HashMap<Integer, Socket> connectionsMap  = new HashMap<>();
+    private final HashMap<Integer, ObjectOutputStream> connectionsMap  = new HashMap<>();
 	int numberOfWorkers;
+
     ClientRequestListener clientRequestListener;
     ReducerRequestListener ReducerResponseListener;
 
@@ -39,10 +41,13 @@ public class Master{
 class ClientRequestListener extends Thread{
     private ServerSocket providerSocket;
     Socket connection = null;
-    private final HashMap<Integer, Socket> connectionsMap;
+
+    private final Object lock = new Object();
+    private final HashMap<Integer, ObjectOutputStream> connectionsMap;
     int numberOfWorkers;
+    Integer requestId = 0;
     Config portConfig ;
-    ClientRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
+    ClientRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
@@ -60,14 +65,20 @@ class ClientRequestListener extends Thread{
 
             while (true) {
                 connection = providerSocket.accept();
-                int requestId ;
-                synchronized (connectionsMap)
+//                int requestId ;
+//                synchronized (connectionsMap)
+//                {
+//                    connectionsMap.put(connectionsMap.size(), connection);
+//                    requestId = connectionsMap.size()-1;
+//                }
+                Thread requestHandler;
+                synchronized (lock)
                 {
-                    connectionsMap.put(connectionsMap.size(), connection);
-                    requestId = connectionsMap.size()-1;
+                    requestHandler = new RequestHandler(connection, numberOfWorkers,requestId, connectionsMap);
+                    requestId++;
                 }
-                Thread requestHandler = new RequestHandler(connection, numberOfWorkers,requestId, connectionsMap);
                 requestHandler.start();
+
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -88,9 +99,9 @@ class ReducerRequestListener extends Thread
     private ServerSocket providerSocket;
     Socket connection = null;
     private int numberOfWorkers;
-    private HashMap<Integer,Socket> connectionsMap;
+    private HashMap<Integer,ObjectOutputStream> connectionsMap;
     Config portConfig ;
-    ReducerRequestListener(HashMap<Integer, Socket> connectionsMap, int numberOfWorkers)
+    ReducerRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;

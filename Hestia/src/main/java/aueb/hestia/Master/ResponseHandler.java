@@ -13,12 +13,12 @@ import java.util.HashMap;
 public class ResponseHandler extends Thread{
 
     private Pair<Integer,ArrayList<Room>> mappedResults;
-    private HashMap<Integer, Socket> connectionsMap;
+    private HashMap<Integer, ObjectOutputStream> connectionsMap;
     private ObjectInputStream reducerInputStream;
     private ObjectOutputStream reducerOutputStream;
     private Socket reducerSocket ;
 
-    ResponseHandler(Socket reducerSocket, HashMap<Integer,Socket> connectionsMap){
+    ResponseHandler(Socket reducerSocket, HashMap<Integer,ObjectOutputStream> connectionsMap){
 
         this.connectionsMap = connectionsMap;
         try {
@@ -43,6 +43,7 @@ public class ResponseHandler extends Thread{
             try {
                 reducerOutputStream.close();
                 reducerInputStream.close();
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -53,19 +54,19 @@ public class ResponseHandler extends Thread{
 
     public void forwardToClient() throws IOException, ClassNotFoundException {
         mappedResults = (Pair<Integer,ArrayList<Room>>) reducerInputStream.readObject();
-        Socket clientSocket = connectionsMap.get(mappedResults.getKey());
+        ObjectOutputStream clientOutputStream = connectionsMap.get(mappedResults.getKey());
 
-        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+//        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 //        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
         synchronized (connectionsMap) {
             connectionsMap.remove(mappedResults.getKey());
         }
         ArrayList<Room> rooms = mappedResults.getValue();
-        out.writeObject(rooms);
-        out.flush();
+        clientOutputStream.writeObject(rooms);
+        clientOutputStream.flush();
 
-        out.close();
+        clientOutputStream.close();
 //        in.close();
     }
 }
