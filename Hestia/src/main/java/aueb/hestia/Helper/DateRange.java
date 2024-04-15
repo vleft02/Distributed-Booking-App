@@ -6,9 +6,10 @@ import java.time.format.DateTimeFormatter;
 public class DateRange implements Serializable {
     private LocalDate from;
     private LocalDate to;
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public DateRange(String from, String to) throws InvalidDateException
     {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fromDate = LocalDate.parse(from,dateFormatter);
         LocalDate toDate = LocalDate.parse(to,dateFormatter);
         if (fromDate.isAfter(toDate))
@@ -99,6 +100,7 @@ public class DateRange implements Serializable {
     @Override
     public String toString()
     {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fromDateStr = from.format(dateFormatter);
         String toDateStr =  to.format(dateFormatter);
         return String.format("%s - %s", fromDateStr, toDateStr);

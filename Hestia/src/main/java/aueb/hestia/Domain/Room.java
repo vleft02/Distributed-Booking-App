@@ -29,7 +29,7 @@ public class Room implements Serializable {
         this.stars = stars;
         this.noOfReviews = noOfReviews;
         this.roomImage = roomImage;
-        this.price = 0.0;
+        this.price = price;
         this.availability = new ArrayList<DateRange>();
     }
 

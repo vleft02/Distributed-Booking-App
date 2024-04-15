@@ -184,6 +184,15 @@ public class WorkerThread extends Thread {
         Long longNoOfPersons = (Long) json.get("noOfPersons");
         int noOfPersons = longNoOfPersons.intValue();
         String area = (String) json.get("area");
+        String dateRangeString = (String) json.get("dateRange");
+        DateRange dateRange = null;
+        try {
+            dateRange = parseDateRange(dateRangeString);
+        } catch (InvalidDateException e) {
+            outputStream.writeUTF("Internal error due to false Dates");
+            outputStream.flush();
+            return;
+        }
 
         double price = (double) json.get("price");
         double stars = (double) json.get("stars");
@@ -193,7 +202,10 @@ public class WorkerThread extends Thread {
         Long longNoOfReviews = (Long) json.get("noOfReviews");
         int noOfReviews = longNoOfPersons.intValue();
         synchronized (rooms) {
-            rooms.add(new Room(username, roomName, noOfPersons, area, (float)stars ,noOfReviews, price, roomImage));
+            Room room = new Room(username, roomName, noOfPersons, area, (float)stars ,noOfReviews, price, roomImage);
+            room.addAvailability(dateRange);
+            rooms.add(room);
+
         }
         outputStream.writeUTF("Room added Successfully");
         outputStream.flush();
