@@ -1,7 +1,7 @@
 {
   "NumberOfWorkers": 5,
 
-  "MasterIP": "127.0.0.1",
+  "MasterIP": "192.168.1.26",
   "ClientRequestListenerPort": 7000,
   "ReducerRequestListener": 7999,
 

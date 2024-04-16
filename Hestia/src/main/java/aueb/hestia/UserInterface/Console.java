@@ -45,9 +45,11 @@ public class Console extends Thread{
                 if (in != null) {
                     in.close();
                 }
-                assert out != null;
-                out.close();
-                requestSocket.close();
+                if (out != null)
+                {
+                    out.close();
+                    requestSocket.close();
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
