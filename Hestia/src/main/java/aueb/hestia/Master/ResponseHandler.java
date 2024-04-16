@@ -56,8 +56,6 @@ public class ResponseHandler extends Thread{
         mappedResults = (Pair<Integer,ArrayList<Room>>) reducerInputStream.readObject();
         ObjectOutputStream clientOutputStream = connectionsMap.get(mappedResults.getKey());
 
-//        ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-//        ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
         synchronized (connectionsMap) {
             connectionsMap.remove(mappedResults.getKey());
@@ -67,6 +65,5 @@ public class ResponseHandler extends Thread{
         clientOutputStream.flush();
 
         clientOutputStream.close();
-//        in.close();
     }
 }

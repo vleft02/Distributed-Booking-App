@@ -3,6 +3,7 @@ package aueb.hestia;
 import aueb.hestia.Domain.Room;
 import aueb.hestia.Helper.DateRange;
 import aueb.hestia.Helper.InvalidDateException;
+import aueb.hestia.Helper.RoomUnavailableException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,18 +61,18 @@ class RoomTest {
 
 
     @Test
-    void book() throws InvalidDateException {
+    void book() throws InvalidDateException, RoomUnavailableException {
         room1.addAvailability(new DateRange("10/03/2024","20/03/2024"));
-        room1.book(new DateRange("10/03/2024","15/03/2024"));
+        room1.book(new DateRange("10/03/2024","15/03/2024"),"Customer");
 
         assertEquals(new DateRange("16/03/2024", "20/03/2024"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
     }
 
     @Test
-    void bookInTheMiddle() throws InvalidDateException {
+    void bookInTheMiddle() throws InvalidDateException, RoomUnavailableException {
         room1.addAvailability(new DateRange("10/03/2024","20/03/2024"));
-        room1.book(new DateRange("13/03/2024","15/03/2024"));
+        room1.book(new DateRange("13/03/2024","15/03/2024"),"Customer");
 
         assertEquals(new DateRange("10/03/2024", "12/03/2024"), room1.getAvailability().get(0));
         assertEquals(new DateRange("16/03/2024", "20/03/2024"), room1.getAvailability().get(1));
@@ -79,18 +80,18 @@ class RoomTest {
     }
 
     @Test
-    void bookInvalid() throws InvalidDateException {
+    void bookInvalid() throws InvalidDateException, RoomUnavailableException {
         room1.addAvailability(new DateRange("10/03/2024","20/03/2024"));
-        room1.book(new DateRange("08/03/2024","15/03/2024"));
+        room1.book(new DateRange("08/03/2024","15/03/2024"), "Customer");
 
         assertEquals(new DateRange("10/03/2024", "20/03/2024"), room1.getAvailability().get(0));
         assertEquals(1, room1.getAvailability().size());
     }
 
     @Test
-    void bookSingle() throws InvalidDateException {
+    void bookSingle() throws InvalidDateException, RoomUnavailableException {
         room1.addAvailability(new DateRange("10/03/2024","20/03/2024"));
-        room1.book(new DateRange("11/03/2024","11/03/2024"));
+        room1.book(new DateRange("11/03/2024","11/03/2024"), "Customer");
         room1.printAvailability();
 
         assertEquals(new DateRange("10/03/2024", "10/03/2024"), room1.getAvailability().get(0));

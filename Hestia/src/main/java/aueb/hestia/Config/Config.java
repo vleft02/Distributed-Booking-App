@@ -13,10 +13,17 @@ public class Config {
 
             Object jsonFile = null;
             if (osName.contains("windows")) {
-                String filePath = new File("").getAbsolutePath();
-                jsonFile = new JSONParser().parse(new FileReader(filePath+"\\src\\main\\java\\aueb\\hestia\\Config\\"+"config.json"));
-
-            } else if (osName.contains("linux")) {
+                String osVersion = System.getProperty("os.version");
+                if (osVersion.startsWith("10")) {
+                    String filePath = new File("").getAbsolutePath();
+                    jsonFile = new JSONParser().parse(new FileReader(filePath + "\\Hestia\\src\\main\\java\\aueb\\hestia\\Config\\" + "config.json"));
+                }
+                else if (osVersion.startsWith("11")) {
+                    String filePath = new File("").getAbsolutePath();
+                    jsonFile = new JSONParser().parse(new FileReader(filePath + "\\src\\main\\java\\aueb\\hestia\\Config\\" + "config.json"));
+                }
+            }
+            else if (osName.contains("linux")) {
                 String filePath = new File("").getAbsolutePath();
                 jsonFile = new JSONParser().parse(new FileReader(filePath+"/Hestia/src/main/java/aueb/hestia/Config/"+"config.json"));
 

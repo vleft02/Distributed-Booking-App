@@ -7,20 +7,17 @@ import java.util.*;
 
 import aueb.hestia.Config.Config;
 import aueb.hestia.Domain.Room;
-import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
 
-import org.json.simple.parser.*;
-
-public class User extends Thread{
+public class UserConsole extends Thread{
 
     JSONObject requestJson ;
 
     private String masterIp;
     private int masterPort;
 
-    User(JSONObject requestJson){
+    UserConsole(JSONObject requestJson){
         this.requestJson = requestJson;
         Config config = new Config();
         this.masterIp = config.getMasterIp();
@@ -87,7 +84,7 @@ public class User extends Thread{
                             search.put("noOfPersons",noOfPersons);
                             search.put("stars",stars);
                             search.put("function","search");
-                            ArrayList<Room> response = (ArrayList<Room>)new User(search).request();
+                            ArrayList<Room> response = (ArrayList<Room>)new UserConsole(search).request();
 
                             for (Room room : response)
                             {
@@ -121,7 +118,7 @@ public class User extends Thread{
                         booking.put("dateRange",dates);
                         booking.put("function","book");
 
-                        String response = (String) new User(booking).request();
+                        String response = (String) new UserConsole(booking).request();
 
                         System.out.println("\n"+response+"\n\n");
 
@@ -149,7 +146,7 @@ public class User extends Thread{
                         review.put("stars",stars);
                         review.put("function","review");
 
-                        String response  = (String) new User(review).request();
+                        String response  = (String) new UserConsole(review).request();
 
                         System.out.println("\n"+response+"\n\n");
                     } else {

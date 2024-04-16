@@ -1,12 +1,10 @@
 package aueb.hestia.Workers;// package com.aueb.hestia;
 
 import aueb.hestia.Config.Config;
-import aueb.hestia.dao.RoomDao;
-import aueb.hestia.dao.RoomMemoryDao;
+import aueb.hestia.Dao.RoomDao;
+import aueb.hestia.Dao.RoomMemoryDao;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 

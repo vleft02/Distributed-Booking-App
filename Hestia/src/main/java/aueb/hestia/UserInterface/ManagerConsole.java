@@ -9,14 +9,13 @@ import aueb.hestia.Domain.Room;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
-import java.text.ParseException;
 
-public class Console extends Thread{
+public class ManagerConsole extends Thread{
 
     private JSONObject requestJson;
     private String masterIp;
     private int masterPort;
-    Console(JSONObject requestJson){
+    ManagerConsole(JSONObject requestJson){
         this.requestJson = requestJson;
         Config config = new Config();
         this.masterIp = config.getMasterIp();
@@ -110,7 +109,7 @@ public class Console extends Thread{
                             room.put("function","addRoom");
 
 
-                            String response = (String) new Console(room).request();
+                            String response = (String) new ManagerConsole(room).request();
                             System.out.println(response);
                         }
                     } else {
@@ -130,7 +129,7 @@ public class Console extends Thread{
                         JSONObject manager = new JSONObject();
                         manager.put("name",name);
                         manager.put("function","showBookings");
-                        new Console(manager).request();
+                        new ManagerConsole(manager).request();
 
 
                     } else {
@@ -145,7 +144,7 @@ public class Console extends Thread{
                     JSONObject manager = new JSONObject();
                     manager.put("username",username);
                     manager.put("function","showRooms");
-                    ArrayList<Room> response = (ArrayList<Room>) new Console(manager).request();
+                    ArrayList<Room> response = (ArrayList<Room>) new ManagerConsole(manager).request();
 
                     for (Room room : response)
                     {
@@ -166,7 +165,7 @@ public class Console extends Thread{
                     addindDates.put("roomName",roomName);
                     addindDates.put("function","addDate");
                     addindDates.put("dateRange",dates);
-                    String response = (String) new Console(addindDates).request();
+                    String response = (String) new ManagerConsole(addindDates).request();
                     System.out.println(response);
                 } else {
                     System.out.println("Invalid dates format. Please enter dates in the specified format.");

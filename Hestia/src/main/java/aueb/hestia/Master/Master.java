@@ -68,12 +68,7 @@ class ClientRequestListener extends Thread{
 
             while (true) {
                 connection = providerSocket.accept();
-//                int requestId ;
-//                synchronized (connectionsMap)
-//                {
-//                    connectionsMap.put(connectionsMap.size(), connection);
-//                    requestId = connectionsMap.size()-1;
-//                }
+
                 Thread requestHandler;
                 synchronized (lock)
                 {

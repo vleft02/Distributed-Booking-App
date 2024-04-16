@@ -1,4 +1,4 @@
-package aueb.hestia.dao;
+package aueb.hestia.Dao;
 
 import aueb.hestia.Helper.DateRange;
 import aueb.hestia.Domain.Room;
