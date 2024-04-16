@@ -105,7 +105,7 @@ public class UserConsole extends Thread{
                 //booking a room
                 System.out.println("Give me your name please.");
                 String name = scanner.nextLine();
-                if (name.matches("[a-zA-Z]+")) {
+                if (name.matches("[a-zA-Z\\s]+")) {
                     System.out.println("Give me the room's name please.");
                     String roomName = scanner.nextLine();
                     System.out.println("Please give the dates you want to reserve in the format 01/04/2024-25/04/2024");
@@ -134,7 +134,7 @@ public class UserConsole extends Thread{
                 //make a review
                 System.out.println("Give me your name please.");
                 String name = scanner.nextLine();
-                if (name.matches("[a-zA-Z]+")) {
+                if (name.matches("[a-zA-Z\\s]+")) {
                     System.out.println("Give me the room's name please.");
                     String roomName = scanner.nextLine();
                     System.out.println("Please give the number of stars.");

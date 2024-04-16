@@ -125,7 +125,7 @@ public class ManagerConsole extends Thread{
             }else if (answer.equals("2")) {
                     System.out.println("Give me your name please.");
                     String name = scanner.nextLine();
-                    if (name.matches("[a-zA-Z]+")) {
+                    if (name.matches("[a-zA-Z\\s]+")) {
                         JSONObject manager = new JSONObject();
                         manager.put("username",name);
                         manager.put("function","showBookings");
@@ -140,7 +140,7 @@ public class ManagerConsole extends Thread{
                 //See Owned Lodgings
                 System.out.println("Give me your name please.");
                 String username = scanner.nextLine();
-                if (username.matches("[a-zA-Z]+")) {
+                if (username.matches("[a-zA-Z\\s]+")) {
                     JSONObject manager = new JSONObject();
                     manager.put("username",username);
                     manager.put("function","showRooms");
@@ -157,7 +157,7 @@ public class ManagerConsole extends Thread{
                 //Add Availability
                 System.out.println("Give me your lodging's name please.");
                 String roomName = scanner.nextLine();
-                System.out.println("Please give the available dates in the format 01/04/2024-25/04/2024,15/05/24-29/05/24");
+                System.out.println("Please give the available dates in the format 01/04/2024-25/04/2024");
                 String dates = scanner.nextLine();
                 // Check if the input matches the required format
                 if (dates.matches(datePattern)) {
