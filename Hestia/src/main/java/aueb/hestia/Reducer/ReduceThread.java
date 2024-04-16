@@ -149,7 +149,7 @@ public class ReduceThread extends Thread {
         String output = "";
         for (String key : map.keySet())
         {
-            output+= key+": "+map.get(key)+"\n";
+            output += key+": "+map.get(key)+"\n";
         }
 
         return output;

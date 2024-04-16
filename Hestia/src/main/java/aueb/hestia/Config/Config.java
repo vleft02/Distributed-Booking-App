@@ -41,7 +41,7 @@ public class Config {
     }
     public String getWorkersIP()
     {
-        return (String) j.get("WorkersIP");
+        return (String) j.get("WorkerIP");
     }
 
     public String getReducerIP()

@@ -23,18 +23,20 @@ public class Worker extends Thread{
         id = counter++;
     }
     public static void main(String[] args) {
-        Worker wk = new Worker(0);
-        Worker wk2 = new Worker(1);
-        Worker wk3 = new Worker(2);
-        Worker wk4 = new Worker(3);
-        Worker wk5 = new Worker(4);
+        Config config = new Config();
+        int numberOfWorkers = config.getNumberOfWorkers();
 
-        wk2.start();
+        for (int i =0; i<= numberOfWorkers;i++)
+        {
+            workerMain(i);
+        }
+
+    }
+
+    private static void workerMain(int id)
+    {
+        Worker wk = new Worker(id);
         wk.start();
-        wk3.start();
-        wk4.start();
-        wk5.start();
-
     }
 
 
