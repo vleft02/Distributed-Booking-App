@@ -90,7 +90,8 @@ public class WorkerThread extends Thread {
 
     public void search(JSONObject json) throws IOException, ClassNotFoundException {
         String area = (String) json.get("area");
-
+        Long longNoOfPersons = (Long) json.get("noOfPersons");
+        int noOfPersons = longNoOfPersons.intValue();
         String dateRangeString = (String) json.get("dateRange");
         DateRange dateRange = null;
         try {
@@ -101,8 +102,8 @@ public class WorkerThread extends Thread {
             return;
         }
 
-        int noOfPersons = (int) json.get("noOfPersons");
-        float stars = (float) json.get("stars");
+        Long longStars = (Long) json.get("stars");
+        int stars = longStars.intValue();
         ArrayList<Room> found;
         synchronized (rooms) {
             found = rooms.findByFilters(area, dateRange, noOfPersons, stars);

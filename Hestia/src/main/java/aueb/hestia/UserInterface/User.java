@@ -115,7 +115,7 @@ public class User extends Thread{
 
                         String response = (String) new User(booking).request();
 
-                        System.out.println("Server> "+response+"\n\n");
+                        System.out.println("\n"+response+"\n\n");
 
 
                     } else {
@@ -143,7 +143,7 @@ public class User extends Thread{
 
                         String response  = (String) new User(review).request();
 
-                        System.out.println("Server> "+response+"\n\n");
+                        System.out.println("\n"+response+"\n\n");
                     } else {
                         System.out.println("Invalid input. Please enter an integer for the number of stars.");
                     }
