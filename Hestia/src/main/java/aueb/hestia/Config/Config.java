@@ -10,7 +10,7 @@ public class Config {
     public Config() {
         try {
             String filePath = new File("").getAbsolutePath();
-            Object o = new JSONParser().parse(new FileReader(filePath+"\\src\\main\\java\\aueb\\hestia\\Config\\"+"config.json"));
+            Object o = new JSONParser().parse(new FileReader(filePath+"\\Hestia\\src\\main\\java\\aueb\\hestia\\Config\\"+"config.json"));
             j = (JSONObject) o;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
