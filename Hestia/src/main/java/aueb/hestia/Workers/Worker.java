@@ -1,5 +1,6 @@
 package aueb.hestia.Workers;// package com.aueb.hestia;
 
+import aueb.hestia.Config.Config;
 import aueb.hestia.dao.RoomDao;
 import aueb.hestia.dao.RoomMemoryDao;
 
@@ -16,6 +17,8 @@ public class Worker extends Thread{
     ServerSocket providerSocket;
     Socket connection = null;
     private int id = 0;
+    private Config config;
+    private int workerPort;
     RoomDao rooms = new RoomMemoryDao();
     Worker()
     {
@@ -40,11 +43,13 @@ public class Worker extends Thread{
     Worker(int id)
     {
         this.id = id;
+        this.config = new Config();
+        this.workerPort = config.getWorkersPort();
     }
     @Override
     public void run() {
         try {
-            providerSocket = new ServerSocket(4001+id);
+            providerSocket = new ServerSocket(workerPort + id);
             while(true)
             {
                 connection = providerSocket.accept();

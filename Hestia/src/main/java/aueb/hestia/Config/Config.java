@@ -9,19 +9,32 @@ public class Config {
     private JSONObject j;
     public Config() {
         try {
-            Object o = new JSONParser().parse(new FileReader("C:/Git/Distributed-Booking-App/Hestia/src/main/java/aueb/hestia/Config/config.json"));
+            String filePath = new File("").getAbsolutePath();
+            Object o = new JSONParser().parse(new FileReader(filePath+"\\src\\main\\java\\aueb\\hestia\\Config\\"+"config.json"));
             j = (JSONObject) o;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
-
-    public int getMasterPort() {
-        return (int) (long) j.get("MasterPort");
+    public int getNumberOfWorkers() {
+        Long num =  (Long) j.get("NumberOfWorkers");
+        return num.intValue();
+    }
+    public int getReducerPort() {
+        return (int) (long) j.get("ReducerPort");
     }
 
     public int getWorkersPort() {
         return (int) (long) j.get("WorkersPort");
+    }
+    public String getWorkersIP()
+    {
+        return (String) j.get("WorkersIP");
+    }
+
+    public String getReducerIP()
+    {
+        return (String) j.get("ReducerIP");
     }
 
     public int getClientRequestListenerPort() {
@@ -30,5 +43,9 @@ public class Config {
 
     public int getReducerRequestListener() {
         return (int) (long) j.get("ReducerRequestListener");
+    }
+
+    public String getMasterIp(){
+        return (String) j.get("MasterIP");
     }
 }

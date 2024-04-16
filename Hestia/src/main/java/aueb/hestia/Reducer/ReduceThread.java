@@ -1,5 +1,6 @@
 package aueb.hestia.Reducer;
 
+import aueb.hestia.Config.Config;
 import aueb.hestia.Helper.Pair;
 import aueb.hestia.Domain.Room;
 import org.json.simple.JSONObject;
@@ -14,7 +15,8 @@ public class ReduceThread extends Thread {
 
     private Pair<Integer, Object> results;
     private int requestId;
-
+    private int masterPort;
+    private String masterIp;
     ObjectOutputStream workerOutputStream;
     ObjectInputStream workerInputStream;
     private Socket requestSocket;
@@ -35,7 +37,9 @@ public class ReduceThread extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        Config config = new Config();
+        this.masterPort = config.getReducerRequestListener();
+        this.masterIp = config.getReducerIP();
     }
 
     public void run() {
@@ -74,7 +78,7 @@ public class ReduceThread extends Thread {
                 }
                 //Make Sure that the condition turns to true at some points
                 if (roomsAlreadyArrived.getKey() >= numberOfThreads) {
-                    requestSocket = new Socket("127.0.0.1", 3999);
+                    requestSocket = new Socket(masterIp, masterPort);
                     ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
 

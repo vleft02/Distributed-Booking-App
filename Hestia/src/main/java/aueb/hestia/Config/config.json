@@ -1,6 +1,14 @@
 {
-  "WorkersPort": 4001,
-  "MasterPort": 4405,
-  "ClientRequestListenerPort": 4000,
-  "ReducerRequestListener": 3999
+  "NumberOfWorkers": 5,
+
+  "MasterIP": "127.0.0.1",
+  "ClientRequestListenerPort": 7000,
+  "ReducerRequestListener": 7999,
+
+  "WorkerIP" : "127.0.0.1",
+  "WorkersPort": 7001,
+
+  "ReducerIP": "127.0.0.1",
+  "ReducerPort": 8000
+
 }

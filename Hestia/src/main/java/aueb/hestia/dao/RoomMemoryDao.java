@@ -42,7 +42,7 @@ public class RoomMemoryDao implements RoomDao{
     public ArrayList<Room> findByFilters(String area, DateRange dateRange, int noOfPersons, float stars) {
         ArrayList<Room> found= new ArrayList<>();
         for (Room room : rooms) {
-            if (room.getArea().equals(area) && room.isAvailable(dateRange) && room.getNoOfPersons() == noOfPersons && room.getStars()<=stars) {
+            if (room.getArea().equals(area) && room.isAvailable(dateRange) && room.getNoOfPersons() == noOfPersons && room.getStars()>=stars) {
                 found.add(room);
             }
         }

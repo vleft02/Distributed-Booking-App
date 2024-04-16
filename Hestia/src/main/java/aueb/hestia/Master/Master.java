@@ -17,17 +17,19 @@ public class Master{
 
     ClientRequestListener clientRequestListener;
     ReducerRequestListener ReducerResponseListener;
+    Config config;
 
 	public static void main(String[] args) {
-		new Master(5).openServer();
+		new Master().openServer();
 	}
 
-	Master(int numberOfWorkers)
+	Master()
 	{
-		this.numberOfWorkers = numberOfWorkers;
-        this.clientRequestListener = new ClientRequestListener(connectionsMap, numberOfWorkers);
-        this.ReducerResponseListener = new ReducerRequestListener(connectionsMap,numberOfWorkers);
 
+        this.config = new Config();
+		this.numberOfWorkers = config.getNumberOfWorkers();
+        this.clientRequestListener = new ClientRequestListener(connectionsMap, numberOfWorkers);
+        this.ReducerResponseListener = new ReducerRequestListener(connectionsMap, numberOfWorkers);
 	}
 
 	void openServer() {
@@ -46,12 +48,13 @@ class ClientRequestListener extends Thread{
     private final HashMap<Integer, ObjectOutputStream> connectionsMap;
     int numberOfWorkers;
     Integer requestId = 0;
-    Config portConfig ;
+    Config config;
+
     ClientRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
-//        this.portConfig = new Config();
+        this.config = new Config();
     }
 
     @Override
@@ -59,9 +62,9 @@ class ClientRequestListener extends Thread{
 
 
         try {
-            /*int cPort = portConfig.getClientRequestListenerPort();
-            providerSocket = new ServerSocket(cPort);*/
-            providerSocket = new ServerSocket(4000);
+            int requestListenerPort = config.getClientRequestListenerPort();
+            providerSocket = new ServerSocket(requestListenerPort);
+/*            providerSocket = new ServerSocket(4000);*/
 
             while (true) {
                 connection = providerSocket.accept();
@@ -100,20 +103,20 @@ class ReducerRequestListener extends Thread
     Socket connection = null;
     private int numberOfWorkers;
     private HashMap<Integer,ObjectOutputStream> connectionsMap;
-    Config portConfig ;
+    Config config ;
     ReducerRequestListener(HashMap<Integer, ObjectOutputStream> connectionsMap, int numberOfWorkers)
     {
         this.connectionsMap = connectionsMap;
         this.numberOfWorkers = numberOfWorkers;
-//        this.portConfig = new Config();
+        this.config = new Config();
     }
     @Override
     public void run() {
 
         try {
-            /*int rPort = portConfig.getReducerRequestListener();
-            providerSocket = new ServerSocket(rPort);*/
-            providerSocket = new ServerSocket(3999);
+            int reducerResponsePort = config.getReducerRequestListener();
+            providerSocket = new ServerSocket(reducerResponsePort);
+//            providerSocket = new ServerSocket(3999);
 
             while (true) {
                 connection = providerSocket.accept();

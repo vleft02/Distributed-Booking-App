@@ -1,5 +1,6 @@
 package aueb.hestia.Workers;
 
+import aueb.hestia.Config.Config;
 import aueb.hestia.Helper.DateRange;
 import aueb.hestia.Helper.InvalidDateException;
 import aueb.hestia.Helper.Pair;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 
 public class WorkerThread extends Thread {
     private Integer requestId;
+    private int reducerPort;
+    private String reducerIp;
     private RoomDao rooms;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -35,6 +38,10 @@ public class WorkerThread extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Config config = new Config();
+        this.reducerPort = config.getReducerPort();
+        this.reducerIp = config.getReducerIP();
     }
 
 
@@ -112,7 +119,7 @@ public class WorkerThread extends Thread {
         Pair<Integer, ArrayList<Room>> pair = new Pair<>();
         pair.put(requestId, found);
 
-        requestSocket = new Socket("127.0.0.1", 4009);
+        requestSocket = new Socket(reducerIp, reducerPort);
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
         out.writeObject(pair);
@@ -253,7 +260,7 @@ public class WorkerThread extends Thread {
         Pair<Integer, ArrayList<Room>> pair = new Pair<>();
         pair.put(requestId, ownedRooms);
 
-        requestSocket = new Socket("127.0.0.1", 4009);
+        requestSocket = new Socket(reducerIp, reducerPort);
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
 

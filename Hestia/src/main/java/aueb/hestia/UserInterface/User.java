@@ -5,6 +5,7 @@ import java.net.*;
 import java.text.ParseException;
 import java.util.*;
 
+import aueb.hestia.Config.Config;
 import aueb.hestia.Domain.Room;
 import org.json.simple.JSONArray;
 
@@ -16,8 +17,14 @@ public class User extends Thread{
 
     JSONObject requestJson ;
 
+    private String masterIp;
+    private int masterPort;
+
     User(JSONObject requestJson){
         this.requestJson = requestJson;
+        Config config = new Config();
+        this.masterIp = config.getMasterIp();
+        this.masterPort = config.getClientRequestListenerPort();
     }
 
     ObjectInputStream responseInputStream;
@@ -26,7 +33,7 @@ public class User extends Thread{
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
-            requestSocket = new Socket("127.0.0.1", 4000);
+            requestSocket = new Socket(masterIp, masterPort);
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             in = new ObjectInputStream(requestSocket.getInputStream());
 

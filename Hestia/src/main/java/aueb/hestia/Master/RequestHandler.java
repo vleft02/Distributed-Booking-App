@@ -1,5 +1,6 @@
 package aueb.hestia.Master;
 
+import aueb.hestia.Config.Config;
 import aueb.hestia.Helper.DateRange;
 import aueb.hestia.Helper.InvalidDateException;
 import aueb.hestia.Helper.Pair;
@@ -23,6 +24,8 @@ import org.json.simple.parser.*;
 
 public class RequestHandler extends Thread{
 
+    private int workerOffsetPort;
+    private String workerIp;
     private String function;
     private ObjectInputStream requestInputStream;
     private ObjectOutputStream requestOutputStream;
@@ -51,7 +54,9 @@ public class RequestHandler extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        Config config = new Config();
+        this.workerIp = config.getWorkersIP();
+        this.workerOffsetPort = config.getWorkersPort();
     }
 
 @Override
@@ -89,7 +94,7 @@ public void run() {
     public String sendToWorker(int port, Pair<Integer,String> request)
     {
         try {
-            requestSocket = new Socket("127.0.0.1", port);
+            requestSocket = new Socket(workerIp, port);
             ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
 
@@ -125,7 +130,7 @@ public void run() {
             for (int i=0; i<numberOfWorkers; i++)
             {
 
-                requestSocket= new Socket("127.0.0.1", 4000+i+1);
+                requestSocket= new Socket(workerIp, workerOffsetPort+i);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
                 out.writeObject(request);
@@ -174,7 +179,7 @@ public void run() {
         String roomName = (String) json.get("roomName");
         mappedRequest.put(requestId, json.toJSONString());
 
-         String message = sendToWorker(4001+hashCode(roomName) ,mappedRequest);
+         String message = sendToWorker(workerOffsetPort+hashCode(roomName) ,mappedRequest);
 
 
 //        Socket clientSocket = connectionsMap.get(requestId);
