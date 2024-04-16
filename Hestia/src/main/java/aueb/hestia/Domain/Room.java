@@ -17,6 +17,7 @@ public class Room implements Serializable {
     private String ownerUsername;
     private ArrayList<DateRange> availability;
 
+    private ArrayList<Booking> bookings;
 
 
 
@@ -31,6 +32,7 @@ public class Room implements Serializable {
         this.roomImage = roomImage;
         this.price = price;
         this.availability = new ArrayList<DateRange>();
+        this.bookings = new ArrayList<>();
     }
 
     //Setters and Getters
@@ -113,7 +115,7 @@ public class Room implements Serializable {
 
 
 
-    public void book(DateRange bookingDateRange) throws RoomUnavailableException
+    public void book(DateRange bookingDateRange,String customerUserName) throws RoomUnavailableException
     {
             for (DateRange interval : availability)
             {
@@ -128,6 +130,8 @@ public class Room implements Serializable {
                         availability.add(new DateRange(bookingDateRange.getTo().plusDays(1), interval.getTo()));
                     }
                     availability.remove(interval);
+                    bookings.add(new Booking(bookingDateRange, customerUserName));
+
                     return;
                 }
             }

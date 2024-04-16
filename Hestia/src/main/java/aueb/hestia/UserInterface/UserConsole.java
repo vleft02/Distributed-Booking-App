@@ -7,20 +7,17 @@ import java.util.*;
 
 import aueb.hestia.Config.Config;
 import aueb.hestia.Domain.Room;
-import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
 
-import org.json.simple.parser.*;
-
-public class User extends Thread{
+public class UserConsole extends Thread{
 
     JSONObject requestJson ;
 
     private String masterIp;
     private int masterPort;
 
-    User(JSONObject requestJson){
+    UserConsole(JSONObject requestJson){
         this.requestJson = requestJson;
         Config config = new Config();
         this.masterIp = config.getMasterIp();
@@ -87,12 +84,13 @@ public class User extends Thread{
                             search.put("noOfPersons",noOfPersons);
                             search.put("stars",stars);
                             search.put("function","search");
-                            ArrayList<Room> response = (ArrayList<Room>)new User(search).request();
+                            ArrayList<Room> response = (ArrayList<Room>)new UserConsole(search).request();
 
                             for (Room room : response)
                             {
                                 System.out.println(room);
                             }
+                            scanner.nextLine();
 
                         } else {
                             System.out.println("Invalid input. Please enter an integer for the number of stars.");
@@ -120,7 +118,7 @@ public class User extends Thread{
                         booking.put("dateRange",dates);
                         booking.put("function","book");
 
-                        String response = (String) new User(booking).request();
+                        String response = (String) new UserConsole(booking).request();
 
                         System.out.println("\n"+response+"\n\n");
 
@@ -148,7 +146,7 @@ public class User extends Thread{
                         review.put("stars",stars);
                         review.put("function","review");
 
-                        String response  = (String) new User(review).request();
+                        String response  = (String) new UserConsole(review).request();
 
                         System.out.println("\n"+response+"\n\n");
                     } else {
@@ -167,60 +165,3 @@ public class User extends Thread{
         scanner.close();
     }
 }
-
-
-
-
-/*public class User {
-    public static void main(String[] args)
-    {
-        Socket requestSocket = null;
-        ObjectOutputStream out = null;
-        ObjectInputStream in= null;
-
-        try {
-            while (true){
-                requestSocket = new Socket("127.0.0.1", 4000);
-                out = new ObjectOutputStream(requestSocket.getOutputStream());
-                in = new ObjectInputStream(requestSocket.getInputStream());
-
-                out.writeObject("addRoom");
-                out.flush();
-
-                out.writeObject("Kostas");
-                out.flush();
-
-                out.writeObject("Priamos Hotel");
-                out.flush();
-
-                out.writeInt(1);
-                out.flush();
-
-                out.writeObject("Athens");
-                out.flush();
-
-                out.writeDouble(20.0);
-                out.flush();
-
-                out.writeObject("img");
-                out.flush();
-            }
-
-
-//            System.out.println("Server>" + in.readInt());
-
-        } catch (UnknownHostException unknownHost) {
-            System.err.println("You are trying to connect to an unknown host!");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            try {
-                in.close();	out.close();
-                requestSocket.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-    }
-    
-}*/

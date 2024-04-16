@@ -6,7 +6,7 @@ import aueb.hestia.Helper.InvalidDateException;
 import aueb.hestia.Helper.Pair;
 import aueb.hestia.Domain.Room;
 import aueb.hestia.Helper.RoomUnavailableException;
-import aueb.hestia.dao.RoomDao;
+import aueb.hestia.Dao.RoomDao;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -137,6 +137,7 @@ public class WorkerThread extends Thread {
     public void book(JSONObject json) throws IOException, ClassNotFoundException {
         String roomName = (String) json.get("roomName");
         String dateRangeString = (String) json.get("dateRange");
+        String username = (String) json.get("customerName");
         DateRange dateRange = null;
         try {
             dateRange = parseDateRange(dateRangeString);
@@ -149,7 +150,7 @@ public class WorkerThread extends Thread {
             Room roomToBook = rooms.findByRoomName(roomName);
             try {
                 if (roomToBook != null) {
-                    roomToBook.book(dateRange);
+                    roomToBook.book(dateRange,username);
                     outputStream.writeUTF("Room" + roomName + " booked Successfully for dates " + dateRange.toString());
                     outputStream.flush();
                 } else {
