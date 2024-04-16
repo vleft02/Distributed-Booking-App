@@ -53,17 +53,45 @@ public class ResponseHandler extends Thread{
 
 
     public void forwardToClient() throws IOException, ClassNotFoundException {
-        mappedResults = (Pair<Integer,ArrayList<Room>>) reducerInputStream.readObject();
-        ObjectOutputStream clientOutputStream = connectionsMap.get(mappedResults.getKey());
+        Object receivedObject = reducerInputStream.readObject();
 
 
-        synchronized (connectionsMap) {
-            connectionsMap.remove(mappedResults.getKey());
+        if (receivedObject instanceof Pair<?, ?>) {
+            Pair<?, ?> pair = (Pair<?, ?>) receivedObject;
+            if (pair.getKey() instanceof Integer && pair.getValue() instanceof String) {
+                Pair<Integer,String> results = (Pair<Integer,String>) receivedObject;
+                ObjectOutputStream clientOutputStream = connectionsMap.get(results.getKey());
+
+
+                synchronized (connectionsMap) {
+                    connectionsMap.remove(results.getKey());
+                }
+                clientOutputStream.writeObject(results.getValue());
+                clientOutputStream.flush();
+
+
+                clientOutputStream.close();
+            }else{
+                mappedResults = (Pair<Integer,ArrayList<Room>>) receivedObject;
+                ObjectOutputStream clientOutputStream = connectionsMap.get(mappedResults.getKey());
+
+
+                synchronized (connectionsMap) {
+                    connectionsMap.remove(mappedResults.getKey());
+                }
+                ArrayList<Room> rooms = mappedResults.getValue();
+                clientOutputStream.writeObject(rooms);
+                clientOutputStream.flush();
+
+
+                clientOutputStream.close();
+            }
+
         }
-        ArrayList<Room> rooms = mappedResults.getValue();
-        clientOutputStream.writeObject(rooms);
-        clientOutputStream.flush();
 
-        clientOutputStream.close();
+
+
+
+
     }
 }

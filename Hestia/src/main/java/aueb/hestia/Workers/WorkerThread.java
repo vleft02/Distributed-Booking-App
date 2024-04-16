@@ -76,7 +76,7 @@ public class WorkerThread extends Thread {
                     showRooms(requestJson);
                     break;
                 case "showBookings":
-//                    showBookings();
+                    showBookings(requestJson);
                     break;
                 default:
                     System.out.print("Function Not Found");
@@ -248,8 +248,30 @@ public class WorkerThread extends Thread {
 
     public void showBookings(JSONObject json) throws IOException, ClassNotFoundException {
         String username = (String) json.get("username");
+        synchronized (rooms)
+        {
+            ArrayList<Room> ownedRooms = rooms.findByOwner(username);
 
-        //Immplement aggregation
+            requestSocket = new Socket(reducerIp, reducerPort);
+            ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
+
+            Pair<Integer, ArrayList<Room>> pair = new Pair<>();
+            pair.put(requestId, ownedRooms);
+
+            out.writeObject(json.toJSONString());
+            out.flush();
+
+            out.writeObject(pair);
+            out.flush();
+
+            out.close();
+            in.close();
+            if (requestSocket != null) {
+                requestSocket.close();
+            }
+        }
+
     }
 
     public void showRooms(JSONObject json) throws IOException, ClassNotFoundException {

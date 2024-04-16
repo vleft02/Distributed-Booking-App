@@ -127,11 +127,11 @@ public class ManagerConsole extends Thread{
                     String name = scanner.nextLine();
                     if (name.matches("[a-zA-Z]+")) {
                         JSONObject manager = new JSONObject();
-                        manager.put("name",name);
+                        manager.put("username",name);
                         manager.put("function","showBookings");
-                        new ManagerConsole(manager).request();
 
-
+                        String response = (String) new ManagerConsole(manager).request();
+                        System.out.println(response);
                     } else {
                         System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
                     }

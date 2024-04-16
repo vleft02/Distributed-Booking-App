@@ -81,6 +81,8 @@ public class Room implements Serializable {
         return availability;
     }
 
+    public ArrayList<Booking> getBookings(){return bookings;}
+
 
     //Methods
     public void addAvailability(DateRange dateRange)

@@ -111,7 +111,6 @@ class ReducerRequestListener extends Thread
         try {
             int reducerResponsePort = config.getReducerRequestListener();
             providerSocket = new ServerSocket(reducerResponsePort);
-//            providerSocket = new ServerSocket(3999);
 
             while (true) {
                 connection = providerSocket.accept();
