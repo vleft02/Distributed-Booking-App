@@ -87,6 +87,7 @@ public class ReduceThread extends Thread {
         requestId = results.getKey();
         Object obj = results.getValue();
         ArrayList<Room> rooms = (ArrayList<Room>) obj;
+
         synchronized (receivedParts) {
             if (!receivedParts.containsKey(results.getKey())) {
                 Pair<Integer, ArrayList<Room>> receivedSegment = new Pair<>();

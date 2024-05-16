@@ -123,18 +123,27 @@ public class ManagerConsole extends Thread{
                 }
 
             }else if (answer.equals("2")) {
-                    System.out.println("Give me your name please.");
-                    String name = scanner.nextLine();
+                System.out.println("Give me your name please.");
+                String name = scanner.nextLine();
+                System.out.println("Give The Date Range of interest");
+                String dates= scanner.nextLine();
+                if (dates.matches(datePattern)) {
+
                     if (name.matches("[a-zA-Z\\s]+")) {
                         JSONObject manager = new JSONObject();
-                        manager.put("username",name);
-                        manager.put("function","showBookings");
+                        manager.put("username", name);
+                        manager.put("dateRange", dates);
+                        manager.put("function", "showBookings");
 
                         String response = (String) new ManagerConsole(manager).request();
                         System.out.println(response);
                     } else {
                         System.out.println("Invalid input. Please enter a valid name containing only alphabetic characters.");
                     }
+                } else
+                {
+                    System.out.println("Invalid dates format. Please enter dates in the specified format.");
+                }
             }
             else if (answer.equals("3")) {
                 //See Owned Lodgings

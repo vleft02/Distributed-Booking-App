@@ -5,6 +5,8 @@ import aueb.hestia.Dao.RoomDao;
 import aueb.hestia.Dao.RoomMemoryDao;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,37 +20,36 @@ public class Worker extends Thread{
     private Config config;
     private int workerPort;
     RoomDao rooms = new RoomMemoryDao();
-    Worker()
-    {
-        id = counter++;
-    }
+
+
     public static void main(String[] args) {
         Config config = new Config();
         int numberOfWorkers = config.getNumberOfWorkers();
 
-        for (int i =0; i<= numberOfWorkers;i++)
-        {
-            workerMain(i);
+        try {
+            Worker wk = new Worker();
+            wk.server();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
-    private static void workerMain(int id)
-    {
-        Worker wk = new Worker(id);
-        wk.start();
-    }
 
 
-    Worker(int id)
-    {
-        this.id = id;
+
+    Worker() throws IOException {
         this.config = new Config();
         this.workerPort = config.getWorkersPort();
+        this.id = getWorkersCount();
+        System.out.println("Worker "+id);
     }
-    @Override
-    public void run() {
+
+
+    public void server() {
         try {
+
+            System.out.println("Listening on..."+ (workerPort + id));
             providerSocket = new ServerSocket(workerPort + id);
             while(true)
             {
@@ -63,7 +64,10 @@ public class Worker extends Thread{
             throw new RuntimeException(e);
         } finally {
             try {
-                providerSocket.close();
+                if(providerSocket!=null)
+                {
+                    providerSocket.close();
+                }
 
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -71,5 +75,21 @@ public class Worker extends Thread{
         }
     }
 
+    public int getWorkersCount() throws IOException {
+
+        Socket socket = new Socket(config.getCounterIp(), config.getCounterPort());
+
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+        out.writeInt(1);
+        out.flush();
+
+        int count = in.readInt();
+
+        out.close();
+        in.close();
+        return count;
+    }
 
 }

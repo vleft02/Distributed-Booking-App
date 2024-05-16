@@ -136,6 +136,9 @@ public class Room implements Serializable {
 
                     return;
                 }
+                else{
+                    throw new RoomUnavailableException();
+                }
             }
 
     }

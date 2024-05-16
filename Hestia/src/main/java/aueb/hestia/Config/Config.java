@@ -60,4 +60,12 @@ public class Config {
     public String getMasterIp(){
         return (String) j.get("MasterIP");
     }
+    public String getCounterIp(){
+        return (String) j.get("CounterIP");
+    }
+    public int getCounterPort() {
+        return (int) (long) j.get("CounterPort");
+    }
+
+
 }

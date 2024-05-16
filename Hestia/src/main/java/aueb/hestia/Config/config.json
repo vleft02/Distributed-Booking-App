@@ -1,14 +1,17 @@
 {
   "NumberOfWorkers": 5,
 
-  "MasterIP": "192.168.1.26",
+  "MasterIP": "127.0.0.1",
   "ClientRequestListenerPort": 7000,
   "ReducerRequestListener": 7999,
 
-  "WorkerIP" : "192.168.1.50",
-  "WorkersPort": 7001,
+  "WorkerIP" : "127.0.0.1",
+  "WorkersPort": 10000,
 
-  "ReducerIP": "192.168.1.26",
-  "ReducerPort": 8000
+  "ReducerIP": "127.0.0.1",
+  "ReducerPort": 8000,
+
+  "CounterIP": "127.0.0.1",
+  "CounterPort": 8001
 
 }

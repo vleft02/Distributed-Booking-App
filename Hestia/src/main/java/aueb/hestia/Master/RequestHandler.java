@@ -49,7 +49,7 @@ public class RequestHandler extends Thread{
             this.requestInputStream = (ObjectInputStream) new ObjectInputStream(clientSocket.getInputStream());
             this.numberOfWorkers = numberOfWorkers;
             this.requestId = requestId;
-            this.connectionsMap =connectionsMap;
+            this.connectionsMap = connectionsMap;
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public class Booking implements Serializable {
 
-    private String username;
-    private DateRange dateRange;
+    private final String username;
+    private final DateRange dateRange;
 
     Booking (DateRange dateRange,String username )
     {
@@ -15,4 +15,11 @@ public class Booking implements Serializable {
         this.dateRange = dateRange;
     }
 
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

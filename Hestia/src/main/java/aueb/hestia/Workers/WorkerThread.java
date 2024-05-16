@@ -151,7 +151,7 @@ public class WorkerThread extends Thread {
             try {
                 if (roomToBook != null) {
                     roomToBook.book(dateRange,username);
-                    outputStream.writeUTF("Room" + roomName + " booked Successfully for dates " + dateRange.toString());
+                    outputStream.writeUTF("Room: " + roomName + " booked Successfully for dates " + dateRange.toString());
                     outputStream.flush();
                 } else {
                     outputStream.writeUTF("Room doesn't exist");
@@ -160,7 +160,7 @@ public class WorkerThread extends Thread {
 
 
             } catch (RoomUnavailableException e) {
-                outputStream.writeUTF("Booking of room " + roomName + "Failed");
+                outputStream.writeUTF("Booking of room " + roomName + " Failed for Dates Specified");
                 outputStream.flush();
 
             }
@@ -214,7 +214,6 @@ public class WorkerThread extends Thread {
             Room room = new Room(username, roomName, noOfPersons, area, (float)stars ,noOfReviews, price, roomImage);
             room.addAvailability(dateRange);
             rooms.add(room);
-
         }
         outputStream.writeUTF("Room added Successfully");
         outputStream.flush();
