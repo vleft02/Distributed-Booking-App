@@ -56,7 +56,6 @@ public class ResponseHandler extends Thread{
         Object receivedObject = reducerInputStream.readObject();
 
 
-
         if (receivedObject instanceof Pair<?, ?>) {
             Pair<?, ?> pair = (Pair<?, ?>) receivedObject;
             if (pair.getKey() instanceof Integer && pair.getValue() instanceof String) {

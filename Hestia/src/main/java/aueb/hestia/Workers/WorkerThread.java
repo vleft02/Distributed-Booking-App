@@ -122,6 +122,10 @@ public class WorkerThread extends Thread {
         requestSocket = new Socket(reducerIp, reducerPort);
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
+
+        out.writeObject(json.toJSONString());
+        out.flush();
+
         out.writeObject(pair);
         out.flush();
 
@@ -285,6 +289,9 @@ public class WorkerThread extends Thread {
         requestSocket = new Socket(reducerIp, reducerPort);
         ObjectOutputStream out = new ObjectOutputStream(requestSocket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(requestSocket.getInputStream());
+
+        out.writeObject(json.toJSONString());
+        out.flush();
 
         out.writeObject(pair);
         out.flush();

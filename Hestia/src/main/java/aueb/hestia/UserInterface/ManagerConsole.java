@@ -63,7 +63,7 @@ public class ManagerConsole extends Thread{
         System.out.println("Welcome to our Hotel Booking App! Add your lodging now and start earning money.");
         while(adding) {
             System.out.println("1.Add lodgings\n2.See Reservations Per Area\n3.See owned lodgings\n4.Add availability for Lodging\n5.Exit");
-            System.out.println("Type the number if the operation you want to perform.");
+            System.out.println("Type the number of the operation you want to perform.");
 
 //            System.out.println("Do you want to add a lodging?(y/n)");
             String answer = scanner.nextLine();
