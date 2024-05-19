@@ -11,6 +11,8 @@ import aueb.hestia.android.login.LoginViewModel;
 
 public class RoomDetailsActivity extends AppCompatActivity implements RoomDetailsView{
 
+
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +23,9 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
 
         if (savedInstanceState == null){
             Intent intent = getIntent();
+
         }
 
-        
+
     }
 }

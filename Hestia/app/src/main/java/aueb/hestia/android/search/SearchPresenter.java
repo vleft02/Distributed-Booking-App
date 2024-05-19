@@ -1,5 +1,8 @@
 package aueb.hestia.android.search;
 
+import android.widget.EditText;
+
+import aueb.hestia.R;
 import aueb.hestia.android.login.LoginView;
 
 public class SearchPresenter {
@@ -13,5 +16,9 @@ public class SearchPresenter {
 
     public void setView(SearchRoomsView view) {
         this.view = view;
+    }
+
+    public void search() {
+
     }
 }

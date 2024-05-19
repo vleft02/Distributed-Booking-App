@@ -38,8 +38,8 @@
 
     <TextView
         android:id="@+id/WelcomeText"
-        android:layout_width="146dp"
-        android:layout_height="34dp"
+        android:layout_width="364dp"
+        android:layout_height="32dp"
         android:paddingStart="10dp"
         android:text="Welcome Back"
         android:textColor="@color/white"
@@ -75,7 +75,33 @@
         app:layout_constraintVertical_bias="0.511">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/BookButton"
+            android:id="@+id/FromDateButton"
+            android:layout_width="49dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/calendar"
+            android:text="Button"
+            android:textColor="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintStart_toEndOf="@+id/FromDateField"
+            app:layout_constraintTop_toBottomOf="@+id/PersonsField" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ToDateButton"
+            android:layout_width="48dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/calendar"
+            android:text="Button"
+            android:textColor="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintStart_toEndOf="@+id/ToDateField"
+            app:layout_constraintTop_toBottomOf="@+id/FromDateField" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ApplyFiltersButton"
             android:layout_width="143dp"
             android:layout_height="66dp"
             android:layout_marginBottom="16dp"
@@ -90,7 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.431"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+            app:layout_constraintTop_toBottomOf="@+id/RatingBar"
             app:layout_constraintVertical_bias="0.921" />
 
         <EditText
@@ -115,11 +141,11 @@
             android:id="@+id/PersonsField"
             android:layout_width="279dp"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/rounded_textfield"
             android:ems="10"
             android:hint="Number Of Persons"
-            android:inputType="text"
+            android:inputType="number"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/Text_Hint"
@@ -129,31 +155,50 @@
             app:layout_constraintTop_toBottomOf="@+id/AreaField" />
 
         <EditText
-            android:id="@+id/DatesField"
-            android:layout_width="279dp"
-            android:layout_height="60dp"
+            android:id="@+id/ToDateField"
+            android:layout_width="231dp"
+            android:layout_height="56dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_textfield"
             android:ems="10"
-            android:hint="Dates"
+            android:hint="To"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/Text_Hint"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FromDateField" />
+
+        <EditText
+            android:id="@+id/FromDateField"
+            android:layout_width="228dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_textfield"
+            android:ems="10"
+            android:hint="From"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/Text_Hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.323"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/PersonsField" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.338"
+            app:layout_constraintHorizontal_bias="0.28"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/DatesField" />
+            app:layout_constraintTop_toBottomOf="@+id/ToDateField" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

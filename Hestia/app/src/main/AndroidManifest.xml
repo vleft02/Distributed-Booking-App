@@ -17,6 +17,7 @@
             android:exported="false" />
         <activity
             android:name=".android.search.SearchRoomsActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".android.login.LoginActivity"
