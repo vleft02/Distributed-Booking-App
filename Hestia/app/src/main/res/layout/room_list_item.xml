@@ -9,6 +9,21 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-249dp">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="155dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="4dp"
+        android:text="45$ Per Night"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/RoomDescription"
+        app:layout_constraintTop_toBottomOf="@+id/RoomRating"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ImageView
         android:id="@+id/RoomImage"
         android:layout_width="398dp"
@@ -25,7 +40,7 @@
         android:id="@+id/RoomName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:text="Room"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
