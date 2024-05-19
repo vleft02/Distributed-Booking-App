@@ -2,10 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/StarDesc"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Background"
     tools:context=".android.room.RoomDetailsActivity">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BackButton"
+        android:layout_width="65dp"
+        android:layout_height="68dp"
+        android:background="@drawable/left_arrow"
+        android:text="Button"
+        android:textColor="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/RoomSpecificImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BookButton"
@@ -21,27 +36,25 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordField" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/RoomSpecificImage"
         android:layout_width="402dp"
         android:layout_height="288dp"
         android:layout_marginTop="64dp"
-        android:src="@tools:sample/avatars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/RoomNameDesc"
-        android:layout_width="189dp"
-        android:layout_height="44dp"
+        android:layout_width="245dp"
+        android:layout_height="69dp"
         android:layout_marginTop="12dp"
         android:text="Room Name"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +67,48 @@
         android:layout_marginTop="12dp"
         android:text="2 Persons"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RoomNameDesc" />
+
+    <TextView
+        android:id="@+id/AreaDesc"
+        android:layout_width="132dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="8dp"
+        android:text="Area"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PersonsDesc" />
+
+    <TextView
+        android:id="@+id/RatingDesc"
+        android:layout_width="43dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="24dp"
+        android:text="4.5"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toEndOf="@+id/RoomNameDesc"
+        app:layout_constraintTop_toBottomOf="@+id/RoomSpecificImage" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="25dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="24dp"
+        android:text="★"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/RatingDesc"
+        app:layout_constraintTop_toBottomOf="@+id/RoomSpecificImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
