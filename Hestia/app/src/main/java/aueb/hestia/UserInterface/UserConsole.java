@@ -17,7 +17,7 @@ public class UserConsole extends Thread{
     private String masterIp;
     private int masterPort;
 
-    UserConsole(JSONObject requestJson){
+    public UserConsole(JSONObject requestJson){
         this.requestJson = requestJson;
         Config config = new Config();
         this.masterIp = config.getMasterIp();

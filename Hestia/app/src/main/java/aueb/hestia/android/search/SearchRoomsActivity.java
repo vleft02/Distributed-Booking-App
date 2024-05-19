@@ -15,10 +15,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import java.util.Calendar;
-
+import aueb.hestia.UserInterface.UserConsole;
+import aueb.hestia.Domain.Room;
 import aueb.hestia.R;
+import java.util.*;
+import org.json.simple.JSONObject;
+
 
 public class SearchRoomsActivity extends AppCompatActivity implements SearchRoomsView {
     String username;
@@ -26,7 +28,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     TextView noRoomsText;
     ConstraintLayout filtersPanel;
     RecyclerView roomsRecyclerView;
-
+    UserConsole uc;
 
 
     @Override
@@ -95,11 +97,32 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
                     }
                 });
             }
-
-
-
         });
 
+        //pare ta inputs tou xristi oste na kaneis anazitisi
+        findViewById(R.id.ApplyFiltersButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String area = getArea();
+                int noOfPersons = getNoOfPersons();
+                float stars = getStars();
+                String dates = getDates();
+                JSONObject search = new JSONObject();
+                search.put("area",area);
+                search.put("dateRange",dates);
+                search.put("noOfPersons",noOfPersons);
+                search.put("stars",stars);
+                search.put("function","search");
+                ArrayList<Room> response = (ArrayList<Room>)new UserConsole(search).request();
+
+                //edo skeftomai na kaloume mia methodo poy tha tiponei ta apotelesmata
+                //apo ti lista room sto room_list_item.xml
+//                for (Room room : response)
+//                            {
+//                                System.out.println(room);
+//                            }
+            }
+        });
     }
 
 
