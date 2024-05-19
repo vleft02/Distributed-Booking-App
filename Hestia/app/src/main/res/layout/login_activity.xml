@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Background"
-    tools:context=".MainActivity">
+    tools:context=".android.login.LoginActivity">
 
     <EditText
         android:id="@+id/UsernameField"
@@ -57,7 +57,7 @@
         app:layout_constraintVertical_bias="0.167" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/LogInButton"
+        android:id="@+id/LoginButton"
         android:layout_width="143dp"
         android:layout_height="66dp"
         android:background="@drawable/rounded_button"
