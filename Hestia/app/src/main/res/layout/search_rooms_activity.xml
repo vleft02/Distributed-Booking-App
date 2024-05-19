@@ -7,6 +7,35 @@
     android:background="@color/Background"
     tools:context=".android.search.SearchRoomsActivity">
 
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/button"
+        android:layout_width="48dp"
+        android:layout_height="47dp"
+        android:background="@drawable/menu_icon_white"
+        android:color="@color/white"
+        android:text="Filters Button"
+        android:textColor="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/WelcomeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.005"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/NoRoomsFoundMessage"
+        android:layout_width="314dp"
+        android:layout_height="96dp"
+        android:text="No Rooms Found, Press the Options Button to Apply Filters"
+        android:textAlignment="center"
+        android:textColor="@color/Text_Hint"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/WelcomeText"
         android:layout_width="146dp"
@@ -17,18 +46,113 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RoomsRecyclerView"
-        android:layout_width="411dp"
-        android:layout_height="688dp"
+        android:layout_width="389dp"
+        android:layout_height="693dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.934" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/FIltersPanel"
+        android:layout_width="361dp"
+        android:layout_height="663dp"
+        android:background="@color/Background"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.511">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/BookButton"
+            android:layout_width="143dp"
+            android:layout_height="66dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/inter"
+            android:radius="500dp"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PasswordField" />
+
+        <EditText
+            android:id="@+id/AreaField"
+            android:layout_width="279dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_textfield"
+            android:ems="10"
+            android:hint="Area"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/Text_Hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/PersonsField"
+            android:layout_width="279dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_textfield"
+            android:ems="10"
+            android:hint="Number Of Persons"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/Text_Hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AreaField" />
+
+        <EditText
+            android:id="@+id/DatesField"
+            android:layout_width="279dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_textfield"
+            android:ems="10"
+            android:hint="Dates"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/Text_Hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PersonsField" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.338"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DatesField" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

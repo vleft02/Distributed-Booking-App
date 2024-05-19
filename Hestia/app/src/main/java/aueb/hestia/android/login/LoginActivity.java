@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
 
 
-        findViewById(R.id.LoginButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.BookButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = viewModel.getPresenter().authenticate();
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public String ExtractUsername() {
-        return ((EditText)findViewById(R.id.UsernameField)).getText().toString().trim();
+        return ((EditText)findViewById(R.id.PersonsField)).getText().toString().trim();
     }
 
     @Override

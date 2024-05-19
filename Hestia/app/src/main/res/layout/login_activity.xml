@@ -8,7 +8,7 @@
     tools:context=".android.login.LoginActivity">
 
     <EditText
-        android:id="@+id/UsernameField"
+        android:id="@+id/PersonsField"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="444dp"
@@ -30,7 +30,7 @@
         android:id="@+id/HestiaLogo"
         android:layout_width="399dp"
         android:layout_height="787dp"
-        app:layout_constraintBottom_toTopOf="@+id/UsernameField"
+        app:layout_constraintBottom_toTopOf="@+id/PersonsField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,11 +53,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UsernameField"
+        app:layout_constraintTop_toBottomOf="@+id/PersonsField"
         app:layout_constraintVertical_bias="0.167" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/LoginButton"
+        android:id="@+id/BookButton"
         android:layout_width="143dp"
         android:layout_height="66dp"
         android:background="@drawable/rounded_button"
