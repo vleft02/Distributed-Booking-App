@@ -88,58 +88,58 @@ public class Room implements Serializable {
     public void addAvailability(DateRange dateRange)
     {
 
-            for (DateRange interval : availability)
+        for (DateRange interval : availability)
+        {
+            if (interval.contains(dateRange))
             {
-                if (interval.contains(dateRange))
+                return;
+            }
+            else
+            {
+
+                if(interval.isAdjacent(dateRange))
                 {
+                    interval.mergeAdjacent(dateRange);
                     return;
                 }
-                else
+                else if(interval.overlaps(dateRange))
                 {
-
-                    if(interval.isAdjacent(dateRange))
-                    {
-                        interval.mergeAdjacent(dateRange);
-                        return;
-                    }
-                    else if(interval.overlaps(dateRange))
-                    {
-                        DateRange mergedInterval = interval.mergeOverlapping(dateRange);
-                        availability.remove(interval);
-                        availability.add(mergedInterval);
-                        return;
-                    }
+                    DateRange mergedInterval = interval.mergeOverlapping(dateRange);
+                    availability.remove(interval);
+                    availability.add(mergedInterval);
+                    return;
                 }
-
             }
-            availability.add(dateRange);
+
         }
+        availability.add(dateRange);
+    }
 
 
 
     public void book(DateRange bookingDateRange,String customerUserName) throws RoomUnavailableException
     {
-            for (DateRange interval : availability)
+        for (DateRange interval : availability)
+        {
+            if (interval.contains(bookingDateRange))
             {
-                if (interval.contains(bookingDateRange))
+                if (!interval.getFrom().equals(bookingDateRange.getFrom()))
                 {
-                    if (!interval.getFrom().equals(bookingDateRange.getFrom()))
-                    {
-                        availability.add(new DateRange(interval.getFrom(), bookingDateRange.getFrom().minusDays(1)));
-                    }
-                    if (!interval.getTo().equals(bookingDateRange.getTo()))
-                    {
-                        availability.add(new DateRange(bookingDateRange.getTo().plusDays(1), interval.getTo()));
-                    }
-                    availability.remove(interval);
-                    bookings.add(new Booking(bookingDateRange, customerUserName));
+                    availability.add(new DateRange(interval.getFrom(), bookingDateRange.getFrom().minusDays(1)));
+                }
+                if (!interval.getTo().equals(bookingDateRange.getTo()))
+                {
+                    availability.add(new DateRange(bookingDateRange.getTo().plusDays(1), interval.getTo()));
+                }
+                availability.remove(interval);
+                bookings.add(new Booking(bookingDateRange, customerUserName));
 
-                    return;
-                }
-                else{
-                    throw new RoomUnavailableException();
-                }
+                return;
             }
+            else{
+                throw new RoomUnavailableException();
+            }
+        }
 
     }
 

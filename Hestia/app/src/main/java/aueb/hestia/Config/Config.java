@@ -22,6 +22,11 @@ public class Config {
                 jsonFile = new JSONParser().parse(new FileReader(filePath+"/Hestia/src/main/java/aueb/hestia/Config/"+"config.json"));
 
             }
+            else
+            {
+                String filePath = new File("").getAbsolutePath();
+                jsonFile = new JSONParser().parse(new FileReader(filePath + "\\src\\main\\java\\aueb\\hestia\\Config\\" + "config.json"));
+            }
 
             j = (JSONObject) jsonFile;
         } catch (IOException | ParseException e) {

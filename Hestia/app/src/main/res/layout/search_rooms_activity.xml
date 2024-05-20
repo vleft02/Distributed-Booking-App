@@ -53,8 +53,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RoomsRecyclerView"
-        android:layout_width="389dp"
-        android:layout_height="693dp"
+        android:layout_width="393dp"
+        android:layout_height="646dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,8 +63,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/FIltersPanel"
-        android:layout_width="361dp"
-        android:layout_height="663dp"
+        android:layout_width="415dp"
+        android:layout_height="637dp"
         android:background="@color/Background"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -113,8 +113,8 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         findViewById(R.id.ApplyFiltersButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Room> rooms = viewModel.getPresenter().search();
-                showRooms(rooms);
+                viewModel.getPresenter().search();
+//                showRooms(rooms);
             }
         });
     }
@@ -147,11 +147,10 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         return ((RatingBar)findViewById(R.id.RatingBar)).getRating();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public String getDates() {
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         String from = ((EditText) findViewById(R.id.FromDateField)).getText().toString().trim();
         String to = ((EditText) findViewById(R.id.ToDateField)).getText().toString().trim();
@@ -179,8 +178,22 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
 
     public void showRooms(ArrayList<Room> rooms)
     {
-        roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        roomsRecyclerView.setAdapter(new SearchRoomsRecyclerViewAdapter(rooms, this));
+        filtersPanel.setVisibility(View.GONE);
+        if (rooms.size() == 0)
+        {
+            noRoomsText.setVisibility(View.VISIBLE);
+            roomsRecyclerView.setVisibility(View.INVISIBLE);
+
+        }
+        else
+        {
+
+            noRoomsText.setVisibility(View.GONE);
+            roomsRecyclerView.setVisibility(View.VISIBLE);
+
+            roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            roomsRecyclerView.setAdapter(new SearchRoomsRecyclerViewAdapter(rooms, this));
+        }
     }
 
     @Override

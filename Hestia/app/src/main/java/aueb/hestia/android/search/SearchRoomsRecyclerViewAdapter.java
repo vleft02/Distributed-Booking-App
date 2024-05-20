@@ -40,6 +40,8 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
         holder.roomRating.setText(String.valueOf(currentItem.getStars()));
         holder.roomDescription.setText(String.valueOf(currentItem.getArea())+", "+String.valueOf(currentItem.getNoOfPersons())+" Persons");
 
+//        holder.roomImage()
+
         //Room Image code
 
         holder.roomImage.setOnClickListener(new View.OnClickListener() {
