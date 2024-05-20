@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteY="-249dp">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/RoomPrice"
         android:layout_width="155dp"
         android:layout_height="28dp"
         android:layout_marginTop="4dp"

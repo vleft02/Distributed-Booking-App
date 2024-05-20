@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import aueb.hestia.UserInterface.UserConsole;
 import aueb.hestia.Domain.Room;
 import aueb.hestia.R;
+import aueb.hestia.android.login.LoginActivity;
+import aueb.hestia.android.room.RoomDetailsActivity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +30,9 @@ import java.util.*;
 import org.json.simple.JSONObject;
 
 
-public class SearchRoomsActivity extends AppCompatActivity implements SearchRoomsView {
+public class SearchRoomsActivity extends AppCompatActivity implements SearchRoomsView ,SearchRoomsRecyclerViewAdapter.SearchRoomsSelectionListener{
+
+    SearchViewModel viewModel;
     String username;
     TextView welcomeText;
     TextView noRoomsText;
@@ -40,7 +45,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_rooms_activity);
-        SearchViewModel viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         viewModel.getPresenter().setView(this);
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -109,6 +114,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
             @Override
             public void onClick(View v) {
                 ArrayList<Room> rooms = viewModel.getPresenter().search();
+                showRooms(rooms);
             }
         });
     }
@@ -168,5 +174,26 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
                 date.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.show();
+    }
+
+
+    public void showRooms(ArrayList<Room> rooms)
+    {
+        roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        roomsRecyclerView.setAdapter(new SearchRoomsRecyclerViewAdapter(rooms, this));
+    }
+
+    @Override
+    public void selectRoom(Room room) {
+        Intent intent = new Intent(SearchRoomsActivity.this, RoomDetailsActivity.class);
+        intent.putExtra("username",username);
+        intent.putExtra("roomName",room.getRoomName());
+        intent.putExtra("roomPrice",room.getPrice());
+        intent.putExtra("roomArea",room.getArea());
+        intent.putExtra("roomRating",room.getArea());
+        intent.putExtra("noOfReviews", room.getNoOfReviews());
+        intent.putExtra("dates",room.getAvailability());
+
+        startActivity(intent);
     }
 }
