@@ -1,5 +1,7 @@
 package aueb.hestia.android.search;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.simple.parser.JSONParser;
+
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import aueb.hestia.Domain.Room;
@@ -41,9 +47,15 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
         holder.roomDescription.setText(String.valueOf(currentItem.getArea())+", "+String.valueOf(currentItem.getNoOfPersons())+" Persons");
 
 //        holder.roomImage()
-
         //Room Image code
+//        ImageView Rooms = new ImageView(this);
+//        String filePath = new File("").getAbsolutePath() + "/Hestia/images/";
+        String filepath= "C:\\Users\\vleft\\Desktop\\DStest\\Distributed-Booking-App\\Hestia\\images\\";
+        String fileName = currentItem.getRoomImage();
 
+
+        Bitmap image = BitmapFactory.decodeFile(filepath+fileName);
+        holder.roomImage.setImageBitmap(image);
         holder.roomImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

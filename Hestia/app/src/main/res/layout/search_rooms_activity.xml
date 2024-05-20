@@ -83,7 +83,7 @@
             android:text="Button"
             android:textColor="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintHorizontal_bias="0.461"
             app:layout_constraintStart_toEndOf="@+id/FromDateField"
             app:layout_constraintTop_toBottomOf="@+id/PersonsField" />
 
