@@ -81,7 +81,7 @@ public class SearchPresenter {
 
 
         ArrayList<Room> response = (ArrayList<Room>) request(search);
-
+        return response;
         //edo skeftomai na kaloume mia methodo poy tha tiponei ta apotelesmata
         //apo ti lista room sto room_list_item.xml
 //                for (Room room : response)
