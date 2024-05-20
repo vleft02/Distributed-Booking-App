@@ -67,6 +67,8 @@ class ClientRequestListener extends Thread{
 /*            providerSocket = new ServerSocket(4000);*/
 
             while (true) {
+
+                System.out.println("Connection Received");
                 connection = providerSocket.accept();
 
                 Thread requestHandler;

@@ -5,7 +5,7 @@
     "area": "City Center",
     "stars": 5.0,
     "noOfReviews": 100,
-    "roomImage": "luxury_suite.jpg",
+    "roomImage": "bed1.png",
     "price": 56.8
   },
   {
@@ -14,7 +14,7 @@
     "area": "Suburb",
     "stars": 4.0,
     "noOfReviews": 75,
-    "roomImage": "family_room.jpg",
+    "roomImage": "bed2.png",
     "price": 34.2
   },
   {
@@ -23,16 +23,16 @@
     "area": "Downtown",
     "stars": 3.0,
     "noOfReviews": 50,
-    "roomImage": "standard_double.jpg",
+    "roomImage": "bed3.png",
     "price": 21.9
   },
   {
     "roomName": "Executive Suite",
     "noOfPersons": 2,
-    "area": "Financial District",
+    "area": "City Center",
     "stars": 5.0,
     "noOfReviews": 120,
-    "roomImage": "executive_suite.jpg",
+    "roomImage": "bed4.png",
     "price": 77.5
   },
   {
@@ -41,7 +41,7 @@
     "area": "Outskirts",
     "stars": 2.4,
     "noOfReviews": 30,
-    "roomImage": "budget_room.jpg",
+    "roomImage": "bed5.png",
     "price": 44.6
   },
   {
@@ -50,7 +50,7 @@
     "area": "Coastal Area",
     "stars": 5.0,
     "noOfReviews": 90,
-    "roomImage": "ocean_view_suite.jpg",
+    "roomImage": "bed6.png",
     "price": 90.3
   },
   {
@@ -59,7 +59,7 @@
     "area": "City Center",
     "stars": 4.3,
     "noOfReviews": 80,
-    "roomImage": "deluxe_room.jpg",
+    "roomImage": "bed7.png",
     "price": 38.7
   },
   {
@@ -68,7 +68,7 @@
     "area": "Skyline",
     "stars": 5.0,
     "noOfReviews": 150,
-    "roomImage": "penthouse.jpg",
+    "roomImage": "bed8.png",
     "price": 79.2
   },
   {
@@ -77,16 +77,16 @@
     "area": "Outskirts",
     "stars": 2.1,
     "noOfReviews": 40,
-    "roomImage": "economy_single.jpg",
+    "roomImage": "bed9.png",
     "price": 27.8
   },
   {
     "roomName": "Riverside Suite",
     "noOfPersons": 2,
-    "area": "Riverside",
+    "area": "City Center",
     "stars": 4.8,
     "noOfReviews": 70,
-    "roomImage": "riverside_suite.jpg",
+    "roomImage": "bed10.png",
     "price": 63.5
   },
   {
@@ -95,7 +95,7 @@
     "area": "Mountain Resort",
     "stars": 5.0,
     "noOfReviews": 110,
-    "roomImage": "mountain_view_chalet.jpg",
+    "roomImage": "bed11.png",
     "price": 82.0
   },
   {
@@ -104,7 +104,7 @@
     "area": "Downtown",
     "stars": 3.4,
     "noOfReviews": 60,
-    "roomImage": "studio_apartment.jpg",
+    "roomImage": "bed12.png",
     "price": 49.6
   },
   {
@@ -113,7 +113,7 @@
     "area": "Countryside",
     "stars": 4.5,
     "noOfReviews": 85,
-    "roomImage": "countryside_retreat.jpg",
+    "roomImage": "bed13.png",
     "price": 73.1
   },
   {
@@ -122,16 +122,16 @@
     "area": "Beachfront",
     "stars": 5.0,
     "noOfReviews": 200,
-    "roomImage": "beachfront_villa.jpg",
+    "roomImage": "bed14.png",
     "price": 99.5
   },
   {
     "roomName": "Historic Inn",
     "noOfPersons": 2,
-    "area": "Old Town",
+    "area": "Downtown",
     "stars": 3.2,
     "noOfReviews": 55,
-    "roomImage": "historic_inn.jpg",
+    "roomImage": "bed15.png",
     "price": 35.8
   },
   {
@@ -140,7 +140,7 @@
     "area": "Ski Resort",
     "stars": 4.0,
     "noOfReviews": 120,
-    "roomImage": "ski_lodge.jpg",
+    "roomImage": "bed16.png",
     "price": 67.4
   },
   {
@@ -149,7 +149,7 @@
     "area": "City Center",
     "stars": 4.0,
     "noOfReviews": 90,
-    "roomImage": "urban_loft.jpg",
+    "roomImage": "bed17.png",
     "price": 86.3
   },
   {
@@ -158,7 +158,7 @@
     "area": "Rural Area",
     "stars": 3.3,
     "noOfReviews": 70,
-    "roomImage": "country_cottage.jpg",
+    "roomImage": "bed18.png",
     "price": 58.7
   },
   {
@@ -167,7 +167,7 @@
     "area": "Lakeside",
     "stars": 4.1,
     "noOfReviews": 80,
-    "roomImage": "lakeside_cabin.jpg",
+    "roomImage": "bed19.png",
     "price": 30.2
   },
   {
@@ -176,7 +176,7 @@
     "area": "Island Resort",
     "stars": 5.0,
     "noOfReviews": 150,
-    "roomImage": "tropical_bungalow.jpg",
+    "roomImage": "bed20.png",
     "price": 64.7
   },
   {
@@ -185,7 +185,7 @@
     "area": "Financial District",
     "stars": 4.4,
     "noOfReviews": 85,
-    "roomImage": "business_suite.jpg",
+    "roomImage": "bed21.png",
     "price": 44.8
   },
   {
@@ -194,7 +194,7 @@
     "area": "Farmland",
     "stars": 3.6,
     "noOfReviews": 65,
-    "roomImage": "farmhouse.jpg",
+    "roomImage":"bed22.png",
     "price": 20.4
   },
   {
@@ -203,7 +203,7 @@
     "area": "Desert",
     "stars": 5.0,
     "noOfReviews": 100,
-    "roomImage": "desert_oasis.jpg",
+    "roomImage": "bed23.png",
     "price": 45.7
   },
   {
@@ -212,7 +212,7 @@
     "area": "Suburb",
     "stars": 5.0,
     "noOfReviews": 180,
-    "roomImage": "mansion.jpg",
+    "roomImage": "bed24.png",
     "price": 91.3
   },
   {
@@ -221,7 +221,7 @@
     "area": "City Center",
     "stars": 4.0,
     "noOfReviews": 95,
-    "roomImage": "art_deco_apartment.jpg",
+    "roomImage": "bed25.png",
     "price": 72.0
   },
   {
@@ -230,7 +230,7 @@
     "area": "Forest",
     "stars": 4.4,
     "noOfReviews": 110,
-    "roomImage": "rustic_lodge.jpg",
+    "roomImage": "bed26.png",
     "price": 83.5
   },
   {
@@ -239,7 +239,7 @@
     "area": "Countryside",
     "stars": 3.2,
     "noOfReviews": 75,
-    "roomImage": "tudor_house.jpg",
+    "roomImage": "bed27.png",
     "price": 65.9
   },
   {
@@ -248,7 +248,7 @@
     "area": "City Center",
     "stars": 4.5,
     "noOfReviews": 105,
-    "roomImage": "city_view_apartment.jpg",
+    "roomImage": "bed28.png",
     "price": 37.8
   },
   {
@@ -257,7 +257,7 @@
     "area": "Lakefront",
     "stars": 5.0,
     "noOfReviews": 130,
-    "roomImage": "lakefront_retreat.jpg",
+    "roomImage": "bed29.png",
     "price": 59.1
   }
 ]

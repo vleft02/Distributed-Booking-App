@@ -53,6 +53,7 @@ public class Worker extends Thread{
             providerSocket = new ServerSocket(workerPort + id);
             while(true)
             {
+                System.out.println("Connection Received");
                 connection = providerSocket.accept();
 
                 WorkerThread wt = new WorkerThread(connection, rooms);

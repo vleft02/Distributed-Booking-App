@@ -109,8 +109,8 @@ public class WorkerThread extends Thread {
             return;
         }
 
-        Long longStars = (Long) json.get("stars");
-        int stars = longStars.intValue();
+        Double dstars = (Double) json.get("stars");
+        float stars = dstars.floatValue();
         ArrayList<Room> found;
         synchronized (rooms) {
             found = rooms.findByFilters(area, dateRange, noOfPersons, stars);

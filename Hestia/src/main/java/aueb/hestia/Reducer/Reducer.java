@@ -32,6 +32,7 @@ public class Reducer {
     }
     void openServer() {
         try {
+            System.out.println("Connection Received");
             providerSocket = new ServerSocket(reducerPort);
 
             while (true) {
