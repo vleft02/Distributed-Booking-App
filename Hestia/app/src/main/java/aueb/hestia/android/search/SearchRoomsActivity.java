@@ -2,6 +2,7 @@ package aueb.hestia.android.search;
 
 import static java.lang.Integer.parseInt;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -18,6 +20,9 @@ import android.widget.TextView;
 import aueb.hestia.UserInterface.UserConsole;
 import aueb.hestia.Domain.Room;
 import aueb.hestia.R;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.json.simple.JSONObject;
 
@@ -103,24 +108,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         findViewById(R.id.ApplyFiltersButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String area = getArea();
-                int noOfPersons = getNoOfPersons();
-                float stars = getStars();
-                String dates = getDates();
-                JSONObject search = new JSONObject();
-                search.put("area",area);
-                search.put("dateRange",dates);
-                search.put("noOfPersons",noOfPersons);
-                search.put("stars",stars);
-                search.put("function","search");
-                ArrayList<Room> response = (ArrayList<Room>)new UserConsole(search).request();
-
-                //edo skeftomai na kaloume mia methodo poy tha tiponei ta apotelesmata
-                //apo ti lista room sto room_list_item.xml
-//                for (Room room : response)
-//                            {
-//                                System.out.println(room);
-//                            }
+                ArrayList<Room> rooms = viewModel.getPresenter().search();
             }
         });
     }
@@ -153,10 +141,20 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         return ((RatingBar)findViewById(R.id.RatingBar)).getRating();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public String getDates() {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-        String dateRange= ((EditText) findViewById(R.id.FromDateField)).getText().toString().trim() + "-" + ((EditText) findViewById(R.id.ToDateField)).getText().toString().trim();
+        String from = ((EditText) findViewById(R.id.FromDateField)).getText().toString().trim();
+        String to = ((EditText) findViewById(R.id.ToDateField)).getText().toString().trim();
+
+        LocalDate fromDate =LocalDate.parse(from,inputFormatter);
+        LocalDate toDate = LocalDate.parse(to,inputFormatter);
+
+        String dateRange = fromDate.format(outputFormatter)+"-"+toDate.format(outputFormatter);
+
         return dateRange;
     }
 
