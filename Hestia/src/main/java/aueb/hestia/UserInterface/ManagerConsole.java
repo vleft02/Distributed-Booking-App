@@ -113,7 +113,7 @@ public class ManagerConsole extends Thread{
                             }
                             byte[] imageData = convertToByteArray(imageFile);
                             String encodedImage = Base64.getEncoder().encodeToString(imageData);
-
+                            System.out.println(encodedImage);
                             JSONObject room = new JSONObject();
                             room.put("username", username);
                             room.put("roomName",roomName);

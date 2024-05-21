@@ -13,7 +13,7 @@ public class Room implements Serializable {
     private float stars;
     private int noOfReviews;
     private String roomImage;
-    private byte[] imageData;
+    private String imageData;
     private double price;
     private String ownerUsername;
     private ArrayList<DateRange> availability;
@@ -45,10 +45,10 @@ public class Room implements Serializable {
         }
     }
 
-    public void setImageData(byte[] imageData) {
+    public void setImageData(String imageData) {
         this.imageData = imageData;
     }
-    public byte[] getImageData()
+    public String getImageData()
     {
         return imageData;
     }

@@ -214,8 +214,6 @@ public class WorkerThread extends Thread {
         String roomImage = (String) json.get("roomImage");
 
         String encodedImage = (String) json.get("roomImageData");
-        byte[] imageData = Base64.getDecoder().decode(encodedImage);
-
 
         Long longNoOfReviews = (Long) json.get("noOfReviews");
         int noOfReviews = longNoOfPersons.intValue();
@@ -224,7 +222,7 @@ public class WorkerThread extends Thread {
         synchronized (rooms) {
             Room room = new Room(username, roomName, noOfPersons, area, (float)stars ,noOfReviews, price, roomImage);
             room.addAvailability(dateRange);
-            room.setImageData(imageData);
+            room.setImageData(encodedImage);
             rooms.add(room);
         }
         outputStream.writeUTF("Room added Successfully");
