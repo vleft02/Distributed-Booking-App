@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import aueb.hestia.Domain.Room;
@@ -50,12 +53,24 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
         //Room Image code
 //        ImageView Rooms = new ImageView(this);
 //        String filePath = new File("").getAbsolutePath() + "/Hestia/images/";
-        String filepath= "C:\\Users\\vleft\\Desktop\\DStest\\Distributed-Booking-App\\Hestia\\images\\";
+//        String filepath= "C:\\Users\\vleft\\Desktop\\DStest\\Distributed-Booking-App\\Hestia\\images\\";
         String fileName = currentItem.getRoomImage();
 
+        FileInputStream fis;
+        try {
+            fis = holder.roomImage.getContext().openFileInput(fileName);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        Bitmap image = BitmapFactory.decodeFile(filepath+fileName);
+        Bitmap image = BitmapFactory.decodeStream(fis);
         holder.roomImage.setImageBitmap(image);
+
+        try {
+            fis.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         holder.roomImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

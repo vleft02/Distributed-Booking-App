@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -24,8 +25,10 @@ import aueb.hestia.R;
 import aueb.hestia.android.login.LoginActivity;
 import aueb.hestia.android.room.RoomDetailsActivity;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import org.json.simple.JSONObject;
 
@@ -155,12 +158,31 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         String from = ((EditText) findViewById(R.id.FromDateField)).getText().toString().trim();
         String to = ((EditText) findViewById(R.id.ToDateField)).getText().toString().trim();
 
-        LocalDate fromDate =LocalDate.parse(from,inputFormatter);
-        LocalDate toDate = LocalDate.parse(to,inputFormatter);
 
-        String dateRange = fromDate.format(outputFormatter)+"-"+toDate.format(outputFormatter);
+        try
+        {
+            LocalDate fromDate =LocalDate.parse(from,inputFormatter);
+            LocalDate toDate = LocalDate.parse(to,inputFormatter);
+            String dateRange = fromDate.format(outputFormatter)+"-"+toDate.format(outputFormatter);
 
-        return dateRange;
+            return dateRange;
+        }
+        catch(DateTimeParseException e)
+        {
+            return "";
+        }
+
+
+    }
+
+    @Override
+    public void showMessage(String title, String message) {
+        new AlertDialog.Builder(SearchRoomsActivity.this)
+                .setCancelable(true)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", null).create().show();
+
     }
 
 

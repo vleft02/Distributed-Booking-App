@@ -107,11 +107,19 @@ public class SearchPresenter {
     }
 
     public void search() {
+        String datePattern = "\\d{2}/\\d{2}/\\d{4}-\\d{2}/\\d{2}/\\d{4}";
 
         String area = view.getArea();
         int noOfPersons = view.getNoOfPersons();
         float stars = view.getStars();
         String dates = view.getDates();
+
+        if(!dates.matches(datePattern))
+        {
+            view.showMessage("Invalid Input", "Please provide a valid Date Range");
+            return;
+        }
+
 
         JSONObject search = new JSONObject();
         search.put("area",area);
