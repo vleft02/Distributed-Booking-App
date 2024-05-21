@@ -13,6 +13,8 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
 
 
     String username;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +25,11 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
 
         if (savedInstanceState == null){
             Intent intent = getIntent();
-
+            //intent.getExtra("")
         }
 
+        //book on click
+        //viewModel.getPresenter().book()
 
     }
 }

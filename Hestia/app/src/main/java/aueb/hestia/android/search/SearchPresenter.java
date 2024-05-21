@@ -86,9 +86,14 @@ public class SearchPresenter {
                 ArrayList<Room> rooms = (ArrayList<Room>) obj;
 
 
+
                 in.close();
                 out.close();
                 requestSocket.close();
+
+
+
+
 
                 Message msg = new Message();
                 Bundle bundle = new Bundle();
@@ -163,17 +168,9 @@ public class SearchPresenter {
                         availabilityArray.add(availabilityJson);
                     }
                     jsonRoom.put("availability", availabilityArray);
+                    jsonRoom.put("roomImageData", room.getImageData());
 
-                    // Convert bookings to JSON array
-                    JSONArray bookingsArray = new JSONArray();
-                    for (Booking booking : room.getBookings()) {
-                        JSONObject bookingJson = new JSONObject();
-                        // Add booking properties to the JSON object
-                        bookingsArray.add(bookingJson);
-                    }
-                    jsonRoom.put("bookings", bookingsArray);
 
-                    // Add the room JSON object to the rooms JSON array
                     jsonRoomsArray.add(jsonRoom);
                 }
                 return jsonRoomsArray.toString();
@@ -208,6 +205,7 @@ public class SearchPresenter {
                     String roomImage = (String) jsonRoom.get("roomImage");
                     double price = ((Number) jsonRoom.get("price")).doubleValue();
                     String ownerUsername = (String) jsonRoom.get("ownerUsername");
+                    String encodedImageData = (String) jsonRoom.get("roomImageData");
 
                     // Parse availability array
                     JSONArray availabilityArray = (JSONArray) jsonRoom.get("availability");
@@ -229,7 +227,7 @@ public class SearchPresenter {
                     for (DateRange range : availability) {
                         room.addAvailability(range);
                     }
-
+                    room.setImageData(encodedImageData);
                     rooms.add(room);
                 }
             }

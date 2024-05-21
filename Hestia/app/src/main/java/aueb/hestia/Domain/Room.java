@@ -13,6 +13,7 @@ public class Room implements Serializable {
     private float stars;
     private int noOfReviews;
     private String roomImage;
+    private String imageData;
     private double price;
     private String ownerUsername;
     private ArrayList<DateRange> availability;
@@ -44,6 +45,13 @@ public class Room implements Serializable {
         }
     }
 
+    public void setImageData(String imageData) {
+        this.imageData = imageData;
+    }
+    public String getImageData()
+    {
+        return imageData;
+    }
     public String getRoomName() {
         return roomName;
     }
@@ -181,11 +189,13 @@ public class Room implements Serializable {
     public String toString()
     {
 
-        String room = "Name: "+roomName+"\nNumber of persons: "+noOfPersons+"\nArea: "+area+"\nRating: "+stars+"\nReviews: "+noOfReviews+"\nPrice "+price+"$\nAvailable for: ";
+        StringBuilder room = new StringBuilder("Name: " + roomName + "\nNumber of persons: " + noOfPersons + "\nArea: " + area + "\nRating: " + stars + "\nReviews: " + noOfReviews + "\nPrice " + price + "$\nAvailable for: ");
         for (DateRange date : availability)
         {
-            room = room+date.toString()+"\n";
+            room.append(date.toString()).append("\n");
         }
-        return room;
+        return room.toString();
     }
+
+
 }

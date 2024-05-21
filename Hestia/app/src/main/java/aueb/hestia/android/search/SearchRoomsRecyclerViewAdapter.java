@@ -1,5 +1,6 @@
 package aueb.hestia.android.search;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -11,14 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import aueb.hestia.Domain.Room;
 import aueb.hestia.R;
@@ -54,23 +58,37 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
 //        ImageView Rooms = new ImageView(this);
 //        String filePath = new File("").getAbsolutePath() + "/Hestia/images/";
 //        String filepath= "C:\\Users\\vleft\\Desktop\\DStest\\Distributed-Booking-App\\Hestia\\images\\";
-        String fileName = currentItem.getRoomImage();
 
-        FileInputStream fis;
+
+        String fileName = currentItem.getRoomImage();
+        String encodedImage = currentItem.getImageData();
+        byte[] imageData = Base64.getDecoder().decode(encodedImage);
+
+
+        FileOutputStream fos;
         try {
-            fis = holder.roomImage.getContext().openFileInput(fileName);
+            fos = holder.roomImage.getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+//
+//        FileInputStream fis;
+//        try {
+//            fis = holder.roomImage.getContext().openFileInput(fileName);
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        Bitmap image = BitmapFactory.decodeStream(fis);
 
-        Bitmap image = BitmapFactory.decodeStream(fis);
+        Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
         holder.roomImage.setImageBitmap(image);
 
-        try {
-            fis.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            fis.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         holder.roomImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
