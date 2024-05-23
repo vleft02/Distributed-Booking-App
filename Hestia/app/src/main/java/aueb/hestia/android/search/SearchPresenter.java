@@ -44,7 +44,6 @@ public class SearchPresenter {
         public boolean handleMessage(@NonNull Message message) {
 
             String result = message.getData().getString("roomsJson");
-
             ArrayList<Room> rooms = parseJsonToRooms(result);
 
             view.showRooms(rooms);
@@ -72,7 +71,7 @@ public class SearchPresenter {
 
 
             try {
-                requestSocket = new Socket("10.0.2.2", 7000);
+                requestSocket = new Socket("192.168.1.48", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
@@ -134,7 +133,6 @@ public class SearchPresenter {
         search.put("function","search");
 
         request(search);
-
         //edo skeftomai na kaloum
         // e mia methodo poy tha tiponei ta apotelesmata
         //apo ti lista room sto room_list_item.xml

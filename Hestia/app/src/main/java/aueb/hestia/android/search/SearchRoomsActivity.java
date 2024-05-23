@@ -37,6 +37,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
 
     SearchViewModel viewModel;
     String username;
+    String givendates;
     TextView welcomeText;
     TextView noRoomsText;
     ConstraintLayout filtersPanel;
@@ -164,7 +165,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
             LocalDate fromDate =LocalDate.parse(from,inputFormatter);
             LocalDate toDate = LocalDate.parse(to,inputFormatter);
             String dateRange = fromDate.format(outputFormatter)+"-"+toDate.format(outputFormatter);
-
+            givendates = dateRange;
             return dateRange;
         }
         catch(DateTimeParseException e)
@@ -225,10 +226,10 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         intent.putExtra("roomName",room.getRoomName());
         intent.putExtra("roomPrice",room.getPrice());
         intent.putExtra("roomArea",room.getArea());
-        intent.putExtra("roomRating",room.getArea());
+        intent.putExtra("roomRating",room.getStars());
         intent.putExtra("noOfReviews", room.getNoOfReviews());
-        intent.putExtra("dates",room.getAvailability());
-
+        intent.putExtra("dates",givendates);
+        intent.putExtra("noOfPersons",room.getNoOfPersons());
         startActivity(intent);
     }
 }
