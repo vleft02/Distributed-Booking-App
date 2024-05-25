@@ -43,6 +43,9 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     int noOfPersons;
     String roomImage;
 
+
+    TextView ratingDesc;
+    TextView noOfReviewsDesc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +88,11 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         TextView roomNameDesc = findViewById(R.id.RoomNameDesc);
         TextView areaDesc = findViewById(R.id.AreaDesc);
         TextView roomp = findViewById(R.id.RoomPrice);
-        TextView ratingDesc = findViewById(R.id.RatingDesc);
+
+        ratingDesc = findViewById(R.id.RatingDesc);
         TextView personsDesc = findViewById(R.id.PersonsDesc);
-        TextView noOfReviewsDesc = findViewById(R.id.NoOfReviews);
+
+        noOfReviewsDesc = findViewById(R.id.NoOfReviews);
         ImageView roomImageView = findViewById(R.id.RoomSpecificImage);
 
 
@@ -150,10 +155,22 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     public int getNoOfReviews(){
         return noOfReviews;
     }
+
+    @Override
+    public void updateRating() {
+        float stars = getStarsroom();
+        noOfReviews++;
+        roomRating = (roomRating * (noOfReviews - 1) + stars) / noOfReviews;
+        ratingDesc.setText(String.format("%.2f", roomRating));
+        noOfReviewsDesc.setText(String.valueOf("By "+noOfReviews+" users" ));
+    }
+
     @Override
     public void hideReviewWidget() {
         findViewById(R.id.ReviewRB).setVisibility(View.GONE);
         findViewById(R.id.ReviewButton).setVisibility(View.GONE);
     }
+
+
 
 }

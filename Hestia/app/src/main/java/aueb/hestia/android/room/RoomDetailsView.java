@@ -10,4 +10,6 @@ public interface RoomDetailsView {
 
     void hideReviewWidget();
     int getNoOfReviews();
+
+    void updateRating();
 }
