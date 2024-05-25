@@ -100,6 +100,8 @@ public class WorkerThread extends Thread {
         String area = (String) json.get("area");
         Long longNoOfPersons = (Long) json.get("noOfPersons");
         int noOfPersons = longNoOfPersons.intValue();
+        Long longPrice = (Long) json.get("price");
+        int price = longPrice.intValue();
         String dateRangeString = (String) json.get("dateRange");
         DateRange dateRange = null;
         try {
@@ -114,7 +116,7 @@ public class WorkerThread extends Thread {
         float stars = dstars.floatValue();
         ArrayList<Room> found;
         synchronized (rooms) {
-            found = rooms.findByFilters(area, dateRange, noOfPersons, stars);
+            found = rooms.findByFilters(area, dateRange, noOfPersons, stars, price);
         }
 
         Pair<Integer, ArrayList<Room>> pair = new Pair<>();
@@ -216,7 +218,7 @@ public class WorkerThread extends Thread {
         String encodedImage = (String) json.get("roomImageData");
 
         Long longNoOfReviews = (Long) json.get("noOfReviews");
-        int noOfReviews = longNoOfPersons.intValue();
+        int noOfReviews = longNoOfReviews.intValue();
 
 
         synchronized (rooms) {
