@@ -158,7 +158,7 @@ public class WorkerThread extends Thread {
             try {
                 if (roomToBook != null) {
                     roomToBook.book(dateRange,username);
-                    outputStream.writeUTF("Room: " + roomName + " booked Successfully for dates " + dateRange.toString());
+                    outputStream.writeUTF(roomName + " booked Successfully for dates " + dateRange.toString());
                     outputStream.flush();
                 } else {
                     outputStream.writeUTF("Room doesn't exist");
