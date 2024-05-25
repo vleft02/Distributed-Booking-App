@@ -87,30 +87,13 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         TextView roomp = findViewById(R.id.RoomPrice);
         TextView ratingDesc = findViewById(R.id.RatingDesc);
         TextView personsDesc = findViewById(R.id.PersonsDesc);
+        TextView noOfReviewsDesc = findViewById(R.id.NoOfReviews);
         ImageView roomImageView = findViewById(R.id.RoomSpecificImage);
 
-//        FileInputStream fis = null;
-//        try {
-//            fis = openFileInput(roomImage);
-//            Bitmap image = BitmapFactory.decodeFile(getFilesDir()+roomImage);
-//            roomImageView.setImageBitmap(image);
-//
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }finally {
-//            // Close the FileInputStream if it was opened
-//            if (fis != null) {
-//                try {
-//                    fis.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
+        Bitmap image = BitmapFactory.decodeFile(getFilesDir()+"/"+roomImage);
+        roomImageView.setImageBitmap(image);
 
-            Bitmap image = BitmapFactory.decodeFile(getFilesDir()+"/"+roomImage);
-            roomImageView.setImageBitmap(image);
-//        }
 
         // Set the text
         roomNameDesc.setText(roomname);
@@ -118,7 +101,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         roomp.setText(String.valueOf(roomPrice+"$"));
         ratingDesc.setText(String.valueOf(roomRating));
         personsDesc.setText(String.format("%d Persons", noOfPersons));
-
+        noOfReviewsDesc.setText(String.valueOf("By "+noOfReviews+" users"));
         findViewById(R.id.ReviewButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +146,10 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     public float getStarsroom() {
         return ((RatingBar) findViewById(R.id.ReviewRB)).getRating();
     }
-
+    @Override
+    public int getNoOfReviews(){
+        return noOfReviews;
+    }
     @Override
     public void hideReviewWidget() {
         findViewById(R.id.ReviewRB).setVisibility(View.GONE);

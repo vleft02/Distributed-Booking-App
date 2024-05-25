@@ -65,6 +65,7 @@ public class RoomDetailsPresenter {
         public boolean handleMessage(@NonNull Message message) {
 
             String result = message.getData().getString("response");
+            
             view.showDialog(result);
             return false;
         }

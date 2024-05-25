@@ -19,4 +19,6 @@ public interface SearchRoomsView{
 
     void showMessage(String title, String message);
     void showRooms(ArrayList<Room> rooms);
+
+    int getPrice();
 }

@@ -150,7 +150,12 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     public float getStars() {
         return ((RatingBar)findViewById(R.id.RatingBar)).getRating();
     }
-
+    @Override
+    public int getPrice() {
+        String content = (((EditText)findViewById(R.id.PriceField)).getText().toString());
+        int price = Integer.valueOf(content);
+        return price;
+    }
     @Override
     public String getDates() {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -218,6 +223,8 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
             roomsRecyclerView.setAdapter(new SearchRoomsRecyclerViewAdapter(rooms, this));
         }
     }
+
+
 
     @Override
     public void selectRoom(Room room) {

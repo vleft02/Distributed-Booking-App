@@ -9,4 +9,5 @@ public interface RoomDetailsView {
     float getStarsroom();
 
     void hideReviewWidget();
+    int getNoOfReviews();
 }
