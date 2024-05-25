@@ -177,8 +177,8 @@ public class WorkerThread extends Thread {
 
     public void review(JSONObject json) throws IOException, ClassNotFoundException {
         String roomName = (String) json.get("roomName");
-        Long longStars = (Long) json.get("stars");
-        int stars = longStars.intValue();
+        Double dStars = (Double) json.get("stars");
+        float stars = dStars.floatValue();
         synchronized (rooms) {
             Room roomToRate = rooms.findByRoomName(roomName);
             if (roomToRate != null) {
