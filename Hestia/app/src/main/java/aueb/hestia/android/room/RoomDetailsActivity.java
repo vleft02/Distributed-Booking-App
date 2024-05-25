@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import aueb.hestia.R;
@@ -81,6 +82,13 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         ratingDesc.setText(String.valueOf(roomRating));
         personsDesc.setText(String.format("%d Persons", noOfPersons));
 
+        findViewById(R.id.ReviewButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.getPresenter().review();
+            }
+        });
+
 
     }
 
@@ -92,4 +100,10 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     public void onBackPressed() {
         super.onBackPressed();
     }
-}
+
+    @Override
+    public float getStarsroom() {
+        return ((RatingBar)findViewById(R.id.ReviewRB)).getRating();
+    }
+
+

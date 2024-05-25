@@ -139,4 +139,31 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/RatingDesc"
         app:layout_constraintTop_toBottomOf="@+id/RoomSpecificImage" />
+
+    <Button
+        android:id="@+id/ReviewButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="16dp"
+        android:text="Review"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/BookButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ReviewRB" />
+
+    <RatingBar
+        android:id="@+id/ReviewRB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="26dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/BookButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Dolar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

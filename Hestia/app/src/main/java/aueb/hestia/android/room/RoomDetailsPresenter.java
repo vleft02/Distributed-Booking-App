@@ -50,7 +50,7 @@ public class RoomDetailsPresenter {
             ObjectInputStream in = null;
 
             try {
-                requestSocket = new Socket("192.168.1.48", 7000);
+                requestSocket = new Socket("192.168.56.1", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
@@ -105,4 +105,61 @@ public class RoomDetailsPresenter {
 
         request(booking);
     }
+
+
+    public Object request_review() throws RuntimeException {
+        Socket requestSocket = null;
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
+        try {
+            requestSocket = new Socket("192.168.56.1", 7000);
+            out = new ObjectOutputStream(requestSocket.getOutputStream());
+            in = new ObjectInputStream(requestSocket.getInputStream());
+
+
+
+            out.writeUTF(review.toJSONString());
+            out.flush();
+
+            Object obj =  in.readObject();
+            return obj;
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                in.close();	out.close();
+                requestSocket.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+    public void review(){
+        float stars = view.getStarsroom();
+        JSONObject review = new JSONObject();
+        review.put("stars",stars);
+        review.put("function","review");
+        request_review(review);
+    }
+
+
+//    public Handler ReviewResponseHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+//        @Override
+//
+//        public boolean handleMessage(@NonNull Message Reviewmessage) {
+//
+//            String result = Reviewmessage.getData().getString("review");
+//            if (result.contains("Successfully")) {
+//                view.showMessage("Your Review has been added successfully !");
+//            } else {
+//                view.showMessage("Review Failed");
+//            }
+//            view.onBackPressed();
+//
+//            return false;
+//        }
+//    });
+
+
 }
