@@ -12,4 +12,6 @@ public interface RoomDetailsView {
     int getNoOfReviews();
 
     void updateRating();
+
+    void showBookingDialog(String message);
 }

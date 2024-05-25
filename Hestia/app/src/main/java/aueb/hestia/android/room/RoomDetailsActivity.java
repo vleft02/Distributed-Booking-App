@@ -124,21 +124,17 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     @Override
     public void showDialog(String message) {
 
-        if (!isFinishing() && !isDestroyed())
-        {
-
-            new AlertDialog.Builder(RoomDetailsActivity.this)
-                    .setCancelable(true)
-                    .setTitle("Notice")
-                    .setMessage(message)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            hideReviewWidget();
-                        }
-                    }).create().show();
-        }
+        new AlertDialog.Builder(RoomDetailsActivity.this)
+                .setCancelable(true)
+                .setTitle("Review")
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        hideReviewWidget();
+                    }
+                }).create().show();
 
     }
 
@@ -163,6 +159,21 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         roomRating = (roomRating * (noOfReviews - 1) + stars) / noOfReviews;
         ratingDesc.setText(String.format("%.2f", roomRating));
         noOfReviewsDesc.setText(String.valueOf("By "+noOfReviews+" users" ));
+    }
+
+    @Override
+    public void showBookingDialog(String message) {
+        new AlertDialog.Builder(RoomDetailsActivity.this)
+                .setCancelable(true)
+                .setTitle("Booking")
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        onBackPressed();
+                    }
+                }).create().show();
     }
 
     @Override

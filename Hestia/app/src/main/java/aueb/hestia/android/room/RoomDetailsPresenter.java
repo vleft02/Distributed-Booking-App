@@ -48,13 +48,15 @@ public class RoomDetailsPresenter {
         public boolean handleMessage(@NonNull Message message) {
 
             String result = message.getData().getString("book");
-            if (result.contains("Successfully")) {
-                view.showMessage("Successfully booked!");
-            } else {
-                view.showMessage("Booking Failed");
-            }
-            view.onBackPressed();
+//            if (result.contains("Successfully")) {
+//                view.showMessage("Successfully booked!");
+//            } else {
+//                view.showMessage("Booking Failed");
+//            }
+//            view.onBackPressed();
 
+
+            view.showBookingDialog(result);
             return false;
         }
     });
