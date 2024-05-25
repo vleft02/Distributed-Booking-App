@@ -226,6 +226,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         intent.putExtra("roomName",room.getRoomName());
         intent.putExtra("roomPrice",room.getPrice());
         intent.putExtra("roomArea",room.getArea());
+        intent.putExtra("roomImage", room.getRoomImage());
         intent.putExtra("roomRating",room.getStars());
         intent.putExtra("noOfReviews", room.getNoOfReviews());
         intent.putExtra("dates",givendates);

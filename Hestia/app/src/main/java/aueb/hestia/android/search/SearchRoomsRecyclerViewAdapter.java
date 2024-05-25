@@ -71,6 +71,18 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        try {
+            fos.write(imageData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 //
 //        FileInputStream fis;
 //        try {

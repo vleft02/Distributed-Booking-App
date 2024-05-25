@@ -71,7 +71,7 @@ public class SearchPresenter {
 
 
             try {
-                requestSocket = new Socket("192.168.56.1", 7000);
+                requestSocket = new Socket("10.0.2.2", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 

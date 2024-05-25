@@ -133,7 +133,7 @@
             android:textColorHint="@color/Text_Hint"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,7 +141,7 @@
             android:id="@+id/PersonsField"
             android:layout_width="279dp"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_textfield"
             android:ems="10"
             android:hint="Number Of Persons"
@@ -151,6 +151,7 @@
             android:textColorHint="@color/Text_Hint"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/AreaField" />
 

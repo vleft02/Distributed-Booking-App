@@ -160,7 +160,7 @@ public class Room implements Serializable {
         System.out.print("\n");
     }
 
-    public void review(int starScore)
+    public void review(float starScore)
     {
         if (starScore>0 && starScore<=5)
         {

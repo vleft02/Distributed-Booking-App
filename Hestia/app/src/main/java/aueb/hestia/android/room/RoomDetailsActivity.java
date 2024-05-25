@@ -5,22 +5,34 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import aueb.hestia.R;
 import aueb.hestia.UserInterface.UserConsole;
 import aueb.hestia.android.login.LoginViewModel;
+import aueb.hestia.android.search.SearchRoomsActivity;
 import aueb.hestia.android.search.SearchViewModel;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import aueb.hestia.Helper.DateRange;
 import android.widget.Toast;
 
-public class RoomDetailsActivity extends AppCompatActivity implements RoomDetailsView{
+public class RoomDetailsActivity extends AppCompatActivity implements RoomDetailsView {
     String username;
     String roomname;
     double roomPrice;
@@ -29,6 +41,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     int noOfReviews;
     String dates;
     int noOfPersons;
+    String roomImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,24 +51,25 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         RoomDetailsViewModel viewModel = new ViewModelProvider(this).get(RoomDetailsViewModel.class);
         viewModel.getPresenter().setView(this);
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             Intent intent = getIntent();
 
             username = intent.getStringExtra("username");
             roomname = intent.getStringExtra("roomName");
-            roomPrice = intent.getDoubleExtra("roomPrice",0.0);
+            roomPrice = intent.getDoubleExtra("roomPrice", 0.0);
             roomArea = intent.getStringExtra("roomArea");
-            roomRating = intent.getFloatExtra("roomRating",0.0f);
-            noOfReviews = intent.getIntExtra("noOfReviews",0 );
+            roomImage = intent.getStringExtra("roomImage");
+            roomRating = intent.getFloatExtra("roomRating", 0.0f);
+            noOfReviews = intent.getIntExtra("noOfReviews", 0);
             dates = intent.getStringExtra("dates");
-            noOfPersons = intent.getIntExtra("noOfPersons",0 );
+            noOfPersons = intent.getIntExtra("noOfPersons", 0);
         }
 
         findViewById(R.id.BookButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //book the room
-                viewModel.getPresenter().book(username,roomname,dates);
+                viewModel.getPresenter().book(username, roomname, dates);
             }
         });
 
@@ -73,19 +87,42 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         TextView roomp = findViewById(R.id.RoomPrice);
         TextView ratingDesc = findViewById(R.id.RatingDesc);
         TextView personsDesc = findViewById(R.id.PersonsDesc);
+        ImageView roomImageView = findViewById(R.id.RoomSpecificImage);
 
+//        FileInputStream fis = null;
+//        try {
+//            fis = openFileInput(roomImage);
+//            Bitmap image = BitmapFactory.decodeFile(getFilesDir()+roomImage);
+//            roomImageView.setImageBitmap(image);
+//
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }finally {
+//            // Close the FileInputStream if it was opened
+//            if (fis != null) {
+//                try {
+//                    fis.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+
+
+            Bitmap image = BitmapFactory.decodeFile(getFilesDir()+"/"+roomImage);
+            roomImageView.setImageBitmap(image);
+//        }
 
         // Set the text
         roomNameDesc.setText(roomname);
         areaDesc.setText(roomArea);
-        roomp.setText(String.valueOf(roomPrice));
+        roomp.setText(String.valueOf(roomPrice+"$"));
         ratingDesc.setText(String.valueOf(roomRating));
         personsDesc.setText(String.format("%d Persons", noOfPersons));
 
         findViewById(R.id.ReviewButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.getPresenter().review();
+                viewModel.getPresenter().review(username,roomname);
             }
         });
 
@@ -97,13 +134,40 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
     }
 
     @Override
+    public void showDialog(String message) {
+
+        if (!isFinishing() && !isDestroyed())
+        {
+
+            new AlertDialog.Builder(RoomDetailsActivity.this)
+                    .setCancelable(true)
+                    .setTitle("Notice")
+                    .setMessage(message)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            hideReviewWidget();
+                        }
+                    }).create().show();
+        }
+
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
     @Override
     public float getStarsroom() {
-        return ((RatingBar)findViewById(R.id.ReviewRB)).getRating();
+        return ((RatingBar) findViewById(R.id.ReviewRB)).getRating();
     }
 
+    @Override
+    public void hideReviewWidget() {
+        findViewById(R.id.ReviewRB).setVisibility(View.GONE);
+        findViewById(R.id.ReviewButton).setVisibility(View.GONE);
+    }
 
+}
