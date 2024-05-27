@@ -142,7 +142,16 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     @Override
     public int getNoOfPersons() {
         String content = (((EditText)findViewById(R.id.PersonsField)).getText().toString());
-        int noOfPersons = Integer.valueOf(content);
+        int noOfPersons;
+        if(content.equals(""))
+        {
+            noOfPersons = -1;
+        }
+        else
+        {
+            noOfPersons = Integer.valueOf(content);
+        }
+
         return noOfPersons;
     }
 
@@ -153,7 +162,16 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     @Override
     public int getPrice() {
         String content = (((EditText)findViewById(R.id.PriceField)).getText().toString());
-        int price = Integer.valueOf(content);
+        int price;
+        if (content.equals(""))
+        {
+            price = 0;
+        }
+        else
+        {
+            price = Integer.valueOf(content);
+        }
+
         return price;
     }
     @Override

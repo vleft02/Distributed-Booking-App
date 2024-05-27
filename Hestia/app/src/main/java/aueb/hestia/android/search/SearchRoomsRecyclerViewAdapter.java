@@ -50,7 +50,7 @@ public class SearchRoomsRecyclerViewAdapter extends RecyclerView.Adapter<SearchR
         final Room currentItem = rooms.get(position);
         holder.roomName.setText(String.valueOf(currentItem.getRoomName()));
         holder.roomPrice.setText(String.valueOf(currentItem.getPrice()) + " $");
-        holder.roomRating.setText(String.valueOf(currentItem.getStars()));
+        holder.roomRating.setText(String.format("%.2f",currentItem.getStars()));
         holder.roomDescription.setText(String.valueOf(currentItem.getArea())+", "+String.valueOf(currentItem.getNoOfPersons())+" Persons");
 
 //        holder.roomImage()
