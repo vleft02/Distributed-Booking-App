@@ -50,13 +50,13 @@ public class RoomDetailsPresenter {
             ObjectInputStream in = null;
 
             try {
-                requestSocket = new Socket("192.168.1.48", 7000);
+                requestSocket = new Socket("10.26.18.228", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
                 out.writeUTF(requestJson.toJSONString());
                 out.flush();
-                System.out.println(requestJson);
+                //System.out.println(requestJson);
                 Object obj = in.readObject();
 
                 String book = (String) obj;
