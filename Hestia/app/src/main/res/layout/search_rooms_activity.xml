@@ -74,6 +74,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.511">
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/FromDateButton"
             android:layout_width="49dp"
@@ -133,7 +134,7 @@
             android:textColorHint="@color/Text_Hint"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,7 +142,7 @@
             android:id="@+id/PersonsField"
             android:layout_width="279dp"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_textfield"
             android:ems="10"
             android:hint="Number Of Persons"
@@ -151,6 +152,7 @@
             android:textColorHint="@color/Text_Hint"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/AreaField" />
 
@@ -171,6 +173,24 @@
             app:layout_constraintHorizontal_bias="0.33"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/FromDateField" />
+
+        <EditText
+            android:id="@+id/PriceField"
+            android:layout_width="231dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_textfield"
+            android:ems="10"
+            android:hint="Price"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/Text_Hint"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.331"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ToDateField" />
 
         <EditText
             android:id="@+id/FromDateField"
@@ -196,9 +216,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.28"
+            app:layout_constraintHorizontal_bias="0.348"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ToDateField" />
+            app:layout_constraintTop_toBottomOf="@+id/PriceField" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

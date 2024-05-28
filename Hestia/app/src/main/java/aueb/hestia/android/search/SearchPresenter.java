@@ -71,7 +71,7 @@ public class SearchPresenter {
 
 
             try {
-                requestSocket = new Socket("10.26.18.228", 7000);
+                requestSocket = new Socket("10.0.2.2", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
@@ -117,6 +117,7 @@ public class SearchPresenter {
         int noOfPersons = view.getNoOfPersons();
         float stars = view.getStars();
         String dates = view.getDates();
+        int price = view.getPrice();
 
         if(!dates.matches(datePattern))
         {
@@ -130,6 +131,7 @@ public class SearchPresenter {
         search.put("dateRange",dates);
         search.put("noOfPersons",noOfPersons);
         search.put("stars",stars);
+        search.put("price", price);
         search.put("function","search");
 
         request(search);

@@ -142,7 +142,16 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     @Override
     public int getNoOfPersons() {
         String content = (((EditText)findViewById(R.id.PersonsField)).getText().toString());
-        int noOfPersons = Integer.valueOf(content);
+        int noOfPersons;
+        if(content.equals(""))
+        {
+            noOfPersons = -1;
+        }
+        else
+        {
+            noOfPersons = Integer.valueOf(content);
+        }
+
         return noOfPersons;
     }
 
@@ -150,7 +159,21 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
     public float getStars() {
         return ((RatingBar)findViewById(R.id.RatingBar)).getRating();
     }
+    @Override
+    public int getPrice() {
+        String content = (((EditText)findViewById(R.id.PriceField)).getText().toString());
+        int price;
+        if (content.equals(""))
+        {
+            price = 0;
+        }
+        else
+        {
+            price = Integer.valueOf(content);
+        }
 
+        return price;
+    }
     @Override
     public String getDates() {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -219,6 +242,8 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         }
     }
 
+
+
     @Override
     public void selectRoom(Room room) {
         Intent intent = new Intent(SearchRoomsActivity.this, RoomDetailsActivity.class);
@@ -226,6 +251,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
         intent.putExtra("roomName",room.getRoomName());
         intent.putExtra("roomPrice",room.getPrice());
         intent.putExtra("roomArea",room.getArea());
+        intent.putExtra("roomImage", room.getRoomImage());
         intent.putExtra("roomRating",room.getStars());
         intent.putExtra("noOfReviews", room.getNoOfReviews());
         intent.putExtra("dates",givendates);
