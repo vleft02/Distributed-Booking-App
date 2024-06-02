@@ -6,12 +6,11 @@
   "ReducerRequestListener": 7999,
 
   "WorkerIP" : "127.0.0.1",
-  "WorkersPort": 10000,
+  "WorkersPort": 9000,
 
   "ReducerIP": "127.0.0.1",
   "ReducerPort": 8000,
 
   "CounterIP": "127.0.0.1",
   "CounterPort": 8001
-
 }

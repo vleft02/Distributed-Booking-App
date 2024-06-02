@@ -87,7 +87,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
                 showDatePickerDialog(fromDate, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        fromDate.set(year, month, dayOfMonth);
+                        fromDate.set(year, month+1, dayOfMonth);
 
                         fromDateField.setText(fromDate.get(Calendar.DAY_OF_MONTH)+"/"+fromDate.get(Calendar.MONTH)+"/"+fromDate.get(Calendar.YEAR));
                     }
@@ -105,7 +105,7 @@ public class SearchRoomsActivity extends AppCompatActivity implements SearchRoom
                 showDatePickerDialog(toDate, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        toDate.set(year, month, dayOfMonth);
+                        toDate.set(year, month+1, dayOfMonth);
 
                         toDateField.setText(toDate.get(Calendar.DAY_OF_MONTH)+"/"+toDate.get(Calendar.MONTH)+"/"+toDate.get(Calendar.YEAR));
                     }

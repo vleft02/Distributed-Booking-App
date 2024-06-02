@@ -71,6 +71,4 @@ public class Config {
     public int getCounterPort() {
         return (int) (long) j.get("CounterPort");
     }
-
-
 }

@@ -64,14 +64,13 @@ public class SearchPresenter {
             Socket requestSocket = null;
             ObjectOutputStream out = null;
             ObjectInputStream in = null;
-
     //        Config cfg = new Config();
     //        String masterIp = cfg.getMasterIp();
     //        int masterPort = cfg.getClientRequestListenerPort();
 
 
             try {
-                requestSocket = new Socket("10.0.2.2", 7000);
+                requestSocket = new Socket("192.168.1.6", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 

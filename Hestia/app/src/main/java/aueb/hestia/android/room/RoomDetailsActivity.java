@@ -88,6 +88,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         TextView roomNameDesc = findViewById(R.id.RoomNameDesc);
         TextView areaDesc = findViewById(R.id.AreaDesc);
         TextView roomp = findViewById(R.id.RoomPrice);
+        TextView dateDesc = findViewById(R.id.DatesDesc);
 
         ratingDesc = findViewById(R.id.RatingDesc);
         TextView personsDesc = findViewById(R.id.PersonsDesc);
@@ -103,7 +104,8 @@ public class RoomDetailsActivity extends AppCompatActivity implements RoomDetail
         // Set the text
         roomNameDesc.setText(roomname);
         areaDesc.setText(roomArea);
-        roomp.setText(String.valueOf(roomPrice+"$"));
+        roomp.setText(String.valueOf(roomPrice+"$/Night"));
+        dateDesc.setText(dates);
         ratingDesc.setText(String.valueOf(roomRating));
         personsDesc.setText(String.format("%d Persons", noOfPersons));
         noOfReviewsDesc.setText(String.valueOf("By "+noOfReviews+" users"));

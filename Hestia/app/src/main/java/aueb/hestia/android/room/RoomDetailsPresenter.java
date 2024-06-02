@@ -38,6 +38,7 @@ public class RoomDetailsPresenter {
     }
 
     private String RoomName;
+
     public void setView(RoomDetailsView view) {
         this.view = view;
     }
@@ -80,8 +81,9 @@ public class RoomDetailsPresenter {
             ObjectOutputStream out = null;
             ObjectInputStream in = null;
 
+
             try {
-                requestSocket = new Socket("10.0.2.2", 7000);
+                requestSocket = new Socket("192.168.1.6", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
@@ -129,8 +131,10 @@ public class RoomDetailsPresenter {
             Socket requestSocket = null;
             ObjectOutputStream out = null;
             ObjectInputStream in = null;
+
+
             try {
-                requestSocket = new Socket("10.0.2.2", 7000);
+                requestSocket = new Socket("192.168.1.6", 7000);
                 out = new ObjectOutputStream(requestSocket.getOutputStream());
                 in = new ObjectInputStream(requestSocket.getInputStream());
 
